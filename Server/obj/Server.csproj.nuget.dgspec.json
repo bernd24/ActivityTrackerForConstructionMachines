@@ -37,6 +37,16 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[2.1.13, )"
+            },
+            "microsoft-web-helpers": {
+              "target": "Package",
+              "version": "[2.1.20710.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

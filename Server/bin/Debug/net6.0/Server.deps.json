@@ -7,8 +7,91 @@
   "targets": {
     ".NETCoreApp,Version=v6.0": {
       "Server/1.0.0": {
+        "dependencies": {
+          "MySqlConnector": "2.1.13",
+          "microsoft-web-helpers": "2.1.20710.2"
+        },
         "runtime": {
           "Server.dll": {}
+        }
+      },
+      "microsoft-web-helpers/2.1.20710.2": {
+        "dependencies": {
+          "Microsoft.AspNet.WebPages": "2.0.20505",
+          "Microsoft.AspNet.WebPages.WebData": "2.0.20505"
+        },
+        "runtime": {
+          "lib/net40/Microsoft.Web.Helpers.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.20710.0"
+          }
+        }
+      },
+      "Microsoft.AspNet.Razor/2.0.20505": {
+        "runtime": {
+          "lib/net40/System.Web.Razor.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.20505.0"
+          }
+        }
+      },
+      "Microsoft.AspNet.WebPages/2.0.20505": {
+        "dependencies": {
+          "Microsoft.AspNet.Razor": "2.0.20505",
+          "Microsoft.Web.Infrastructure": "1.0.0"
+        },
+        "runtime": {
+          "lib/net40/System.Web.Helpers.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.20505.0"
+          },
+          "lib/net40/System.Web.WebPages.Deployment.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.20505.0"
+          },
+          "lib/net40/System.Web.WebPages.Razor.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.20505.0"
+          },
+          "lib/net40/System.Web.WebPages.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.20505.0"
+          }
+        }
+      },
+      "Microsoft.AspNet.WebPages.Data/2.0.20505": {
+        "runtime": {
+          "lib/net40/WebMatrix.Data.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.20505.0"
+          }
+        }
+      },
+      "Microsoft.AspNet.WebPages.WebData/2.0.20505": {
+        "dependencies": {
+          "Microsoft.AspNet.WebPages.Data": "2.0.20505"
+        },
+        "runtime": {
+          "lib/net40/WebMatrix.WebData.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.20505.0"
+          }
+        }
+      },
+      "Microsoft.Web.Infrastructure/1.0.0": {
+        "runtime": {
+          "lib/net40/Microsoft.Web.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.20105.407"
+          }
+        }
+      },
+      "MySqlConnector/2.1.13": {
+        "runtime": {
+          "lib/net6.0/MySqlConnector.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.1.13.0"
+          }
         }
       }
     }
@@ -18,6 +101,55 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "microsoft-web-helpers/2.1.20710.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vzUNqlz+dVoN0WsAPBtiqYNEMsg6kRYYIGlNsWcmnASIQkpeCCEYcXPIUNk2j2dbor4RC2niFwAPHtt7zLwqnQ==",
+      "path": "microsoft-web-helpers/2.1.20710.2",
+      "hashPath": "microsoft-web-helpers.2.1.20710.2.nupkg.sha512"
+    },
+    "Microsoft.AspNet.Razor/2.0.20505": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Gk3ZVP/bwGsKx3fQf4EHoIzCApHU9LTIWOjmABa5VMT7axwyPDtUq3wGfW3LiHmlHjkh/SwnZzwCw1LnCTgmBQ==",
+      "path": "microsoft.aspnet.razor/2.0.20505",
+      "hashPath": "microsoft.aspnet.razor.2.0.20505.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebPages/2.0.20505": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/eILBjvoH9y3DqTZO3HX0HHyocyQPzdR125lVxSVHJUQq6NosyYS9BdcLlug9c7qYtVkDcUDxQRhHTBnDqC1VA==",
+      "path": "microsoft.aspnet.webpages/2.0.20505",
+      "hashPath": "microsoft.aspnet.webpages.2.0.20505.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebPages.Data/2.0.20505": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HmBbQ2Nhlh6pPWisHFpdQsJQ/kKI0UamTXEP9br5T1ohoTG98QqE7UzicF0NVpGD281ugpEswvlHFoNCTa5L3A==",
+      "path": "microsoft.aspnet.webpages.data/2.0.20505",
+      "hashPath": "microsoft.aspnet.webpages.data.2.0.20505.nupkg.sha512"
+    },
+    "Microsoft.AspNet.WebPages.WebData/2.0.20505": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ogl8BC4O0iw4BntvNd8YNPqbkMstATOtEZCpwa2ZXppjkbzOv0yxZnUiniWpr1oXE4BEFRgGbUwHMHZ1t4i1RQ==",
+      "path": "microsoft.aspnet.webpages.webdata/2.0.20505",
+      "hashPath": "microsoft.aspnet.webpages.webdata.2.0.20505.nupkg.sha512"
+    },
+    "Microsoft.Web.Infrastructure/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FNmvLn5m2LTU/Rs2KWVo0SIIh9Ek+U0ojex7xeDaSHw/zgEP77A8vY5cVWgUtBGS8MJfDGNn8rpXJWEIQaPwTg==",
+      "path": "microsoft.web.infrastructure/1.0.0",
+      "hashPath": "microsoft.web.infrastructure.1.0.0.nupkg.sha512"
+    },
+    "MySqlConnector/2.1.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Y3qts7mnuZ4EGEQOI4xJ1n+9ZJOmrcwD2CdqyAXuQONBkrc2ENDywE6ZBysFaRojXrnWzLXpc595+GYlN/PI9Q==",
+      "path": "mysqlconnector/2.1.13",
+      "hashPath": "mysqlconnector.2.1.13.nupkg.sha512"
     }
   }
 }

@@ -1,8 +1,97 @@
 {
   "version": 2,
-  "dgSpecHash": "bIP400VzUN2UDGeO4IwK96heZ62F9HUlATbC3KgtEReb/l1UB+xxkB+loUT5ibUylOIjt6YUOgiJQOl7ukKUGw==",
+  "dgSpecHash": "xb2lTZX+GGnYLmQcz8nhkxZg1R+bpIaxHJX+ldgHIQ1Dai+g46zlXd7QgEsMhUxe0WgNotBvQudsBu842OLG/Q==",
   "success": true,
   "projectFilePath": "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/Server.csproj",
-  "expectedPackageFiles": [],
-  "logs": []
+  "expectedPackageFiles": [
+    "/Users/bernd/.nuget/packages/microsoft-web-helpers/2.1.20710.2/microsoft-web-helpers.2.1.20710.2.nupkg.sha512",
+    "/Users/bernd/.nuget/packages/microsoft.aspnet.razor/2.0.20505/microsoft.aspnet.razor.2.0.20505.nupkg.sha512",
+    "/Users/bernd/.nuget/packages/microsoft.aspnet.webpages/2.0.20505/microsoft.aspnet.webpages.2.0.20505.nupkg.sha512",
+    "/Users/bernd/.nuget/packages/microsoft.aspnet.webpages.data/2.0.20505/microsoft.aspnet.webpages.data.2.0.20505.nupkg.sha512",
+    "/Users/bernd/.nuget/packages/microsoft.aspnet.webpages.webdata/2.0.20505/microsoft.aspnet.webpages.webdata.2.0.20505.nupkg.sha512",
+    "/Users/bernd/.nuget/packages/microsoft.web.infrastructure/1.0.0/microsoft.web.infrastructure.1.0.0.nupkg.sha512",
+    "/Users/bernd/.nuget/packages/mysqlconnector/2.1.13/mysqlconnector.2.1.13.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "\"microsoft-web-helpers 2.1.20710.2\" ist von \"Microsoft.AspNet.WebPages (>= 2.0.0 && < 2.1.0)\" abhängig, \"Microsoft.AspNet.WebPages 2.0.0\" wurde jedoch nicht gefunden. Die ungefähre höchste Übereinstimmung von \"Microsoft.AspNet.WebPages 2.0.20505\" wurde aufgelöst.",
+      "libraryId": "Microsoft.AspNet.WebPages",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "\"microsoft-web-helpers 2.1.20710.2\" ist von \"Microsoft.AspNet.WebPages.WebData (>= 2.0.0 && < 2.1.0)\" abhängig, \"Microsoft.AspNet.WebPages.WebData 2.0.0\" wurde jedoch nicht gefunden. Die ungefähre höchste Übereinstimmung von \"Microsoft.AspNet.WebPages.WebData 2.0.20505\" wurde aufgelöst.",
+      "libraryId": "Microsoft.AspNet.WebPages.WebData",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Das Paket \"microsoft-web-helpers 2.1.20710.2\" wurde nicht mit dem Projektzielframework \"net6.0\", sondern mit \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" wiederhergestellt. Dieses Paket ist mit Ihrem Projekt möglicherweise nicht vollständig kompatibel.",
+      "libraryId": "microsoft-web-helpers",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Das Paket \"Microsoft.AspNet.Razor 2.0.20505\" wurde nicht mit dem Projektzielframework \"net6.0\", sondern mit \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" wiederhergestellt. Dieses Paket ist mit Ihrem Projekt möglicherweise nicht vollständig kompatibel.",
+      "libraryId": "Microsoft.AspNet.Razor",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Das Paket \"Microsoft.AspNet.WebPages 2.0.20505\" wurde nicht mit dem Projektzielframework \"net6.0\", sondern mit \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" wiederhergestellt. Dieses Paket ist mit Ihrem Projekt möglicherweise nicht vollständig kompatibel.",
+      "libraryId": "Microsoft.AspNet.WebPages",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Das Paket \"Microsoft.AspNet.WebPages.Data 2.0.20505\" wurde nicht mit dem Projektzielframework \"net6.0\", sondern mit \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" wiederhergestellt. Dieses Paket ist mit Ihrem Projekt möglicherweise nicht vollständig kompatibel.",
+      "libraryId": "Microsoft.AspNet.WebPages.Data",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Das Paket \"Microsoft.AspNet.WebPages.WebData 2.0.20505\" wurde nicht mit dem Projektzielframework \"net6.0\", sondern mit \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" wiederhergestellt. Dieses Paket ist mit Ihrem Projekt möglicherweise nicht vollständig kompatibel.",
+      "libraryId": "Microsoft.AspNet.WebPages.WebData",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Das Paket \"Microsoft.Web.Infrastructure 1.0.0\" wurde nicht mit dem Projektzielframework \"net6.0\", sondern mit \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" wiederhergestellt. Dieses Paket ist mit Ihrem Projekt möglicherweise nicht vollständig kompatibel.",
+      "libraryId": "Microsoft.Web.Infrastructure",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

@@ -24,3 +24,14 @@
 /Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/obj/Debug/net6.0/Server.pdb
 /Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/obj/Debug/net6.0/Server.genruntimeconfig.cache
 /Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/obj/Debug/net6.0/ref/Server.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/Microsoft.Web.Helpers.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/System.Web.Razor.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/System.Web.Helpers.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/System.Web.WebPages.Deployment.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/System.Web.WebPages.Razor.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/System.Web.WebPages.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/WebMatrix.Data.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/WebMatrix.WebData.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/Microsoft.Web.Infrastructure.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/bin/Debug/net6.0/MySqlConnector.dll
+/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/obj/Debug/net6.0/Server.csproj.CopyComplete

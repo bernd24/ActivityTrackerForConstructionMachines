@@ -7,18 +7,24 @@ namespace Server.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    public AppDb Db { get; }
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, AppDb db)
     {
         _logger = logger;
+        Db = db;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
+        await Db.Connection.OpenAsync();
+        var query = new DbQuery(Db);
+        var result = await query.FindOneAsync(1);
+        TempData["test"] = result.Content;
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult Machines()
     {
         return View();
     }
