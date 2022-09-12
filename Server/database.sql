@@ -1,8 +1,9 @@
-DROP TABLE IF EXISTS BlogPost;
-CREATE TABLE BlogPost (
+DROP TABLE IF EXISTS Machine;
+CREATE TABLE Machine (
   Id INT NOT NULL AUTO_INCREMENT,
-  Content LONGTEXT CHARSET utf8mb4,
-  Title LONGTEXT CHARSET utf8mb4,
+  Manufacturer TEXT,
+  Model TEXT,
+  MachineType TEXT,
   PRIMARY KEY (Id)
 );
-INSERT INTO BlogPost (Content,Title) VALUES ("lasagne2","rezept");
+INSERT INTO Machine (Manufacturer,Model,MachineType) VALUES ("Volvo","EC950F","Excavator");

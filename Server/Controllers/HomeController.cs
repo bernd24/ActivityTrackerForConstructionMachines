@@ -17,15 +17,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        await Db.Connection.OpenAsync();
-        var query = new DbQuery(Db);
-        var result = await query.FindOneAsync(1);
-        TempData["test"] = result.Content;
-        return View();
-    }
-
-    public IActionResult Machines()
-    {
         return View();
     }
 
