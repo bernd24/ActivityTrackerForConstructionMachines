@@ -15,14 +15,24 @@ public class MachineController : Controller
         Db = db;
     }
 
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         await Db.Connection.OpenAsync();
         var query = new Query(Db);
-        var result = await query.FindOneAsync(1);
-        TempData["ma"] = result.Manufacturer;
-        TempData["mo"] = result.Model;
-        TempData["mt"] = result.MachineType;
+        var result = await query.LatestPostsAsync();
+        return View(result);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create()
+    {
+        await Db.Connection.OpenAsync();
+        var newMachine = new Machine();
+        newMachine.Manufacturer = "Volvo";
+        newMachine.Model = "EC850";
+        newMachine.MachineType = "Excavator";
+        await newMachine.InsertAsync();
         return View();
     }
 

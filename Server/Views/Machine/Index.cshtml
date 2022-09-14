@@ -3,4 +3,7 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-@TempData["ma"] @TempData["mo"] @TempData["mt"]
+@foreach (var machine in Model)
+{
+    @machine.Manufacturer @machine.Model @machine.MachineType
+}
