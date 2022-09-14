@@ -25,14 +25,11 @@ public class MachineController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create()
+    public async Task<IActionResult> Create([FromBody]Machine m)
     {
         await Db.Connection.OpenAsync();
-        var newMachine = new Machine(Db);
-        newMachine.Manufacturer = "Volvo";
-        newMachine.Model = "EC850";
-        newMachine.MachineType = "Excavator";
-        await newMachine.InsertAsync();
+        m.Db = Db;
+        await m.InsertAsync();
         return View();
     }
 
