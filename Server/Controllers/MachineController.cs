@@ -28,7 +28,7 @@ public class MachineController : Controller
     public async Task<IActionResult> Create()
     {
         await Db.Connection.OpenAsync();
-        var newMachine = new Machine();
+        var newMachine = new Machine(Db);
         newMachine.Manufacturer = "Volvo";
         newMachine.Model = "EC850";
         newMachine.MachineType = "Excavator";
