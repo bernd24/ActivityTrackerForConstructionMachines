@@ -22,12 +22,9 @@ jobs:
     steps:
       - name: kill
         run: screen -S SERVER -X quit || true
-        
-      - name: change dir
-        run: cd /home/atfcm/ActivityTrackerForConstructionMachines/Server
          
       - name: pull
-        run: pwd
+        run: git pull
         
       - name: build
         run: sudo dotnet build
