@@ -20,11 +20,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: print
-        run: pwd
-    
       - name: kill
-        run: screen -S SERVER -X quit
+        run: screen -S SERVER -X quit || true
          
       - name: pull
         run: git pull
