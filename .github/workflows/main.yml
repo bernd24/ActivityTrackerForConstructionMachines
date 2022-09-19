@@ -27,7 +27,7 @@ jobs:
         run: git pull
         
       - name: build
-        run: dotnet build
+        run: sudo dotnet build
         
       - name: run
-        run: screen -d -m -S SERVER bash -c "dotnet run --urls=http://85.214.151.98:80/"
+        run: screen -d -m -S SERVER bash -c "sudo dotnet run --urls=http://85.214.151.98:80/"
