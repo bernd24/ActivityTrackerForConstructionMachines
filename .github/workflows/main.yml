@@ -27,7 +27,7 @@ jobs:
         run: cd /home/atfcm/ActivityTrackerForConstructionMachines/Server
          
       - name: pull
-        run: git pull
+        run: pwd
         
       - name: build
         run: sudo dotnet build
