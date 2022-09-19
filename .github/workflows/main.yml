@@ -26,6 +26,9 @@ jobs:
       - name: pull
         run: git pull
         
+      - name: print
+        run: pwd
+        
       - name: build
         run: sudo dotnet build
         
