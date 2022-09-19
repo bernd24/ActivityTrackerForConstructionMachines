@@ -20,11 +20,14 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: kill
+        run: screen -S SERVER -X quit
+         
       - name: pull
         run: git pull
         
       - name: build
-        run: sudo dotnet build
+        run: dotnet build
         
       - name: run
-        run: sudo dotnet run --urls=http://85.214.151.98:80/
+        run: screen -d -m -S SERVER bash -c "dotnet run --urls=http://85.214.151.98:80/"
