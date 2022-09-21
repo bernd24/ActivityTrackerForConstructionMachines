@@ -19,5 +19,8 @@ jobs:
     runs-on: self-hosted
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: pwd
-        run: pwd
+      - name: kill
+        run: screen -X -S SERVER kill
+        
+      - name: pull and run
+        run: ./run.sh
