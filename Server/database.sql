@@ -1,9 +1,13 @@
-DROP TABLE IF EXISTS Machine;
-CREATE TABLE Machine (
-  Id INT NOT NULL AUTO_INCREMENT,
-  Manufacturer TEXT,
-  Model TEXT,
-  MachineType TEXT,
-  PRIMARY KEY (Id)
+DROP TABLE if EXISTS SUSTest;
+CREATE TABLE SUSTest (
+  ID INT NOT NULL AUTO_INCREMENT, 
+  Question TEXT NOT NULL, 
+  StronglyDisagree BOOLEAN, 
+  Disagree BOOLEAN,
+  Neutral BOOLEAN, 
+  Agree BOOLEAN, 
+  StronglyAgree BOOLEAN, 
+  PRIMARY KEY(ID)
 );
-INSERT INTO Machine (Manufacturer,Model,MachineType) VALUES ("Volvo","EC950F","Excavator");
+
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("how zufrieden are you?",false, true, false, false, false);

@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 using MySqlConnector;
-
+using UIAutomate.Models;
 
     public class Query
     {
@@ -19,10 +19,10 @@ using MySqlConnector;
             Db = db;
         }
 
-        public async Task<Machine> FindOneAsync(int id)
+        public async Task<SUSTest> FindOneAsync(int id)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Machine WHERE `Id` = @id";
+            cmd.CommandText = @"SELECT * FROM SUSTest WHERE `Id` = @id";
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@id",
@@ -33,10 +33,10 @@ using MySqlConnector;
             return result.Count > 0 ? result[0] : null;
         }
 
-        public async Task<List<Machine>> LatestPostsAsync()
+        public async Task<List<SUSTest>> LatestPostsAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Machine ORDER BY `Id` DESC LIMIT 10;";
+            cmd.CommandText = @"SELECT * FROM SUSTest ORDER BY `Id` DESC LIMIT 10;";
             return await ReadAllAsync(await cmd.ExecuteReaderAsync());
         }
 
@@ -44,28 +44,31 @@ using MySqlConnector;
         {
             using var txn = await Db.Connection.BeginTransactionAsync();
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"DELETE FROM Machine";
+            cmd.CommandText = @"DELETE FROM SUSTest";
             await cmd.ExecuteNonQueryAsync();
             await txn.CommitAsync();
         }
 
-        private async Task<List<Machine>> ReadAllAsync(DbDataReader reader)
+        private async Task<List<SUSTest>> ReadAllAsync(DbDataReader reader)
         {
-            var machines = new List<Machine>();
+            var SUSTests = new List<SUSTest>();
             using (reader)
             {
                 while (await reader.ReadAsync())
                 {
-                    var machine = new Machine(Db)
+                    var SUSTest = new SUSTest(Db)
                     {
                         Id = reader.GetInt32(0),
-                        Manufacturer = reader.GetString(1),
-                        Model = reader.GetString(2),
-                        MachineType = reader.GetString(3)
+                        Question = reader.GetString(1),
+                        StronglyDisagree = reader.GetBoolean(2),
+                        Disagree = reader.GetBoolean(3),
+                        Neutral = reader.GetBoolean(4),
+                        Agree = reader.GetBoolean(5),
+                        StronglyAgree = reader.GetBoolean(6)
                     };
-                    machines.Add(machine);
+                    SUSTests.Add(SUSTest);
                 }
             }
-            return machines;
+            return SUSTests;
         }
     }

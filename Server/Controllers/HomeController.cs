@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
+using UIAutomate.Models;
 
 namespace Server.Controllers;
 
@@ -13,6 +14,10 @@ public class HomeController : Controller
     {
         _logger = logger;
         Db = db;
+    }
+    public async Task<IActionResult> SUSTest()
+    {
+        return View();
     }
 
     public async Task<IActionResult> Index()

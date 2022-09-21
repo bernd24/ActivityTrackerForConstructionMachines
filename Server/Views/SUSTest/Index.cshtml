@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "SUSTest";
+}
+<h1>@ViewData["Title"]</h1>
+
+@foreach (var sustest in Model)
+{
+    @sustest.Question @sustest.StronglyDisagree @sustest.Disagree
+}
