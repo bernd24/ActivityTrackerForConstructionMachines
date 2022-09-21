@@ -1,18 +1,24 @@
 #include "SIM800L.h"
 #include <esp_now.h>
 #include <WiFi.h>
+#include <cQueue.h>
 
 #define SIM800_RST_PIN 4
 
 const char APN[] = "online.telia.se";
-const char URL[] = "http://h2986165.stratoserver.net/Machine/Create";
+//const char URL[] = "http://h2986165.stratoserver.net/Machine/Create";
+const char URL[] = "https://a00212bf-e590-424f-b2cf-751b9a9d644c.mock.pstmn.io/Machine/Create";
 const char CONTENT_TYPE[] = "application/json";
 
 #define CHANNEL 1
 
 SIM800L* sim800l;
 
+Queue_t q;
+
 void setup() {
+  q_init(&q, sizeof(uint8_t), 10, FIFO, false);
+  
   // Initialize Serial Monitor for debugging
   Serial.begin(115200);
   while(!Serial);
@@ -49,13 +55,9 @@ void setup() {
 }
 
 char PAYLOAD[255];
-uint32_t recvCounter = 0;
-uint32_t sendCounter = 0;
-uint8_t val;
 
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-  val = incomingData[0];
-  recvCounter++;
+  q_push(&q,incomingData);
 }
  
 void loop() {
@@ -81,12 +83,37 @@ void loop() {
   esp_now_register_recv_cb(OnDataRecv);
 
   while(1){
-    if(recvCounter > sendCounter){
-      sprintf(PAYLOAD,"{\"Manufacturer\": \"%d\", \"Model\": \"EC350F\", \"MachineType\": \"Excavator\"}",val);      
+    if(!q_isEmpty(&q)){
+      uint8_t val;
+      char valStr[10];
+      strcpy(PAYLOAD,"[");
+      q_pop(&q,&val);
+      sprintf(valStr,"%d",val);
+      strcat(PAYLOAD,valStr);  
+      while(q_pop(&q,&val)){
+        sprintf(valStr,",%d",val);
+        strcat(PAYLOAD,valStr);        
+      }
+      strcat(PAYLOAD,"]");       
       uint16_t rc = sim800l->doPost(URL, CONTENT_TYPE, PAYLOAD, 10000, 10000);
-      sendCounter = recvCounter;
+      if(rc == 200) {
+        // Success, output the data received on the serial
+        Serial.print(F("HTTP POST successful ("));
+        Serial.print(sim800l->getDataSizeReceived());
+        Serial.println(F(" bytes)"));
+        Serial.print(F("Received : "));
+        Serial.println(sim800l->getDataReceived());
+      } else {
+        // Failed...
+        Serial.print(F("HTTP POST error "));
+        Serial.println(rc);
+      }
     }
-    delay(10);
+    uint8_t a = 5;
+    uint8_t b = 6;
+    q_push(&q,&a);
+    q_push(&q,&b);
+    delay(10000);
   }
 }
 
