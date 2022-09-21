@@ -20,7 +20,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: kill
-        run: screen -X -S SERVER kill || true
+        run: sudo pkill Server
         
       - name: pull and run
         run: ./run.sh
