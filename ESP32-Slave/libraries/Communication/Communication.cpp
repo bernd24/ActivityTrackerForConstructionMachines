@@ -1,76 +1,47 @@
-/**
-   ESPNOW - Basic communication - Master
-   Date: 26th September 2017
-   Author: Arvind Ravulavaru <https://github.com/arvindr21>
-   Purpose: ESPNow Communication between a Master ESP32 and a Slave ESP32
-   Description: This sketch consists of the code for the Master module.
-   Resources: (A bit outdated)
-   a. https://espressif.com/sites/default/files/documentation/esp-now_user_guide_en.pdf
-   b. http://www.esploradores.com/practica-6-conexion-esp-now/
-
-   << This Device Master >>
-
-   Flow: Master
-   Step 1 : ESPNow Init on Master and set it in STA mode
-   Step 2 : Start scanning for Slave ESP32 (we have added a prefix of `slave` to the SSID of slave for an easy setup)
-   Step 3 : Once found, add Slave as peer
-   Step 4 : Register for send callback
-   Step 5 : Start Transmitting data from Master to Slave
-
-   Flow: Slave
-   Step 1 : ESPNow Init on Slave
-   Step 2 : Update the SSID of Slave with a prefix of `slave`
-   Step 3 : Set Slave in AP mode
-   Step 4 : Register for receive callback and wait for data
-   Step 5 : Once data arrives, print it in the serial monitor
-
-   Note: Master and Slave have been defined to easily understand the setup.
-         Based on the ESPNOW API, there is no concept of Master and Slave.
-         Any devices can act as master or salve.
-*/
 
 #include <esp_now.h>
 #include <WiFi.h>
 #include <esp_wifi.h> // only for esp_wifi_set_channel()
 
-// Global copy of slave
-esp_now_peer_info_t slave;
-#define CHANNEL 1
-#define PRINTSCANRESULTS 0
-#define DELETEBEFOREPAIR 0
+#include "Communication.h"
 
-
-enum SensorType {
-  ACCELEROMETER_GYROMETER, ACCELEROMETER, GYROMETER, SUPERSONIC
-};
-
-struct Format {
-  SensorType type;
-  uint8_t sensor_id;
-  uint8_t element_count;
-
-  Format(SensorType sensor_type, uint8_t id, uint8_t count): type(sensor_type), sensor_id(id), element_count(count) {}
-};
-
-struct Accelerometer_package {
-  float acc_x, acc_y, acc_z;
-  float gyro_x, gyro_y, gyro_z;
-};
-
-//Format accelerometer_format;
-//accelerometer_format.type = ACCELEROMETER_GYROMETER;
-
-
-void establish_connection(format* formats, uint8_t size) {
+/*
+void establish_connection(Format* formats, uint8_t size, bool rssi) {
 
   sendData((void*)formats, sizeof(formats[0]) * size);
   //const uint8_t *peer_addr = slave.peer_addr;
   //esp_err_t result = esp_now_send(peer_addr, format_arr, sizeof(Format) * size);
   
 }
+*/
+
+void send_error_message(String message) {
+  sendData((void*)&message, sizeof(message));
+}
 
 
-// Init ESP Now with fallback
+int32_t ScanForRSSI() {
+  int16_t scanResults = WiFi.scanNetworks(false, false, false, 300, CHANNEL); // Scan only on one channel
+  if(scanResults == 0) {
+    Serial.println("No wifi devices found when scanning for RSSI.");
+    WiFi.scanDelete();
+    return 0;
+  }
+
+  int32_t rssi = 0;
+  for(int i = 0; i < scanResults; ++i) {
+    String SSID = WiFi.SSID(i);
+    if(SSID.indexOf("Slave") == 0) {
+      rssi = WiFi.RSSI(i);
+      Serial.print("Measuring RSSI: "); Serial.println(rssi);
+      break;
+    }
+  }
+
+  WiFi.scanDelete();
+  return rssi;
+}
+
 void InitESPNow() {
   WiFi.disconnect();
   if (esp_now_init() == ESP_OK) {
@@ -85,29 +56,6 @@ void InitESPNow() {
   }
 }
 
-int32_t ScanForRSSI() {
-  int16_t scanResults = WiFi.scanNetworks(false, false, false, 300, CHANNEL); // Scan only on one channel
-  if(scanResults == 0) {
-    Serial.println("No wifi devices found when scanning for RSSI.");
-    WiFi.scanDelete();
-    return 0;
-  }
-
-
-  for(int i = 0; i < scanResults; ++i) {
-    String SSID = WiFi.SSID(i);
-    if(SSID.indexOf("Slave") == 0) {
-      int32_t rssi = WiFi.RSSI(i);
-      Serial.print("Measuring RSSI: "); Serial.println(rssi);
-      WiFi.scanDelete();
-      return rssi;
-    }
-  }
-  WiFi.scanDelete();
-  return 0;
-}
-
-// Scan for slaves in AP mode
 void ScanForSlave() {
   int16_t scanResults = WiFi.scanNetworks(false, false, false, 300, CHANNEL); // Scan only on one channel
   // reset on each scan
@@ -169,8 +117,6 @@ void ScanForSlave() {
   WiFi.scanDelete();
 }
 
-// Check if the slave is already paired with the master.
-// If not, pair the slave with master
 bool manageSlave() {
   if (slave.channel == CHANNEL) {
     if (DELETEBEFOREPAIR) {
@@ -237,12 +183,10 @@ void deletePeer() {
   }
 }
 
-int32_t data = 0;
-// send data
 void sendData(void* buffer, size_t size) {
   const uint8_t *peer_addr = slave.peer_addr;
-  Serial.print("Sending: "); Serial.println(data);
-  esp_err_t result = esp_now_send(peer_addr, (uint8_t*)buffer, size;
+  Serial.println("Sending: ");
+  esp_err_t result = esp_now_send(peer_addr, (uint8_t*)buffer, size);
   Serial.print("Send Status: ");
   if (result == ESP_OK) {
     Serial.println("Success");
@@ -262,57 +206,10 @@ void sendData(void* buffer, size_t size) {
   }
 }
 
-// callback when data is sent from Master to Slave
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   char macStr[18];
   snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
            mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
   Serial.print("Last Packet Sent to: "); Serial.println(macStr);
   Serial.print("Last Packet Send Status: "); Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
-}
-
-void setup() {
-  Serial.begin(115200);
-  //Set device in STA mode to begin with
-  
-  WiFi.mode(WIFI_STA);
-  esp_wifi_set_channel(CHANNEL, WIFI_SECOND_CHAN_NONE);
-  Serial.println("ESPNow/Basic/Master Example");
-  // This is the mac address of the Master in Station Mode
-  Serial.print("STA MAC: "); Serial.println(WiFi.macAddress());
-  Serial.print("STA CHANNEL "); Serial.println(WiFi.channel());
-  // Init ESPNow with a fallback logic
-  InitESPNow();
-  // Once ESPNow is successfully Init, we will register for Send CB to
-  // get the status of Trasnmitted packet
-  esp_now_register_send_cb(OnDataSent);
-}
-
-void loop() {
-
-  // In the loop we scan for slave
-  ScanForSlave();
-  // If Slave is found, it would be populate in `slave` variable
-  // We will check if `slave` is defined and then we proceed further
-  if (slave.channel == CHANNEL) { // check if slave channel is defined
-    // `slave` is defined
-    // Add slave as peer if it has not been added already
-    bool isPaired = manageSlave();
-    if (isPaired) {
-      // pair success or already paired
-      // Send data to device
-      int32_t rssi = ScanForRSSI();
-      sendData(&rssi, sizeof(rssi));
-    } else {
-      // slave pair failed
-      Serial.println("Slave pair failed!");
-    }
-  }
-  else {
-    // No slave found to process
-  }
-
-
-  // wait for 3seconds to run the logic again
-  delay(3000);
 }
