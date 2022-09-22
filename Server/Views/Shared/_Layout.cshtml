@@ -7,6 +7,41 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Server.styles.css" asp-append-version="true" />
+
+
+    <style>
+        #valid {
+            @* margin: 20px; *@
+            transform: rotate(-90deg);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        table {
+            border: 1px solid gray;
+            cellpadding: 100px;
+        }
+
+        th{
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid gray;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        checkbox {
+            width: 10%;
+            padding: 100px;
+            margin: 100px;
+            @* min-width: 100px; *@
+            position: center;   
+            text-align:center; 
+            vertical-align:middle;
+        }
+    </style>
+
+
 </head>
 <body>
     <header>
@@ -23,7 +58,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SUSTest" asp-action="Index">SUSTest</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="SUSTest" asp-action="Introduction">Introduction</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="SUSTest" asp-action="Formular">Formular</a>
                         </li>
                     </ul>
                 </div>

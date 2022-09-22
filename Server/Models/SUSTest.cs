@@ -37,22 +37,22 @@ namespace UIAutomate.Models{
             Id = (int) cmd.LastInsertedId;
         }
 
-        // public async Task UpdateAsync()
-        // {
-        //     using var cmd = Db.Connection.CreateCommand();
-        //     cmd.CommandText = @"UPDATE SUSTest SET Manufacturer = @manufacturer, Model = @model, SUSTestType = @SUSTestType WHERE `Id` = @id;";
-        //     BindParams(cmd);
-        //     BindId(cmd);
-        //     await cmd.ExecuteNonQueryAsync();
-        // }
+        public async Task UpdateAsync()
+        {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"UPDATE SUSTest SET Manufacturer = @manufacturer, Model = @model, SUSTestType = @SUSTestType WHERE `Id` = @id;";
+            BindParams(cmd);
+            BindId(cmd);
+            await cmd.ExecuteNonQueryAsync();
+        }
 
-        // public async Task DeleteAsync()
-        // {
-        //     using var cmd = Db.Connection.CreateCommand();
-        //     cmd.CommandText = @"DELETE FROM SUSTest WHERE `Id` = @id;";
-        //     BindId(cmd);
-        //     await cmd.ExecuteNonQueryAsync();
-        // }
+        public async Task DeleteAsync()
+        {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"DELETE FROM SUSTest WHERE `Id` = @id;";
+            BindId(cmd);
+            await cmd.ExecuteNonQueryAsync();
+        }
 
         private void BindId(MySqlCommand cmd)
         {

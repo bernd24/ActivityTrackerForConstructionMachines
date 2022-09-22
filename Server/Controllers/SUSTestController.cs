@@ -17,7 +17,16 @@ public class SUSTestController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Formular()
+    {
+        await Db.Connection.OpenAsync();
+        var query = new Query(Db);
+        var result = await query.LatestPostsAsync();
+        return View(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Introduction()
     {
         await Db.Connection.OpenAsync();
         var query = new Query(Db);
