@@ -1,8 +1,11 @@
+using UIAutomate.Models;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<AppDb>(_ => new AppDb("server=localhost;userid=test;password=IbLN+h1UIP;port=3306;database=UITestDatabase;"));
+builder.Services.AddTransient<SUSTestDBContext>(_ => new SUSTestDBContext("server=localhost;userid=test;password=IbLN+h1UIP;port=3306;database=UITestDatabase;"));
 
 var app = builder.Build();
 

@@ -1,0 +1,11 @@
+Use UITestDatabase;
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I think that I would like to use this website frequently.",false, true, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I found the website unnecessarily complex.",false, true, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I thought the website was easy to use. ",false, true, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I think that I would need the support of a technical person to be able to use this website.",false, true, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I found the various functions in this website were well integrated. ",false, true, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I thought there was too much inconsistency in this website.",false, true, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I would imagine that most people would learn to use this website very quickly.",false, false, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I found the website very cumbersom/awkward to use.",false, false, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I felt very confident using the website.",false, false, false, false, false);
+INSERT INTO SUSTest(Question,StronglyDisagree,Disagree,Neutral,Agree,StronglyAgree) VALUES ("I needed to learn a lot of things before i could get going with this system.",false, false, false, false, false);

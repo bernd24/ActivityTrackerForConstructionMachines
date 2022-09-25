@@ -8,13 +8,13 @@ using UIAutomate.Models;
     public class Query
     {
 
-        internal AppDb Db { get; set; }
+        internal SUSTestDBContext Db { get; set; }
 
         public Query()
         {
         }
 
-        internal Query(AppDb db)
+        internal Query(SUSTestDBContext db)
         {
             Db = db;
         }
@@ -48,6 +48,7 @@ using UIAutomate.Models;
             await cmd.ExecuteNonQueryAsync();
             await txn.CommitAsync();
         }
+       
 
         private async Task<List<SUSTest>> ReadAllAsync(DbDataReader reader)
         {
