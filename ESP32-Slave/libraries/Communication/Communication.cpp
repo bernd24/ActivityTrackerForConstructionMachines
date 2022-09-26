@@ -5,18 +5,65 @@
 
 #include "Communication.h"
 
-/*
-void establish_connection(Format* formats, uint8_t size, bool rssi) {
+bool initCommunication(bool rssi) {
+  setupESPnow();
 
-  sendData((void*)formats, sizeof(formats[0]) * size);
-  //const uint8_t *peer_addr = slave.peer_addr;
-  //esp_err_t result = esp_now_send(peer_addr, format_arr, sizeof(Format) * size);
-  
+  ScanForSlave();
 }
-*/
 
-void send_error_message(String message) {
-  sendData((void*)&message, sizeof(message));
+// Convert single digit integer to a char.
+char intToChar(uint8_t i) {
+  if(i > 9)
+    return '0';
+  return (char)('0' + i);
+}
+
+// Copy name from global names. chars arrays are weird.
+void copy_name(sensor_format_t& format, const char src[], uint8_t length) {
+  for (uint8_t i = 0; i < length; ++i) {
+    format.name[i] = src[i];
+  }
+}
+
+// Creates formats for a given sensor type
+void createFormats(sensor_format_t arr[], uint8_t start_index, uint8_t count, uint8_t data_count, const char name[]) {
+  for(uint8_t i = 0; i < count; ++i) {
+    sensor_format_t format;
+    copy_name(format, name, NAME_SIZE);
+
+    uint8_t last_char = NAME_SIZE - 1;
+    // Find last non-null character
+    while(format.name[last_char] == '\0') { --last_char; }
+    format.name[last_char] = intToChar(i);
+
+    format.data_count = data_count;
+
+    arr[start_index + i] = format;
+  }
+}
+
+void initHandshakeBuffer(uint8_t* buf, sensor_format_t* arr, uint8_t arr_size) {
+  buf = (uint8_t*)malloc(1 + sizeof(sensor_format_t) * arr_size);
+  buf[0] = HANDSHAKE;
+
+/*
+  for(uint8_t i = 0; i < arr_size; ++i) {
+    memcpy(buf + 1 + i*sizeof(sensor_format_t), &arr[i], sizeof(sensor_format_t));
+  }
+  */
+}
+
+// Creates the array of formats used for establishing the commmunication data format.
+void createSensorFormatArray(sensor_format_t arr[], uint8_t mpu_count, uint8_t bno_count, uint8_t lidar_count, uint8_t supersonic_count) {
+  
+  // Create mpu formats
+  createFormats(arr, 0, mpu_count, 6, MPU_BASENAME);
+  // Create bno formats
+  createFormats(arr, mpu_count, bno_count, 9, BNO_BASENAME);
+  // Create lidar formats
+  createFormats(arr, mpu_count + bno_count, lidar_count, 1, LIDAR_BASENAME);
+  // Create sonar formats
+  createFormats(arr, mpu_count + bno_count + lidar_count, supersonic_count, 2, SONAR_BASENAME);
 }
 
 
@@ -42,6 +89,7 @@ int32_t ScanForRSSI() {
   return rssi;
 }
 
+
 void InitESPNow() {
   WiFi.disconnect();
   if (esp_now_init() == ESP_OK) {
@@ -56,38 +104,30 @@ void InitESPNow() {
   }
 }
 
-void ScanForSlave() {
+const uint8_t SUCCESS = 0;
+const uint8_t NO_SLAVE_FOUND = 1;
+const uint8_t NO_WIFI_APS_FOUND = 2;
+
+uint8_t ScanForSlave() {
   int16_t scanResults = WiFi.scanNetworks(false, false, false, 300, CHANNEL); // Scan only on one channel
   // reset on each scan
   bool slaveFound = 0;
   memset(&slave, 0, sizeof(slave));
 
+  uint8_t result = 0;
+
   Serial.println("");
   if (scanResults == 0) {
-    Serial.println("No WiFi devices in AP Mode found");
+    result = 2;
   } else {
     Serial.print("Found "); Serial.print(scanResults); Serial.println(" devices ");
     for (int i = 0; i < scanResults; ++i) {
       // Print SSID and RSSI for each device found
       String SSID = WiFi.SSID(i);
-      int32_t RSSI = WiFi.RSSI(i);
       String BSSIDstr = WiFi.BSSIDstr(i);
-
-      if (PRINTSCANRESULTS) {
-        Serial.print(i + 1);
-        Serial.print(": ");
-        Serial.print(SSID);
-        Serial.print(" (");
-        Serial.print(RSSI);
-        Serial.print(")");
-        Serial.println("");
-      }
-      delay(10);
       // Check if the current device starts with `Slave`
       if (SSID.indexOf("Slave") == 0) {
         // SSID of interest
-        Serial.println("Found a Slave.");
-        Serial.print(i + 1); Serial.print(": "); Serial.print(SSID); Serial.print(" ["); Serial.print(BSSIDstr); Serial.print("]"); Serial.print(" ("); Serial.print(RSSI); Serial.print(")"); Serial.println("");
         // Get BSSID => Mac Address of the Slave
         int mac[6];
         if ( 6 == sscanf(BSSIDstr.c_str(), "%x:%x:%x:%x:%x:%x",  &mac[0], &mac[1], &mac[2], &mac[3], &mac[4], &mac[5] ) ) {
@@ -108,34 +148,30 @@ void ScanForSlave() {
   }
 
   if (slaveFound) {
-    Serial.println("Slave Found, processing..");
+    result = 0;
   } else {
-    Serial.println("Slave Not Found, trying again.");
+    result = 1;
   }
 
   // clean up ram
   WiFi.scanDelete();
+  return result;
 }
 
-bool manageSlave() {
+esp_err_t manageSlave() {
   if (slave.channel == CHANNEL) {
-    if (DELETEBEFOREPAIR) {
-      deletePeer();
-    }
-
-    Serial.print("Slave Status: ");
     // check if the peer exists
     bool exists = esp_now_is_peer_exist(slave.peer_addr);
     if ( exists) {
       // Slave already paired.
-      Serial.println("Already Paired");
-      return true;
+      return ESP_OK;
     } else {
       // Slave not paired, attempt pair
       esp_err_t addStatus = esp_now_add_peer(&slave);
+      
+      return addStatus;
+      /*
       if (addStatus == ESP_OK) {
-        // Pair success
-        Serial.println("Pair success");
         return true;
       } else if (addStatus == ESP_ERR_ESPNOW_NOT_INIT) {
         // How did we get so far!!
@@ -157,16 +193,19 @@ bool manageSlave() {
         Serial.println("Not sure what happened");
         return false;
       }
+      */
     }
   } else {
     // No slave found to process
-    Serial.println("No Slave found to process");
-    return false;
+    return ESP_FAIL;
   }
 }
 
-void deletePeer() {
+esp_err_t deletePeer() {
   esp_err_t delStatus = esp_now_del_peer(slave.peer_addr);
+
+  return delStatus;
+  /*
   Serial.print("Slave Delete Status: ");
   if (delStatus == ESP_OK) {
     // Delete success
@@ -180,8 +219,10 @@ void deletePeer() {
     Serial.println("Peer not found.");
   } else {
     Serial.println("Not sure what happened");
-  }
+  }*/
 }
+
+
 
 void sendData(void* buffer, size_t size) {
   const uint8_t *peer_addr = slave.peer_addr;
@@ -212,4 +253,11 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
            mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
   Serial.print("Last Packet Sent to: "); Serial.println(macStr);
   Serial.print("Last Packet Send Status: "); Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+}
+
+void setupESPnow() {
+  WiFi.mode(WIFI_STA);
+  esp_wifi_set_channel(CHANNEL, WIFI_SECOND_CHAN_NONE);
+  InitESPNow();
+  esp_now_register_send_cb(OnDataSent);
 }

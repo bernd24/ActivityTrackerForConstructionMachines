@@ -10,7 +10,7 @@ enum SENSOR_NAME {
 	MPU6050, BNO055
 }
 
-
+/*
 class Sensor {
 public:
 	explicit Sensor(SENSOR_NAME sensor_type);
@@ -32,5 +32,5 @@ private:
 	static uint8_t MPU6050_ID_COUNTER = 0;
 	static uint8_t BNO055_ID_COUNTER = 0;
 }
-
+*/
 #endif
