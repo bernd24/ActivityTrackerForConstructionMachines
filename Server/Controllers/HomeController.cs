@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
+using Microsoft.AspNetCore.Authorization;
+using Server.JWT;
 
 namespace Server.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -14,7 +17,8 @@ public class HomeController : Controller
         _logger = logger;
         Db = db;
     }
-
+    
+    [AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         return View();

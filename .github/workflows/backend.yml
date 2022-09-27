@@ -1,0 +1,13 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: [ "backend" ]
+  workflow_dispatch:
+  
+jobs:
+  CD:
+    runs-on: self-hosted
+    steps:
+      - name: kill, pull and run
+        run: ./runBackend.sh

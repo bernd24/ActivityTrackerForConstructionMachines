@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers;
 
+[Authorize]
 public class MachineController : Controller
 {
     private readonly ILogger<MachineController> _logger;
@@ -25,12 +27,18 @@ public class MachineController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody]Machine m)
+    public async Task<String> Create([FromBody]List<int> m)
     {
         await Db.Connection.OpenAsync();
-        m.Db = Db;
-        await m.InsertAsync();
-        return View();
+        foreach(int val in m){
+            Machine nm = new Machine();
+            nm.Db = Db;
+            nm.Manufacturer = val.ToString();
+            nm.Model = "E";
+            nm.MachineType = "E ";
+            await nm.InsertAsync();
+        }
+        return "success";
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
