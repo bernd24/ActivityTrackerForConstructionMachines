@@ -30,6 +30,7 @@ CREATE TABLE Machine (
   Id INT NOT NULL AUTO_INCREMENT,
   M_Id INT NOT NULL,
   C_Id INT,
+  InternalId VARCHAR(255),
   FOREIGN KEY (C_Id) REFERENCES SensorConfiguration(Id),
   FOREIGN KEY (M_Id) REFERENCES MachineModel(Id),
   PRIMARY KEY (Id)
@@ -85,6 +86,7 @@ CREATE TABLE SensorInstance (
 CREATE TABLE WorkSession (
   Id INT NOT NULL AUTO_INCREMENT,
   Notes TEXT,
+  Worker VARCHAR(255),
   C_Id INT NOT NULL,
   M_Id INT NOT NULL,
   FOREIGN KEY (C_Id) REFERENCES SensorConfiguration(Id),

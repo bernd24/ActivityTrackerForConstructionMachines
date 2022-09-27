@@ -31,10 +31,10 @@ public class MachineController : Controller
     {
         await Db.Connection.OpenAsync();
         foreach(int val in m){
-            Machine nm = new Machine();
+            MachineModel nm = new MachineModel();
             nm.Db = Db;
             nm.Manufacturer = val.ToString();
-            nm.Model = "E";
+            nm.ModelName = "E";
             nm.MachineType = "E ";
             await nm.InsertAsync();
         }

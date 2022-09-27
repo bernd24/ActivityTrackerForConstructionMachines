@@ -19,10 +19,10 @@ using MySqlConnector;
             Db = db;
         }
 
-        public async Task<Machine> FindOneAsync(int id)
+        public async Task<MachineModel> FindOneAsync(int id)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Machine WHERE `Id` = @id";
+            cmd.CommandText = @"SELECT * FROM MachineModel WHERE `Id` = @id";
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@id",
@@ -33,10 +33,10 @@ using MySqlConnector;
             return result.Count > 0 ? result[0] : null;
         }
 
-        public async Task<List<Machine>> LatestPostsAsync()
+        public async Task<List<MachineModel>> LatestPostsAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Machine ORDER BY `Id` DESC LIMIT 10;";
+            cmd.CommandText = @"SELECT * FROM MachineModel ORDER BY `Id` DESC LIMIT 10;";
             return await ReadAllAsync(await cmd.ExecuteReaderAsync());
         }
 
@@ -44,23 +44,23 @@ using MySqlConnector;
         {
             using var txn = await Db.Connection.BeginTransactionAsync();
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"DELETE FROM Machine";
+            cmd.CommandText = @"DELETE FROM MachineModel";
             await cmd.ExecuteNonQueryAsync();
             await txn.CommitAsync();
         }
 
-        private async Task<List<Machine>> ReadAllAsync(DbDataReader reader)
+        private async Task<List<MachineModel>> ReadAllAsync(DbDataReader reader)
         {
-            var machines = new List<Machine>();
+            var machines = new List<MachineModel>();
             using (reader)
             {
                 while (await reader.ReadAsync())
                 {
-                    var machine = new Machine(Db)
+                    var machine = new MachineModel(Db)
                     {
                         Id = reader.GetInt32(0),
                         Manufacturer = reader.GetString(1),
-                        Model = reader.GetString(2),
+                        ModelName = reader.GetString(2),
                         MachineType = reader.GetString(3)
                     };
                     machines.Add(machine);

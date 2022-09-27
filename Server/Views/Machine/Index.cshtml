@@ -3,7 +3,20 @@
 }
 <h1>@ViewData["Title"]</h1>
 
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Manufacturer</th>
+        <th>Model</th>
+        <th>Type</th>
+    </tr>
 @foreach (var machine in Model)
 {
-    @machine.Manufacturer @machine.Model @machine.MachineType
+    <tr>
+        <td>@machine.Id</td>
+        <td>@machine.Manufacturer</td>
+        <td>@machine.ModelName</td>
+        <td>@machine.MachineType</td>
+    </tr>
 }
+</table>
