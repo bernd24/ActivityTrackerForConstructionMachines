@@ -1,9 +1,11 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers;
 
+[Authorize]
 public class MachineController : Controller
 {
     private readonly ILogger<MachineController> _logger;
