@@ -8,29 +8,49 @@
 
 enum SENSOR_NAME {
 	MPU6050, BNO055
-}
+};
 
-/*
+
+
+// Class for handling sensors that are connected.
 class Sensor {
 public:
-	explicit Sensor(SENSOR_NAME sensor_type);
+	static bool initSensors(bool rssi = false);
 
-	bool begin();
+	static uint8_t getData(float* handle);
 
-	void getData(float* handle);
 
-	uint8_t getDataCount();
-	String getID();
+	static uint8_t getMPUSensorCount();
+	static uint8_t getBNOSensorCount();
+	static uint8_t getLIDARSensorCount();
+	static uint8_t getSONARSensorCount();
+	static bool	   getRSSIFlag();
+	
 
 private:
-	SENSOR_NAME name;
-	uint8_t id;
+	/*
+	TODO: Implement other sensors
+	should we have an array of objects or keep them as is?
+	*/
+	static Adafruit_MPU6050 mpu0;
+	static Adafruit_MPU6050 mpu1;
+	static Adafruit_BNO055 bno0;
 
-	Adafruit_MPU6050 mpu;
-	Adafruit_BNO055 bno;
+	static bool MPU6050_0_FLAG;
+	static bool MPU6050_1_FLAG;
 
-	static uint8_t MPU6050_ID_COUNTER = 0;
-	static uint8_t BNO055_ID_COUNTER = 0;
-}
-*/
+	static bool BNO055_0_FLAG;
+	static bool BNO055_1_FLAG;
+
+	static bool LIDAR_0_FLAG;
+	static bool LIDAR_1_FLAG;
+
+	static bool SONAR_0_FLAG;
+	static bool SONAR_1_FLAG;
+
+	static bool RSSI_FLAG;
+
+
+};
+
 #endif
