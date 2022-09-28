@@ -9,6 +9,7 @@
         <th>Manufacturer</th>
         <th>Model</th>
         <th>Type</th>
+        <th>Year</th>
     </tr>
 @foreach (var machine in Model)
 {
@@ -17,6 +18,7 @@
         <td>@machine.Manufacturer</td>
         <td>@machine.ModelName</td>
         <td>@machine.MachineType</td>
+        <td>@machine.ModelYear</td>
     </tr>
 }
 </table>

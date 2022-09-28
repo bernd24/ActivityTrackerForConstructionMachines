@@ -9,6 +9,7 @@ namespace Server.Models{
         public string Manufacturer { get; set; }
         public string ModelName { get; set; }
         public string MachineType { get; set; }
+        public int ModelYear { get; set; }
 
         internal AppDb Db { get; set; }
 
@@ -24,7 +25,7 @@ namespace Server.Models{
         public async Task InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO MachineModel (Manufacturer,ModelName,MachineType) VALUES (@manufacturer, @modelName, @machineType);";
+            cmd.CommandText = @"INSERT INTO MachineModel (Manufacturer,ModelName,MachineType,ModelYear) VALUES (@manufacturer, @modelName, @machineType, @ModelYear);";
             BindParams(cmd);
             await cmd.ExecuteNonQueryAsync();
             Id = (int) cmd.LastInsertedId;
@@ -33,7 +34,7 @@ namespace Server.Models{
         public async Task UpdateAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE MachineModel SET Manufacturer = @manufacturer, ModelName = @modelName, MachineType = @machineType WHERE `Id` = @id;";
+            cmd.CommandText = @"UPDATE MachineModel SET Manufacturer = @manufacturer, ModelName = @modelName, MachineType = @machineType, ModelYear = @modelYear WHERE `Id` = @id;";
             BindParams(cmd);
             BindId(cmd);
             await cmd.ExecuteNonQueryAsync();
@@ -76,6 +77,12 @@ namespace Server.Models{
                 ParameterName = "@machineType",
                 DbType = DbType.String,
                 Value = MachineType,
+            });
+            cmd.Parameters.Add(new MySqlParameter
+            {
+                ParameterName = "@modelYear",
+                DbType = DbType.String,
+                Value = ModelYear,
             });
         }
     }

@@ -16,9 +16,10 @@ CREATE TABLE MachineModel (
   Manufacturer VARCHAR(255),
   ModelName VARCHAR(255),
   MachineType VARCHAR(255),
+  ModelYear INT,
   PRIMARY KEY (Id)
 );
-INSERT INTO MachineModel (Manufacturer,ModelName,MachineType) VALUES ("Fredrik","Woodig","Excavator");
+INSERT INTO MachineModel (Manufacturer,ModelName,MachineType,ModelYear) VALUES ("Fredrik","Woodig","Excavator",2022);
 
 CREATE TABLE SensorConfiguration (
   Id INT NOT NULL AUTO_INCREMENT,

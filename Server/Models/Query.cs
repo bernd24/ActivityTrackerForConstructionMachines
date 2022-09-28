@@ -61,7 +61,8 @@ using Server.Models;
                         Id = reader.GetInt32(0),
                         Manufacturer = reader.GetString(1),
                         ModelName = reader.GetString(2),
-                        MachineType = reader.GetString(3)
+                        MachineType = reader.GetString(3),
+                        ModelYear = reader.GetInt32(4)
                     };
                     machines.Add(machine);
                 }
