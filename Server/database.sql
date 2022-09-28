@@ -24,11 +24,12 @@ INSERT INTO MachineModel (Manufacturer,ModelName,MachineType,ModelYear) VALUES (
 
 CREATE TABLE SensorConfiguration (
   Id INT NOT NULL AUTO_INCREMENT,
-  M_Id INT NOT NULL,
   Picture VARCHAR(255),
   Notes TEXT,
   PRIMARY KEY (Id)
 );
+
+INSERT INTO SensorConfiguration (Picture,Notes) VALUES ("woodig1.jpg","first test");
 
 CREATE TABLE Machine (
   Id INT NOT NULL AUTO_INCREMENT,
@@ -41,9 +42,7 @@ CREATE TABLE Machine (
   PRIMARY KEY (Id)
 );
 
-ALTER TABLE SensorConfiguration ADD FOREIGN KEY (M_Id) REFERENCES Machine(Id);
-
-INSERT INTO Machine (M_Id,InternalId) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Fredrik"),"Wood Model #1");
+INSERT INTO Machine (M_Id,C_Id,InternalId) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Fredrik"),1,"Wood Model #1");
 INSERT INTO Machine (M_Id,InternalId,inUse) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Volvo"),"Test Machine #1",false);
 
 CREATE TABLE SensorNode (
@@ -99,9 +98,11 @@ CREATE TABLE WorkSession (
   C_Id INT NOT NULL,
   M_Id INT NOT NULL,
   FOREIGN KEY (C_Id) REFERENCES SensorConfiguration(Id),
-  FOREIGN KEY (M_Id) REFERENCES MachineModel(Id),
+  FOREIGN KEY (M_Id) REFERENCES Machine(Id),
   PRIMARY KEY (Id)
 );
+
+INSERT INTO WorkSession (Notes,Worker,C_Id,M_Id) VALUES ("test session","Bernd",1,1);
 
 CREATE TABLE WorkSessionActivity (
   Id INT NOT NULL AUTO_INCREMENT,

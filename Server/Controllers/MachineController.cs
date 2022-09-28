@@ -29,7 +29,7 @@ public class MachineController : Controller
     }
 
     [HttpPost]
-    public IActionResult Create([FromForm]machine form)
+    public IActionResult Create([FromForm]Machine form)
     {
         Db.Query("Machine").Insert(new {
             M_Id = form.M_Id,
@@ -47,7 +47,7 @@ public class MachineController : Controller
     }
 
     [HttpPost]
-    public IActionResult Update([FromForm]machine form)
+    public IActionResult Update([FromForm]Machine form)
     {
         Db.Query("Machine").Where("Id",form.Id).Update(new {
             InternalId = form.InternalId,
@@ -59,7 +59,7 @@ public class MachineController : Controller
     [HttpGet("Machine/Update/{Id}")]
     public IActionResult Update(int Id)
     {
-        var result = Db.Query("Machine").Where("Id",Id).Get<machine>();
+        var result = Db.Query("Machine").Where("Id",Id).Get<Machine>();
         ViewBag.Machine = result.First();
         return View();
     }
@@ -67,7 +67,17 @@ public class MachineController : Controller
     [HttpPost("Machine/Delete/{Id}")]
     public IActionResult Delete(int Id)
     {
-        Db.Query("Machine").Where("Id",Id).Delete();
+        if(Db.Query("WorkSession").Where("M_Id",Id).Get().Count() == 0){
+            Db.Query("Machine").Where("Id",Id).Delete();
+        }
+        else{
+            Machine m = Db.Query("Machine").Where("Id",Id).Get<Machine>().First();
+            Db.Query("Machine").Where("Id",m.Id).Update(new {
+                InternalId = (m.InternalId + " [Deleted]"),
+                inUse = false
+            });
+            TempData["Message"] = "Machine cannot be deleted because it has sessions, it got marked as unused instead.";
+        }
         return RedirectToAction("Index", "Machine");
     }
 
