@@ -62,11 +62,12 @@ void loop()
     getTFminiData(&distance, &strength);
     if (distance)
     {
+      Serial.print("Distance: ");
       Serial.print(distance);
-      Serial.print("cm\t");
-      Serial.print("strength: ");
-      Serial.println(strength);
+      Serial.println(" cm");
+      /*Serial.print("strength: ");
+      Serial.println(strength);*/
     }
   }
-  delay(300);
+  delay(100);
 }
