@@ -1,0 +1,41 @@
+@{
+    ViewData["Title"] = "Visualisation";
+}
+<div>
+  <div class="center">
+    <h1>@ViewData["Title"]</h1>
+  </div>
+    
+  <div>
+    @* This card will lead to the Visualisation/Charts/Diagramms *@
+    @using (Html.BeginForm("ShowChart", "Home", FormMethod.Get))
+    {
+      <div class="card">
+        <button class="container">
+          <h2><b>Data/Visualisation</b></h2>
+        </button>
+      </div>
+    }
+
+    @* This card will lead you to the Instalation Sides (not implemented yet) *@
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+      <div class="card">
+        <button class="container">
+          <h2><b>Installation</b></h2>
+        </button>
+      </div>
+    }
+    
+    @* This card will lead you to the Support Sides (not implemented yet) *@
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+      <div class="card">
+        <button class="container">
+          <h2><b>Support</b></h2>
+        </button>
+      </div>
+    }
+  </div>
+</div>
+
