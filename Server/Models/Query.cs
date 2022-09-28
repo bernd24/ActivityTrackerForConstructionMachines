@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 using MySqlConnector;
-
+using Server.Models;
 
     public class Query
     {

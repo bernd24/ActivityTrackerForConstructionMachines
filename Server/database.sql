@@ -31,6 +31,7 @@ CREATE TABLE Machine (
   M_Id INT NOT NULL,
   C_Id INT,
   InternalId VARCHAR(255),
+  inUse BOOLEAN,
   FOREIGN KEY (C_Id) REFERENCES SensorConfiguration(Id),
   FOREIGN KEY (M_Id) REFERENCES MachineModel(Id),
   PRIMARY KEY (Id)
