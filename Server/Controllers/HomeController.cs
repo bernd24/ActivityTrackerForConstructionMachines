@@ -10,12 +10,10 @@ namespace Server.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    public AppDb Db { get; }
 
-    public HomeController(ILogger<HomeController> logger, AppDb db)
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
-        Db = db;
     }
     
     [AllowAnonymous]

@@ -25,7 +25,6 @@ builder.Services.AddTransient<QueryFactory>((e) =>
     return new QueryFactory(connection, compiler);
 
 });
-builder.Services.AddTransient<AppDb>(_ => new AppDb("server=127.0.0.1;user id=root;password=atfcm2022;port=3306;database=atfcm;"));
 
 
 // For Entity Framework
