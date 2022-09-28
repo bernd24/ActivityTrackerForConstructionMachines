@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Update";
+}
+
+<form method="POST" action="/Machine/Update">
+<table class="table table-bordered">
+    <tr>
+        <th>Identificaton</th>
+        <th>in Use?</th>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" name="InternalId" value="@ViewBag.Machine.InternalId">
+            <input name="Id" value="@ViewBag.Machine.Id" type="hidden">
+        </td>
+        @if(ViewBag.Machine.inUse){
+            <td><input type="checkbox" class="custom-control-input" data-val="true" id="inUse" name="inUse" value="true" checked>
+            <input name="inUse" type="hidden" value="false"></td>
+        }
+        else{
+            <td><input type="checkbox" class="custom-control-input" data-val="true" id="inUse" name="inUse" value="true">
+            <input name="inUse" type="hidden" value="false"></td>
+        }
+    </tr>
+</table><br>
+
+    <input type="submit" value="Submit">
+</form>
