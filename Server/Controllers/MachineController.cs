@@ -22,7 +22,7 @@ public class MachineController : Controller
     {
         await Db.Connection.OpenAsync();
         var query = new Query(Db);
-        var result = await query.LatestPostsAsync();
+        var result = await query.LatestPostsAsyncMachine();
         return View(result);
     }
 

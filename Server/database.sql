@@ -20,10 +20,12 @@ CREATE TABLE MachineModel (
   PRIMARY KEY (Id)
 );
 INSERT INTO MachineModel (Manufacturer,ModelName,MachineType,ModelYear) VALUES ("Fredrik","Woodig","Excavator",2022);
+INSERT INTO MachineModel (Manufacturer,ModelName,MachineType,ModelYear) VALUES ("Volvo","EC950F","Excavator",2022);
 
 CREATE TABLE SensorConfiguration (
   Id INT NOT NULL AUTO_INCREMENT,
   Picture VARCHAR(255),
+  Notes TEXT,
   PRIMARY KEY (Id)
 );
 
@@ -32,12 +34,13 @@ CREATE TABLE Machine (
   M_Id INT NOT NULL,
   C_Id INT,
   InternalId VARCHAR(255),
-  inUse BOOLEAN,
+  inUse BOOLEAN DEFAULT true,
   FOREIGN KEY (C_Id) REFERENCES SensorConfiguration(Id),
   FOREIGN KEY (M_Id) REFERENCES MachineModel(Id),
   PRIMARY KEY (Id)
 );
-INSERT INTO Machine (M_Id) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Fredrik"));
+INSERT INTO Machine (M_Id,InternalId) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Fredrik"),"Wood Model #1");
+INSERT INTO Machine (M_Id,InternalId,inUse) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Volvo"),"Test Machine #1",false);
 
 CREATE TABLE SensorNode (
   Id INT NOT NULL AUTO_INCREMENT,
@@ -108,10 +111,12 @@ CREATE TABLE WorkSessionActivity (
 );
 
 CREATE TABLE Measurement (
-  Id BIGINT NOT NULL AUTO_INCREMENT,
-  SensorData FLOAT,
-  TimeOfMeasure TIMESTAMP,
+  WS_Id INT NOT NULL,
   SI_Id INT NOT NULL,
+  Nr INT NOT NULL,
+  TimeOfMeasure TIMESTAMP NOT NULL,
+  SensorData FLOAT,
   FOREIGN KEY (SI_Id) REFERENCES SensorInstance(Id),
-  PRIMARY KEY (Id) 
+  FOREIGN KEY (WS_Id) REFERENCES WorkSession(Id),
+  PRIMARY KEY (Nr,SI_Id,TimeOfMeasure) 
 );

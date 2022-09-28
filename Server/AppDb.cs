@@ -1,5 +1,6 @@
 using System;
 using MySqlConnector;
+
     public class AppDb : IDisposable
     {
         public MySqlConnection Connection { get; }

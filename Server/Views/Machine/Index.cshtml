@@ -3,9 +3,10 @@
 }
 <h1>@ViewData["Title"]</h1>
 
+<div id="unused">
 <table class="table table-bordered">
     <tr>
-        <th>ID</th>
+        <th>Identification</th>
         <th>Manufacturer</th>
         <th>Model</th>
         <th>Type</th>
@@ -13,12 +14,72 @@
     </tr>
 @foreach (var machine in Model)
 {
-    <tr>
-        <td>@machine.Id</td>
-        <td>@machine.Manufacturer</td>
-        <td>@machine.ModelName</td>
-        <td>@machine.MachineType</td>
-        <td>@machine.ModelYear</td>
-    </tr>
+    @if(!machine.inUse){
+        
+            <tr class="table-secondary">
+                <td>@machine.InternalId</td>
+                <td>@machine.Model.Manufacturer</td>
+                <td>@machine.Model.ModelName</td>
+                <td>@machine.Model.MachineType</td>
+                <td>@machine.Model.ModelYear</td>
+            </tr>
+    }
+    else{
+        <tr class="table-primary">
+            <td>@machine.InternalId</td>
+            <td>@machine.Model.Manufacturer</td>
+            <td>@machine.Model.ModelName</td>
+            <td>@machine.Model.MachineType</td>
+            <td>@machine.Model.ModelYear</td>
+        </tr>
+    }
 }
 </table>
+</div>
+
+<div id="used">
+<table class="table table-bordered">
+    <tr>
+        <th>Identification</th>
+        <th>Manufacturer</th>
+        <th>Model</th>
+        <th>Type</th>
+        <th>Year</th>
+    </tr>
+@foreach (var machine in Model)
+{
+    @if(machine.inUse){
+        
+            <tr class="table-primary">
+                <td>@machine.InternalId</td>
+                <td>@machine.Model.Manufacturer</td>
+                <td>@machine.Model.ModelName</td>
+                <td>@machine.Model.MachineType</td>
+                <td>@machine.Model.ModelYear</td>
+            </tr>
+    }
+}
+</table>
+</div>
+
+<button type="button" onclick="changeStyle()">Show Unused</button>
+<script>
+    var a = 1;
+    var unused = document.getElementById("unused");
+    unused.style.display = "none";
+    function changeStyle(){
+
+                var unused = document.getElementById("unused");
+                var used = document.getElementById("used");
+                if (a%2 == 0){
+                    unused.style.display = "none";
+                    used.style.display = "block";
+                }
+                else{
+                    unused.style.display = "block";
+                    used.style.display = "none";
+                }
+            a++;
+            
+        }
+</script>
