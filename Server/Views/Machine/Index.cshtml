@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Machines";
 }
-<h1><pre>@ViewData["Title"] <a class="btn btn-secondary" type="button" onclick="changeStyle()">Show Unused</a> <a class="btn btn-secondary" asp-area="" asp-controller="Machine" asp-action="Create">Add Machine</a></pre></h1>
+<h1><pre>@ViewData["Title"] <a class="btn btn-secondary" type="button" onclick="changeStyle()"><div id="toggleButton">Show Unused</div></a> <a class="btn btn-secondary" asp-area="" asp-controller="Machine" asp-action="Create">Add Machine</a></pre></h1>
 
 <div id="unused">
 <table class="table table-bordered">
@@ -25,6 +25,7 @@
                 <td>@machine.Model.ModelYear</td>
                 <td>
                     <form action="Machine/Delete/@machine.Id" method="POST">
+                        <input id="toggleVal" name="toggleVal" type="hidden" value="1">
                         <div class="btn-group" role="group">
                             <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">Update</a>
                             <button type="submit" class="btn btn-dark">Delete</button>
@@ -42,10 +43,11 @@
             <td>@machine.Model.ModelYear</td>
             <td>
                 <form action="Machine/Delete/@machine.Id" method="POST">
-                <div class="btn-group" role="group">
-                    <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">Update</a>
-                    <button type="submit" class="btn btn-dark">Delete</button>
-                </div>
+                    <input id="toggleVal" name="toggleVal" type="hidden" value="1">
+                    <div class="btn-group" role="group">
+                        <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">Update</a>
+                        <button type="submit" class="btn btn-dark">Delete</button>
+                    </div>
                 </form>
             </td>
         </tr>
@@ -76,6 +78,7 @@
                 <td>@machine.Model.ModelYear</td>
                 <td>
                     <form action="Machine/Delete/@machine.Id" method="POST">
+                        <input id="toggleVal" name="toggleVal" type="hidden" value="1">
                         <div class="btn-group" role="group">
                             <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">Update</a>
                             <button type="submit" class="btn btn-dark">Delete</button>
@@ -96,22 +99,26 @@
 
 
 <script>
-    var a = 1;
-    var unused = document.getElementById("unused");
-    unused.style.display = "none";
+    var a = @TempData["toggle"];
+    changeStyle();
     function changeStyle(){
 
                 var unused = document.getElementById("unused");
                 var used = document.getElementById("used");
+                var toggle = document.getElementById("toggleVal");
+                var toggleButton = document.getElementById("toggleButton");
+
                 if (a%2 == 0){
                     unused.style.display = "none";
                     used.style.display = "block";
+                    toggleButton.innerHTML = "Show unused";
                 }
                 else{
                     unused.style.display = "block";
                     used.style.display = "none";
+                    toggleButton.innerHTML = "Show only used";
                 }
+                toggle.value = a;
             a++;
-            
         }
 </script>
