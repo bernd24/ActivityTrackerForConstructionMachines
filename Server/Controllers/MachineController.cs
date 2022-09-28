@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
 using Microsoft.AspNetCore.Authorization;
+using SqlKata;
+using SqlKata.Execution;
+using System.Data.SqlClient;
 
 namespace Server.Controllers;
 
@@ -9,36 +12,63 @@ namespace Server.Controllers;
 public class MachineController : Controller
 {
     private readonly ILogger<MachineController> _logger;
-    public AppDb Db { get; }
+    private readonly QueryFactory Db;
 
-    public MachineController(ILogger<MachineController> logger, AppDb db)
+    public MachineController(ILogger<MachineController> logger, QueryFactory db)
     {
         _logger = logger;
         Db = db;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        await Db.Connection.OpenAsync();
         var query = new Query(Db);
-        var result = await query.LatestPostsAsyncMachine();
+        var result = query.GetMachines();
         return View(result);
     }
 
     [HttpPost]
-    public async Task<String> Create([FromBody]List<int> m)
+    public IActionResult Create([FromForm]machine form)
     {
-        await Db.Connection.OpenAsync();
-        foreach(int val in m){
-            MachineModel nm = new MachineModel();
-            nm.Db = Db;
-            nm.Manufacturer = val.ToString();
-            nm.ModelName = "E";
-            nm.MachineType = "E ";
-            await nm.InsertAsync();
-        }
-        return "success";
+        Db.Query("Machine").Insert(new {
+            M_Id = form.M_Id,
+            C_Id = form.C_Id,
+            InternalId = form.InternalId,
+            inUse = form.inUse
+        });
+        return RedirectToAction("Index", "Machine");
+    }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View(Db.Query("MachineModel").Get<MachineModel>());
+    }
+
+    [HttpPost]
+    public IActionResult Update([FromForm]machine form)
+    {
+        Db.Query("Machine").Where("Id",form.Id).Update(new {
+            InternalId = form.InternalId,
+            inUse = form.inUse
+        });
+        return RedirectToAction("Index", "Machine");
+    }
+
+    [HttpGet("Machine/Update/{Id}")]
+    public IActionResult Update(int Id)
+    {
+        var result = Db.Query("Machine").Where("Id",Id).Get<machine>();
+        ViewBag.Machine = result.First();
+        return View();
+    }
+
+    [HttpPost("Machine/Delete/{Id}")]
+    public IActionResult Delete(int Id)
+    {
+        Db.Query("Machine").Where("Id",Id).Delete();
+        return RedirectToAction("Index", "Machine");
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -24,6 +24,7 @@ INSERT INTO MachineModel (Manufacturer,ModelName,MachineType,ModelYear) VALUES (
 
 CREATE TABLE SensorConfiguration (
   Id INT NOT NULL AUTO_INCREMENT,
+  M_Id INT NOT NULL,
   Picture VARCHAR(255),
   Notes TEXT,
   PRIMARY KEY (Id)
@@ -39,6 +40,9 @@ CREATE TABLE Machine (
   FOREIGN KEY (M_Id) REFERENCES MachineModel(Id),
   PRIMARY KEY (Id)
 );
+
+ALTER TABLE SensorConfiguration ADD FOREIGN KEY (M_Id) REFERENCES Machine(Id);
+
 INSERT INTO Machine (M_Id,InternalId) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Fredrik"),"Wood Model #1");
 INSERT INTO Machine (M_Id,InternalId,inUse) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Volvo"),"Test Machine #1",false);
 
