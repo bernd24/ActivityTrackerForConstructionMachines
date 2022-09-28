@@ -8,27 +8,27 @@ namespace Server.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    public AppDb Db { get; }
+    // public AppDb Db { get; }
 
-    public HomeController(ILogger<HomeController> logger, AppDb db)
-    {
-        _logger = logger;
-        Db = db;
-    }
-    public async Task<IActionResult> SUSTest()
-    {
-        return View();
-    }
+    // public HomeController(ILogger<HomeController> logger, AppDb db)
+    // {
+    //     _logger = logger;
+    //     Db = db;
+    // }
+    // public async Task<IActionResult> SUSTest()
+    // {
+    //     return View();
+    // }
 
     public async Task<IActionResult> Index()
     {
         return View();
     }
 
-    public async Task<IActionResult> Introduction()
-    {
-        return View();
-    }
+    // public async Task<IActionResult> Introduction()
+    // {
+    //     return View();
+    // }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

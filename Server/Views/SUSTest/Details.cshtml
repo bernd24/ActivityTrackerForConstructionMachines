@@ -1,0 +1,54 @@
+@model UIAutomate.Models.SUSTest
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>SUSTest</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Question)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Question)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StronglyDisagree)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StronglyDisagree)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Disagree)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Disagree)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Neutral)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Neutral)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Agree)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Agree)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StronglyAgree)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StronglyAgree)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

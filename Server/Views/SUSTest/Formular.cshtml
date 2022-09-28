@@ -1,148 +1,50 @@
-﻿@{
+﻿@model IEnumerable<UIAutomate.Models.SUSTest>
+
+@* @model UIAutomate.Models.SUSTest *@
+
+@{
     ViewData["Title"] = "System Usballity Scale (SUS)";
 }
 <h1>@ViewData["Title"]</h1>
 
-@foreach (var sustest in Model)
-{
-    @* @sustest.Question @sustest.StronglyDisagree @sustest.Disagree @sustest.Neutral @sustest.Agree @sustest.StronglyAgree  *@
-
 <p>Please rate on the following scale to what extent you agree with the statements.</p>
 
 
-<form action="/action_page.php">
+<form method="post">
     <table>
         <tr>
-            <tr>
-                <th></th> 
-                <th> <div id="valid">Strongly disagree</div> </th> 
-                <th> <div id="valid">Disagree</div> </th> 
-                <th> <div id="valid">Neutral</div></th>
-                <th> <div id="valid">Agree</div></th>
-                <th> <div id="valid">Strongly agree</div> </th>
-            </tr>
-            <tr>
-                <th>I think that I would like to use this website frequently.</th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-            <tr>
-                <th>I found the website unnecessarily complex.</th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-            <tr>
-                <th>I thought the website was easy to use. </th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-            <tr>
-                <th>I think that I would need the support of a technical person to be able to use this website.</th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-            <tr>
-                <th>I found the various functions in this website were well integrated. </th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-            <tr>
-                <th>I thought there was too much inconsistency in this website.</th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-            <tr>
-                <th>I would imagine that most people would learn to use this website very quickly.</th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-            <tr>
-                <th>I found the website very cumbersom/awkward to use.</th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-             <tr>
-                <th>I felt very confident using the website.</th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
-             <tr>
-                <th>I needed to learn a lot of things before i could get going with this system.</th>
-                <div class= "checkbox">
-                    @* <div class="thcheck"> *@
-                        <th><input type="checkbox" id="cb11" name="cb11" value=@sustest.StronglyDisagree> </th>
-                        <th><input type="checkbox" id="cb12" name="cb12" value=@sustest.Disagree> </th> 
-                        <th><input type="checkbox" id="cb13" name="cb13" value=@sustest.Neutral></th> 
-                        <th><input type="checkbox" id="cb14" name="cb14" value=@sustest.Agree></th> 
-                        <th><input type="checkbox" id="cb15" name="cb15" value=@sustest.StronglyAgree></th>
-                    @* </div> *@
-                </div>
-            </tr>
+            <thead>
+                <tr>
+                    <th></th> 
+                    <th> <div id="valid1">Strongly disagree</div>     </th> 
+                    <th> <div id="valid2">Disagree</div> </th> 
+                    <th> <div id="valid3">Neutral</div></th>
+                    <th> <div id="valid4">Agree</div></th>
+                    <th> <div id="valid5">Strongly agree</div> </th>
+                </tr>  
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <th> @Html.DisplayFor(modelItem => item.Question)</th>
+                        <div class= "checkbox">
+                            <th><input type="checkbox" id="cb12" name="cb12" value='@Html.DisplayFor(modelItem => item.StronglyDisagree)'></th> 
+                            <th><input type="checkbox" id="cb12" name="cb12" value='@Html.DisplayFor(modelItem => item.Disagree)'></th> 
+                            <th><input type="checkbox" id="cb13" name="cb13" value='@Html.DisplayFor(modelItem => item.Neutral)'></th> 
+                            <th><input type="checkbox" id="cb14" name="cb14" value='@Html.DisplayFor(modelItem => item.Agree)'></th>
+                            <th><input type="checkbox" id="cb15" name="cb15" value='@Html.DisplayFor(modelItem => item.StronglyAgree)'></th>
+                            @* <div class="form-group">
+                                <input type="submit" value="Update" class="btn btn-primary" />
+                            </div> *@
+                        </div>
+                    </tr>
+                }
+          
         </tr>
     </table>
 </form>
 
-}
+
+<div class="form-group">
+    <input type="submit" value="Edit" class="btn btn-primary" />
+</div>

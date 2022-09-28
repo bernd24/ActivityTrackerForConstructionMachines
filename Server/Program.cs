@@ -1,8 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddDbContext<SUSTestContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("SUSTestContext")));
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<AppDb>(_ => new AppDb("server=localhost;userid=test;password=IbLN+h1UIP;port=3306;database=UITestDatabase;"));
 
 var app = builder.Build();
 
@@ -13,6 +15,10 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// var builder = WebApplication.CreateBuilder(args);
+
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
