@@ -125,11 +125,20 @@ namespace Server.Controllers
                 }
             }
             return View("~/Views/Home/Index.cshtml");
-            // return _context.SUSTest != null ? 
-            // View(await _context.SUSTest.ToListAsync()) :
-            // Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
-            // return View("Index");
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateVisAWI(IFormCollection form){
+
+
+            return View("~/Views/Home/Index.cshtml");
+        }
+
+
+
+
 
         private bool ConvertToBool(string temp){
             bool erg = false;
@@ -141,6 +150,13 @@ namespace Server.Controllers
             }
             return erg;
         }
+
+
+
+
+
+
+
         // GET: SUSTest/Edit/5
 
         // public async Task<IActionResult> Edit(int? id)
