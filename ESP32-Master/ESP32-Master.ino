@@ -6,8 +6,8 @@
 #define SIM800_RST_PIN 4
 
 const char APN[] = "online.telia.se";
-const char URL[] = "http://h2986165.stratoserver.net/Machine/Create";
-//const char URL[] = "https://a00212bf-e590-424f-b2cf-751b9a9d644c.mock.pstmn.io/Machine/Create";
+//const char URL[] = "http://h2986165.stratoserver.net/Machine/Create";
+const char URL[] = "https://a00212bf-e590-424f-b2cf-751b9a9d644c.mock.pstmn.io/Machine/Create";
 const char CONTENT_TYPE[] = "application/json";
 
 #define CHANNEL 1
@@ -17,7 +17,7 @@ SIM800L* sim800l;
 Queue_t q;
 
 void setup() {
-  q_init(&q, sizeof(int32_t), 10, FIFO, false);
+  q_init(&q, sizeof(int32_t), 100, FIFO, false);
   
   // Initialize Serial Monitor for debugging
   Serial.begin(115200);
@@ -94,7 +94,8 @@ void loop() {
         sprintf(valStr,",%d",val);
         strcat(PAYLOAD,valStr);        
       }
-      strcat(PAYLOAD,"]");       
+      strcat(PAYLOAD,"]");
+      Serial.println(PAYLOAD);       
       uint16_t rc = sim800l->doPost(URL, CONTENT_TYPE, PAYLOAD, 10000, 10000);
       if(rc == 200) {
         // Success, output the data received on the serial
@@ -109,6 +110,14 @@ void loop() {
         Serial.println(rc);
       }
     }
+    /*for(int i = 0; i < 100; i++){
+      const int32_t incomingData = 24;
+      q_push(&q,(const int32_t*)incomingData);
+    }*/
+    const int32_t incomingData = 24;
+    const int32_t incomingData2 = 22;
+    q_push(&q,&incomingData);
+    q_push(&q,&incomingData2);
     delay(10000);
   }
 }
