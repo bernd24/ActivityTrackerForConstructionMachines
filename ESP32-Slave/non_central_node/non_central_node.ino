@@ -1,60 +1,46 @@
-//#include <Sensor.h>
+#include <Sensors.h>
 #include <Communication.h>
 
 
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_BNO055.h>
-#include <Adafruit_Sensor.h>
-#include <Wire.h>
-
-#include <esp_now.h>
-#include <WiFi.h>
-#include <esp_wifi.h> // only for esp_wifi_set_channel()
+#define SEND_ERRORS 0
 
 
 void setup() {
   //Wire.begin();
   Serial.begin(115200);
-  Communication::initCommunication();
+  // Initialize sensors
   
-  /*
-  if(!mpu1.begin()) {
-    while(1) {
-      Serial.println("Could not find MPU1");
-      delay(500);
-    };
+  while(!Sensors::init(false)) {
+    Serial.println("ERROR: Could not find any sensors during initialization");
+    delay(1000);
   }
-  */
+
+  Serial.print("MPU count: "); Serial.println(Sensors::getMPUSensorCount());
+  Serial.print("Lidar count: "); Serial.println(Sensors::getLIDARSensorCount());
+  Serial.print("Sonar count: "); Serial.println(Sensors::getSONARSensorCount());
+  Serial.print("RSSI count: "); Serial.println(Sensors::getRSSIFlag());
+
+  while(!Communication::init()) {
+    Serial.println("ERROR: Could not initialize communication");
+    delay(5000);
+  }
 }
 
 void loop() {
+  if(Communication::is_connected) {
+    // Get Sensor data and load into the communication data packet
+    Communication::packet_data.size = Sensors::getData(Communication::packet_data.payload);
 
+    // Send our data packet.
+    Communication::sendData();
 
-  delay(1000);
-
-/*
-  // In the loop we scan for slave
-  ScanForSlave();
-  // If Slave is found, it would be populate in `slave` variable
-  // We will check if `slave` is defined and then we proceed further
-  if (slave.channel == CHANNEL) { // check if slave channel is defined
-    // `slave` is defined
-    // Add slave as peer if it has not been added already
-    esp_err_t isPaired = manageSlave();
-    if (isPaired == ESP_OK) {
-      // pair success or already paired
-      // Send data to device
-      sendData(&Handshake_Packet, sizeof(Handshake_Packet));
-    } else {
-      // slave pair failed
-      Serial.println("Slave pair failed!");
-    }
-  }
-  else {
-    // No slave found to process
+  /*
+    if(Communication::error_flag) {
+      Communication::sendErrorMessage();
+    }*/
+    
   }
 
 
-  // wait for 3seconds to run the logic again
-  delay(3000);*/
+  delay(3000);
 }

@@ -4,7 +4,14 @@
 #include <esp_wifi.h> // only for esp_wifi_set_channel()
 
 #include "Communication.h"
-#include "../Sensor/Sensor.h"
+#include "../Sensors/Sensors.h"
+
+bool Communication::is_connected  = false;
+bool Communication::error_flag    = false;
+
+packet_handshake_t Communication::packet_handshake;
+packet_data_t      Communication::packet_data;
+packet_error_t     Communication::packet_error;
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   char macStr[18];
@@ -79,32 +86,6 @@ bool setupESPnow() {
   return status;
 }
 
-bool Communication::initCommunication() {
-  // Inits Wifi and esp-now, also sets channel and cb function
-  if(!setupESPnow()) {
-    Serial.println("Error initializing esp-now");
-    return false;
-  }
-
-  // Find and connecto to our slave
-  if(!connectToSlave()) {
-    Serial.println("Failed to connect to slave");
-    return false;
-  }
-
-  
-
-  //  OTHER SETUP STUFF?
-  createHandshakePacket(packet_handshake);
-  if(!send(slave.peer_addr, (uint8_t*)&packet_handshake, 
-    (packet_handshake.size * sizeof(sensor_format_t)) + 2)) 
-  {
-    Serial.println("Error sending handshake");
-    return false;
-  }
-
-}
-
 // Convert single digit integer to a char.
 char intToChar(uint8_t i) {
   if(i > 9)
@@ -138,29 +119,143 @@ void createFormats(sensor_format_t arr[], uint8_t start_index, uint8_t count, ui
 
 // Creates the array of formats used for establishing the commmunication data format.
 void createHandshakePacket(sensor_format_t arr[]) {
-  uint8_t mpu_count         = Sensor::getMPUSensorCount();
-  uint8_t bno_count         = Sensor::getBNOSensorCount();
-  uint8_t lidar_count       = Sensor::getLIDARSensorCount();
-  uint8_t supersonic_count  = Sensor::getSONARSensorCount();
-  bool rssi                 = Sensor::getRSSIFlag();
+  uint8_t mpu_count         = Sensors::getMPUSensorCount();
+  uint8_t lidar_count       = Sensors::getLIDARSensorCount();
+  uint8_t supersonic_count  = Sensors::getSONARSensorCount();
+  bool rssi                 = Sensors::getRSSIFlag();
+
+  Communication::packet_handshake.size = mpu_count + lidar_count + supersonic_count + rssi;
 
   // Create mpu formats
   createFormats(arr, 0, mpu_count, 6, MPU_BASENAME);
-  // Create bno formats
-  createFormats(arr, mpu_count, bno_count, 9, BNO_BASENAME);
   // Create lidar formats
-  createFormats(arr, mpu_count + bno_count, lidar_count, 1, LIDAR_BASENAME);
+  createFormats(arr, mpu_count, lidar_count, 1, LIDAR_BASENAME);
   // Create sonar formats
-  createFormats(arr, mpu_count + bno_count + lidar_count, supersonic_count, 2, SONAR_BASENAME);
+  createFormats(arr, mpu_count + lidar_count, supersonic_count, 1, SONAR_BASENAME);
 
   if(rssi) {
     sensor_format_t format;
     copy_name(format.name, RSSI_BASENAME, NAME_SIZE);
     format.data_count = 1;
 
-    arr[mpu_count + bno_count + lidar_count + supersonic_count] = format;
+    arr[mpu_count + lidar_count + supersonic_count] = format;
   }
 }
+
+bool Communication::init() {
+  // Inits Wifi and esp-now, also sets channel and cb function
+  is_connected = false;
+  error_flag = false;
+  packet_handshake.message_type = SENSOR_NODE_ID | HANDSHAKE;
+  packet_data.message_type      = SENSOR_NODE_ID | DATA;
+  packet_error.message_type     = SENSOR_NODE_ID | ERROR;
+  
+  if(!setupESPnow()) {
+    Serial.println("Error initializing esp-now");
+    return false;
+  }
+
+  // Find and connecto to our slave
+  if(!connectToSlave()) {
+    Serial.println("Failed to connect to slave");
+    return false;
+  }
+
+  // Create handshake packet and send it
+  // For now we rely on Sensor.h to get the sensor format
+  // Should probably change this to recieve that information
+  // as argument. To make the libraries independent.
+  createHandshakePacket(packet_handshake.payload);
+  if(!sendHandshake()) 
+  {
+    Serial.println("Error sending handshake");
+    return false;
+  }
+
+  is_connected = true;
+  return true;
+}
+/*
+void sendData(void* buffer, size_t size) {
+  const uint8_t *peer_addr = slave.peer_addr;
+  Serial.println("Sending: ");
+  esp_err_t result = esp_now_send(peer_addr, (uint8_t*)buffer, size);
+  Serial.print("Send Status: ");
+  if (result == ESP_OK) {
+    Serial.println("Success");
+  } else if (result == ESP_ERR_ESPNOW_NOT_INIT) {
+    // How did we get so far!!
+    Serial.println("ESPNOW not Init.");
+  } else if (result == ESP_ERR_ESPNOW_ARG) {
+    Serial.println("Invalid Argument");
+  } else if (result == ESP_ERR_ESPNOW_INTERNAL) {
+    Serial.println("Internal Error");
+  } else if (result == ESP_ERR_ESPNOW_NO_MEM) {
+    Serial.println("ESP_ERR_ESPNOW_NO_MEM");
+  } else if (result == ESP_ERR_ESPNOW_NOT_FOUND) {
+    Serial.println("Peer not found.");
+  } else {
+    Serial.println("Not sure what happened");
+  }
+}*/
+
+void Communication::sendData() {
+  // Packet size has to be 2 extra bytes to correct for payload offset.
+  esp_err_t result = esp_now_send(slave.peer_addr, (uint8_t*)&packet_data,
+                                   4 + sizeof(float) * packet_data.size);
+  Serial.print("Sending packet of size: ");
+  Serial.println(sizeof(packet_data));
+  Serial.println("Packet contains----->");
+  for(int i = 0; i < packet_data.size; ++i) {
+    Serial.println(packet_data.payload[i]);
+  }
+  switch (result) {
+    case ESP_OK:
+      Serial.println("Successful send.");
+      return;
+    case ESP_ERR_ESPNOW_NOT_INIT:
+      //addErrorMessage("Error: sendData() - ESPNOW not init\n");
+      break;
+    default:
+      break;
+
+  }
+  return;
+}
+
+void Communication::sendErrorMessage() {
+  esp_err_t result = esp_now_send(slave.peer_addr, (uint8_t*)&packet_error, 2 + packet_error.size);
+
+  switch (result) {
+    case ESP_OK:
+      Serial.println("Successful send.");
+      error_flag = false;
+      break;
+    case ESP_ERR_ESPNOW_NOT_INIT:
+      //addErrorMessage("Error: sendErrorMessage() - ESPNOW not init\n");
+      break;
+    default:
+      break;
+  }
+  return;
+}
+
+bool Communication::sendHandshake() {
+  esp_err_t result = esp_now_send(slave.peer_addr, (uint8_t*)&packet_handshake, 
+                                  2 + (packet_handshake.size * sizeof(sensor_format_t)));
+  switch (result) {
+    case ESP_OK:
+      Serial.println("Successful send.");
+      return true;
+    case ESP_ERR_ESPNOW_NOT_INIT:
+      //addErrorMessage("Error: sendErrorMessage() - ESPNOW not init\n");
+      break;
+    default:
+      break;
+  }
+  return false;
+}
+
 
 
 int32_t ScanForRSSI() {
@@ -210,29 +305,4 @@ esp_err_t deletePeer() {
   } else {
     Serial.println("Not sure what happened");
   }*/
-}
-
-
-
-void sendData(void* buffer, size_t size) {
-  const uint8_t *peer_addr = slave.peer_addr;
-  Serial.println("Sending: ");
-  esp_err_t result = esp_now_send(peer_addr, (uint8_t*)buffer, size);
-  Serial.print("Send Status: ");
-  if (result == ESP_OK) {
-    Serial.println("Success");
-  } else if (result == ESP_ERR_ESPNOW_NOT_INIT) {
-    // How did we get so far!!
-    Serial.println("ESPNOW not Init.");
-  } else if (result == ESP_ERR_ESPNOW_ARG) {
-    Serial.println("Invalid Argument");
-  } else if (result == ESP_ERR_ESPNOW_INTERNAL) {
-    Serial.println("Internal Error");
-  } else if (result == ESP_ERR_ESPNOW_NO_MEM) {
-    Serial.println("ESP_ERR_ESPNOW_NO_MEM");
-  } else if (result == ESP_ERR_ESPNOW_NOT_FOUND) {
-    Serial.println("Peer not found.");
-  } else {
-    Serial.println("Not sure what happened");
-  }
 }
