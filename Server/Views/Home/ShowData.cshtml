@@ -6,15 +6,30 @@
     <h1>@ViewData["Title"]</h1>
   </div>
     
+  @* want to order the cards in two rows *@
   <div>
     @* This card will lead to the Visualisation/Charts/Diagramms *@
     @using (Html.BeginForm("ShowChart", "Home", FormMethod.Get))
     {
+      <!-- Card -->
       <div class="card">
-        <button class="container">
+        <!-- Card image -->
+        @* <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.webp" alt="Card image cap"> *@
+        <!-- Card content -->
+        <div class="card-body">
+          <!-- Title -->
+          <h4 class="card-title"><a>Card title</a></h4>
+          <!-- Text -->
+          <p class="card-text">here can/should stand something
+            content.</p>
+          <!-- Button -->
+           <button class="container">
           <h2><b>Data/Visualisation</b></h2>
         </button>
+          @* <a href="#" class="btn btn-primary">Button</a> *@
+        </div>
       </div>
+      <!-- Card -->
     }
 
     @* This card will lead you to the Instalation Sides (not implemented yet) *@
