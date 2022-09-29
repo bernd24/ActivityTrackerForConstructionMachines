@@ -6,8 +6,8 @@
 #define SIM800_RST_PIN 4
 
 const char APN[] = "online.telia.se";
-//const char URL[] = "http://h2986165.stratoserver.net/Machine/Create";
-const char URL[] = "https://a00212bf-e590-424f-b2cf-751b9a9d644c.mock.pstmn.io/Machine/Create";
+const char URL[] = "http://h2986165.stratoserver.net:8000/Home/testesp";
+//const char URL[] = "https://a00212bf-e590-424f-b2cf-751b9a9d644c.mock.pstmn.io/Machine/Create";
 const char CONTENT_TYPE[] = "application/json";
 
 #define CHANNEL 1
