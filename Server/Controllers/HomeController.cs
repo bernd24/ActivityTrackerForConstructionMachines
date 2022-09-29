@@ -24,7 +24,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Home()
     {
-        TempData["lang"] = "sv";
         return View();
     }
 

@@ -31,30 +31,28 @@
                     <ul class="navbar-nav">
                         @if(User.Identity.IsAuthenticated){
                         <li class="nav-item">
-                            <a style="border-style: solid;" class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Logout"><div class="en">Log out</div><div class="sv">Logga ut</div><div class="de">Ausloggen</div></a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Logout"><div class="en">Log out</div><div class="sv">Logga ut</div><div class="de">Ausloggen</div></a>
                         </li>
                         }
                         else{
                         <li class="nav-item">
-                            <a style="border-style: solid;" class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Index"><div class="en">Sign in</div><div class="sv">Logga in</div><div class="de">Einloggen</div></a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Index"><div class="en">Sign in</div><div class="sv">Logga in</div><div class="de">Einloggen</div></a>
                         </li>
                         }
                         <li class="nav-item">
-                            <a style="argin-right: 10px;" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><div class="en">Privacy Policy</div><div class="sv">Integritetspolicy</div><div class="de">Datenschutzvereinbarung</div></a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><div class="en">| &nbsp&nbspPrivacy Policy</div><div class="sv">| &nbsp&nbspIntegritetspolicy</div><div class="de">| &nbsp&nbspDatenschutzvereinbarung</div></a>
                         </li>
                         <li class="nav-item">
-                            <label for="lang">Language - </label>
+                            <label for="lang">| &nbsp&nbspLanguage - </label>
                             <select id="lang" style="margin-top: 8px;" onchange="changeLang()">
-                                @if(TempData["lang"] == "en"){<option selected>English</option>}
-                                else{<option>English</option>}
-                                @if(TempData["lang"] == "sv"){<option selected>Svenska</option>}
-                                else{<option>Svenska</option>}
-                                @if(TempData["lang"] == "de"){<option selected>Deutsch</option>}
-                                else{<option>Deutsch</option>}
+                                <option selected>English</option>
+                                <option>Svenska</option>
+                                <option>Deutsch</option>
                             </select>
                         </li>
                     </ul>
                 </div>
+                </u>
             </div>
         </nav>
     </header>
@@ -68,21 +66,8 @@
     
         <div class="container">
             <div class="container">
-                &copy; 2022 - ATFCM
-            </div>
-            <div class="container">    
-                <a href="">Imprint</a>
-            </div>
-            <div class="container">
-                <a href="">Terms of Use</a>
-            </div>
-            <div class="container">
-                <a href="">Privacy</a>
-            </div>
-            <div class="container">
-                <a href="">Guidelines</a>
-            </div>
-            
+                &copy; 2022 - SIMS #9
+            </div> 
         </div>
 
     </footer>
@@ -92,8 +77,13 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
+        var langCookie = getCookie("lang");
+        if(langCookie != ""){
+            document.getElementById("lang").value = langCookie;
+        }
         changeLang();
         function changeLang(){
+            document.cookie = "lang=".concat(document.getElementById("lang").value,";path=/"); 
             if(document.getElementById("lang").value == "English"){
                 for(e of document.getElementsByClassName("en")){
                     e.style.display = "block"
@@ -124,6 +114,22 @@
                     e.style.display = "none"
                 }
             }
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
         }
     </script>
 </body>
