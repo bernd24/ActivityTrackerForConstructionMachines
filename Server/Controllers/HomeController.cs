@@ -22,6 +22,25 @@ public class HomeController : Controller
         return View();
     }
 
+   [AllowAnonymous]
+    public async Task<IActionResult> ShowData()
+    {
+        return View();
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> ShowChart()
+    {
+        return View();
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> StartPage()
+    {
+        return View();
+    }
+
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {

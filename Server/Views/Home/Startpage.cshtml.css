@@ -1,0 +1,111 @@
+
+overall{
+  display: 100%;
+}
+
+
+.center {
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+.headerButtons {
+  position: absolute;
+  top: 10%;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+
+.div {
+  /* display: flex; */
+  justify-content: space-between;
+}
+
+.container {
+  display: flex;
+}
+
+.container-vertical{
+  /* display: flex; */
+  background-color: rgb(230, 229, 229);
+  
+}
+
+.four{
+  margin-right: auto;
+}
+
+.one,
+.two,
+.three,
+.four,
+.five{
+  display: inline-block;
+  margin: 20px;
+  padding: 10px;
+}
+
+.left-wrapper,
+.right-wrapper {
+  display: inline-block;
+}
+
+.right-wrapper {
+  position: absolute;
+  right: 10%;
+}
+
+
+
+/* Style for the cards and the text description */
+
+.card_with_left_discription{
+  border: black;
+  background-color: lightgray;
+  border-radius: 10px;          /*Slightly Curve edges*/
+  overflow: hidden;             /*Fixes the corners */
+}
+
+.card {
+  width: 30%;
+  height: fit-content;
+  float: left;
+  display: flex;
+  /* background-color: rgb(230, 229, 229); */
+  /* width: 500px;                 Set width of cards */
+  /* height: 300px; */
+  /* display: flex;                Children use Flexbox
+  flex-direction: column;       Rotate Axis
+  border: 1px solid #2c783a;    Set up Border
+  border-radius: 10px;           Slightly Curve edges
+  overflow: hidden;             Fixes the corners */
+}
+
+.discription{
+  width: 70%;
+  float: right;
+}
+
+.card-main {
+  display: flex;              /* Children use Flexbox */
+  flex-direction: column;     /* Rotate Axis to Vertical */
+  justify-content: center;    /* Group Children in Center */
+  align-items: center;        /* Group Children in Center (on cross axis) */
+  padding: 15px;            /* Add padding to the top/bottom */
+}
+
+.card-title {
+  font-size: 36px;            /*Text size of the Title*/
+  color: #000000;             /*Text colour of the Title*/
+  margin-bottom: 5px;         /*distance from the text to the bottom of the card*/
+}
+
+.main-description {
+  color: #000000;             /*Colour of the Text */
+  font-size: 12px;              /*size of the Text*/
+  text-align: center;           /*orientation in the Card*/
+}
+
