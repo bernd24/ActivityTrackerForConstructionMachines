@@ -4,12 +4,27 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MySqlConnector;
+using SqlKata;
+using SqlKata.Execution;
+using SqlKata.Compilers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<AppDb>(_ => new AppDb("server=127.0.0.1;user id=root;password=atfcm2022;port=3306;database=atfcm;"));
+builder.Services.AddTransient<QueryFactory>((e) =>
+{
+
+    var connection = new MySqlConnection(
+        "server=127.0.0.1;user id=root;password=atfcm2022;port=3306;database=atfcm;"
+    );
+
+    var compiler = new MySqlCompiler();
+
+    return new QueryFactory(connection, compiler);
+
+});
 
 
 // For Entity Framework

@@ -1,9 +1,124 @@
 ﻿@{
     ViewData["Title"] = "Machines";
 }
-<h1>@ViewData["Title"]</h1>
+<h1><pre>@ViewData["Title"] <a class="btn btn-secondary" type="button" onclick="changeStyle()"><div id="toggleButton">Show Unused</div></a> <a class="btn btn-secondary" asp-area="" asp-controller="Machine" asp-action="Create">Add Machine</a></pre></h1>
 
+<div id="unused">
+<table class="table table-bordered">
+    <tr>
+        <th>Identification</th>
+        <th>Manufacturer</th>
+        <th>Model</th>
+        <th>Type</th>
+        <th>Year</th>
+        <th>Actions</th>
+    </tr>
 @foreach (var machine in Model)
 {
-    @machine.Manufacturer @machine.Model @machine.MachineType
+    @if(!machine.inUse){
+        
+            <tr class="table-secondary">
+                <td>@machine.InternalId</td>
+                <td>@machine.Model.Manufacturer</td>
+                <td>@machine.Model.ModelName</td>
+                <td>@machine.Model.MachineType</td>
+                <td>@machine.Model.ModelYear</td>
+                <td>
+                    <form action="Machine/Delete/@machine.Id" method="POST">
+                        <input id="toggleVal" name="toggleVal" type="hidden" value="1">
+                        <div class="btn-group" role="group">
+                            <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">Update</a>
+                            <button type="submit" class="btn btn-dark">Delete</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+    }
+    else{
+        <tr class="table-primary">
+            <td>@machine.InternalId</td>
+            <td>@machine.Model.Manufacturer</td>
+            <td>@machine.Model.ModelName</td>
+            <td>@machine.Model.MachineType</td>
+            <td>@machine.Model.ModelYear</td>
+            <td>
+                <form action="Machine/Delete/@machine.Id" method="POST">
+                    <input id="toggleVal" name="toggleVal" type="hidden" value="1">
+                    <div class="btn-group" role="group">
+                        <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">Update</a>
+                        <button type="submit" class="btn btn-dark">Delete</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    }
 }
+</table>
+</div>
+
+<div id="used">
+<table class="table table-bordered">
+    <tr>
+        <th>Identification</th>
+        <th>Manufacturer</th>
+        <th>Model</th>
+        <th>Type</th>
+        <th>Year</th>
+        <th>Actions</th>
+    </tr>
+@foreach (var machine in Model)
+{
+    @if(machine.inUse){
+        
+            <tr class="table-primary">
+                <td>@machine.InternalId</td>
+                <td>@machine.Model.Manufacturer</td>
+                <td>@machine.Model.ModelName</td>
+                <td>@machine.Model.MachineType</td>
+                <td>@machine.Model.ModelYear</td>
+                <td>
+                    <form action="Machine/Delete/@machine.Id" method="POST">
+                        <input id="toggleVal" name="toggleVal" type="hidden" value="0">
+                        <div class="btn-group" role="group">
+                            <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">Update</a>
+                            <button type="submit" class="btn btn-dark">Delete</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+    }
+}
+</table>
+</div>
+
+
+    <p>
+        <font color="red">@TempData["Message"]</font>
+    </p>
+
+
+
+<script>
+    var a = @TempData["toggle"];
+    changeStyle();
+    function changeStyle(){
+
+                var unused = document.getElementById("unused");
+                var used = document.getElementById("used");
+                var toggle = document.getElementById("toggleVal");
+                var toggleButton = document.getElementById("toggleButton");
+
+                if (a%2 == 0){
+                    unused.style.display = "none";
+                    used.style.display = "block";
+                    toggleButton.innerHTML = "Show unused";
+                }
+                else{
+                    unused.style.display = "block";
+                    used.style.display = "none";
+                    toggleButton.innerHTML = "Show only used";
+                }
+                toggle.value = a;
+            a++;
+        }
+</script>

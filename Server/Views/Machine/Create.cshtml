@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form method="POST" action="/Machine/Create">
+<table class="table table-bordered">
+    <tr>
+        <th>Machine Model</th>
+        <th>Identificaton</th>
+        <th>in Use?</th>
+    </tr>
+    <tr>
+        <td><select name="M_Id">
+            @foreach(MachineModel m in Model){
+                <option value="@m.Id"><pre>@m.Manufacturer @m.ModelName @m.MachineType @m.ModelYear</pre></option>
+            }
+        </select></td>
+        <td><input type="text" name="InternalId" value="Machine #1"></td>
+        <td><input type="checkbox" class="custom-control-input" data-val="true" id="inUse" name="inUse" value="true" checked>
+        <input name="inUse" type="hidden" value="false"></td>
+    </tr>
+</table><br>
+
+    <input type="submit" value="Submit">
+</form>

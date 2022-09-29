@@ -3,68 +3,42 @@ using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
 using MySqlConnector;
-
+using Server.Models;
+using SqlKata;
+using SqlKata.Execution;
 
     public class Query
     {
+        private readonly QueryFactory Db;
 
-        internal AppDb Db { get; set; }
-
-        public Query()
-        {
-        }
-
-        internal Query(AppDb db)
+        internal Query(QueryFactory db)
         {
             Db = db;
         }
 
-        public async Task<Machine> FindOneAsync(int id)
-        {
-            using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Machine WHERE `Id` = @id";
-            cmd.Parameters.Add(new MySqlParameter
-            {
-                ParameterName = "@id",
-                DbType = DbType.Int32,
-                Value = id,
-            });
-            var result = await ReadAllAsync(await cmd.ExecuteReaderAsync());
-            return result.Count > 0 ? result[0] : null;
-        }
-
-        public async Task<List<Machine>> LatestPostsAsync()
-        {
-            using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM Machine ORDER BY `Id` DESC LIMIT 10;";
-            return await ReadAllAsync(await cmd.ExecuteReaderAsync());
-        }
-
-        public async Task DeleteAllAsync()
-        {
-            using var txn = await Db.Connection.BeginTransactionAsync();
-            using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"DELETE FROM Machine";
-            await cmd.ExecuteNonQueryAsync();
-            await txn.CommitAsync();
-        }
-
-        private async Task<List<Machine>> ReadAllAsync(DbDataReader reader)
-        {
+        public List<Machine> GetMachines(){
             var machines = new List<Machine>();
-            using (reader)
-            {
-                while (await reader.ReadAsync())
-                {
-                    var machine = new Machine(Db)
-                    {
-                        Id = reader.GetInt32(0),
-                        Manufacturer = reader.GetString(1),
-                        Model = reader.GetString(2),
-                        MachineType = reader.GetString(3)
-                    };
-                    machines.Add(machine);
-                }
+            IEnumerable<dynamic> result = Db.Query("Machine")
+            .Select("Machine.Id","Machine.InternalId","Machine.inUse",
+            "MachineModel.Id as M_Id","MachineModel.Manufacturer","MachineModel.ModelName",
+            "MachineModel.MachineType","MachineModel.ModelYear")
+            .Join("MachineModel","Machine.M_Id","MachineModel.Id")
+            .Get();
+            foreach(var m in result){
+                var machine = new Machine(){
+                    Id = m.Id,
+                    InternalId = m.InternalId,
+                    inUse = m.inUse,
+                    Model = new MachineModel(){
+                        Id = m.M_Id,
+                        Manufacturer = m.Manufacturer,
+                        ModelName = m.ModelName,
+                        MachineType = m.MachineType,
+                        ModelYear = m.ModelYear
+                    },
+                    Config = null
+                };
+                machines.Add(machine);
             }
             return machines;
         }

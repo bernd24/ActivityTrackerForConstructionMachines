@@ -1,18 +1,17 @@
 using System.Data;
 using System.Threading.Tasks;
 using MySqlConnector;
-using SqlKata.Execution;
 
 namespace Server.Models{
-    public class Machine
+    public class WorkSession
     {
+        public int C_Id { get; set; }
         public int M_Id { get; set; }
-        public int? C_Id { get; set; }
 
         public int Id { get; set; }
-        public MachineModel Model { get; set; }
+        public string Worker { get; set; }
+        public string Notes { get; set; }
         public SensorConfiguration Config { get; set; }
-        public string InternalId { get; set; }
-        public bool inUse { get; set; }
+        public Machine Machine { get; set; }
     }
 }
