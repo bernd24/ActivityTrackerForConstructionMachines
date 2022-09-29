@@ -78,7 +78,7 @@
                 <td>@machine.Model.ModelYear</td>
                 <td>
                     <form action="Machine/Delete/@machine.Id" method="POST">
-                        <input id="toggleVal" name="toggleVal" type="hidden" value="1">
+                        <input id="toggleVal" name="toggleVal" type="hidden" value="0">
                         <div class="btn-group" role="group">
                             <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">Update</a>
                             <button type="submit" class="btn btn-dark">Delete</button>
