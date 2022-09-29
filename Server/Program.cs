@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+// using System.Data.Entity;
 using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<UITestContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("UITestContext") ?? throw new InvalidOperationException("Connection string 'UITestContext' not found.")));
 builder.Services.AddDbContext<SUSTestContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("SUSTestContext")));
 // Add services to the container.

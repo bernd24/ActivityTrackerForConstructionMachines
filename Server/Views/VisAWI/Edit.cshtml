@@ -1,17 +1,18 @@
-@model UIAutomate.Models.SUSTest
+@model UIAutomate.Models.VisAWITest
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
-<h4>SUSTest</h4>
+<h4>VisAWITest</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Question" class="control-label"></label>
                 <input asp-for="Question" class="form-control" />
@@ -19,7 +20,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="StronglyDisagree" /> @Html.DisplayNameFor(model => model.StronglyDisagree)
+                    <input class="form-check-input" asp-for="DisagreeEtAll" /> @Html.DisplayNameFor(model => model.DisagreeEtAll)
                 </label>
             </div>
             <div class="form-group form-check">
@@ -29,7 +30,17 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
+                    <input class="form-check-input" asp-for="DisagreeRather" /> @Html.DisplayNameFor(model => model.DisagreeRather)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
                     <input class="form-check-input" asp-for="Neutral" /> @Html.DisplayNameFor(model => model.Neutral)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AgreeRather" /> @Html.DisplayNameFor(model => model.AgreeRather)
                 </label>
             </div>
             <div class="form-group form-check">
@@ -39,11 +50,11 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="StronglyAgree" /> @Html.DisplayNameFor(model => model.StronglyAgree)
+                    <input class="form-check-input" asp-for="AgreeEtAll" /> @Html.DisplayNameFor(model => model.AgreeEtAll)
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

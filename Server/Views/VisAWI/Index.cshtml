@@ -1,4 +1,4 @@
-@model IEnumerable<UIAutomate.Models.SUSTest>
+@model IEnumerable<UIAutomate.Models.VisAWITest>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,19 +16,25 @@
                 @Html.DisplayNameFor(model => model.Question)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StronglyDisagree)
+                @Html.DisplayNameFor(model => model.DisagreeEtAll)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Disagree)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.DisagreeRather)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Neutral)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AgreeRather)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Agree)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StronglyAgree)
+                @Html.DisplayNameFor(model => model.AgreeEtAll)
             </th>
             <th></th>
         </tr>
@@ -40,19 +46,25 @@
                 @Html.DisplayFor(modelItem => item.Question)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StronglyDisagree)
+                @Html.DisplayFor(modelItem => item.DisagreeEtAll)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Disagree)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.DisagreeRather)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Neutral)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AgreeRather)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Agree)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StronglyAgree)
+                @Html.DisplayFor(modelItem => item.AgreeEtAll)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

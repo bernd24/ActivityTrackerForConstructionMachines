@@ -1,0 +1,66 @@
+@model UIAutomate.Models.VisAWITest
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>VisAWITest</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Question)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Question)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DisagreeEtAll)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DisagreeEtAll)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Disagree)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Disagree)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DisagreeRather)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DisagreeRather)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Neutral)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Neutral)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AgreeRather)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AgreeRather)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Agree)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Agree)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AgreeEtAll)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AgreeEtAll)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
