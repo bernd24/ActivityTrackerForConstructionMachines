@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+    <h1>@ViewData["Title"] - Example Company</h1>
+
+
+
+  @* want to order the cards in two rows *@
+    @* This card will lead to the Visualisation/Charts/Diagramms *@
+    <form style="float: left;" id="machine" method="GET" action="/Machine">
+      <!-- Card -->
+      <div class="card" onclick="document.getElementById('machine').submit()">
+        <!-- Card image -->
+        @* <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.webp" alt="Card image cap"> *@
+        <!-- Card content -->
+        <div class="card-body">
+          <!-- Title -->
+          <h4 class="card-title"><a>Machines</a></h4>
+          <!-- Text -->
+          <p class="card-text">View all of the machines.</p>
+          @* <a href="#" class="btn btn-primary">Button</a> *@
+        </div>
+      </div>
+      <!-- Card -->
+    </form>
+    @* This card will lead you to the Instalation Sides (not implemented yet) *@
+    <form style="float: left;" id="install" method="GET" action="/">
+      <!-- Card -->
+      <div class="card" onclick="document.getElementById('install').submit()">
+        <!-- Card image -->
+        @* <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.webp" alt="Card image cap"> *@
+        <!-- Card content -->
+        <div class="card-body">
+          <!-- Title -->
+          <h4 class="card-title"><a>Installation</a></h4>
+          <!-- Text -->
+          <p class="card-text">Install and manage a Sensor-System of a machine.</p>
+          @* <a href="#" class="btn btn-primary">Button</a> *@
+        </div>
+      </div>
+      <!-- Card -->
+    </form>
+    @* This card will lead you to the Support Sides (not implemented yet) *@
+    <form style="float: left;" id="showdata" method="GET" action="/Home/ShowChart">
+      <!-- Card -->
+      <div class="card" onclick="document.getElementById('showdata').submit()">
+        <!-- Card image -->
+        @* <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/43.webp" alt="Card image cap"> *@
+        <!-- Card content -->
+        <div class="card-body">
+          <!-- Title -->
+          <h4 class="card-title"><a>Visualisation</a></h4>
+          <!-- Text -->
+          <p class="card-text">Visualise the data produced by the Sensor-Systems on the Machines</p>
+          @* <a href="#" class="btn btn-primary">Button</a> *@
+        </div>
+      </div>
+      <!-- Card -->
+    </form>
+
+

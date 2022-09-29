@@ -20,27 +20,39 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="StartPage">ShowChart</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ShowData">ShowData</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ShowChart">ShowChart</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><div class="en">About</div><div class="sv">Om oss</div><div class="de">Über</div></a>
                         </li>
                         @if(User.Identity.IsAuthenticated){
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Machine" asp-action="Index">Machines</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Home">Home</a>
                         </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if(User.Identity.IsAuthenticated){
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Logout">Logout</a>
+                            <a style="border-style: solid;" class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Logout"><div class="en">Log out</div><div class="sv">Logga ut</div><div class="de">Ausloggen</div></a>
                         </li>
                         }
                         else{
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Index">Login</a>
+                            <a style="border-style: solid;" class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Index"><div class="en">Sign in</div><div class="sv">Logga in</div><div class="de">Einloggen</div></a>
                         </li>
                         }
+                        <li class="nav-item">
+                            <a style="argin-right: 10px;" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><div class="en">Privacy Policy</div><div class="sv">Integritetspolicy</div><div class="de">Datenschutzvereinbarung</div></a>
+                        </li>
+                        <li class="nav-item">
+                            <label for="lang">Language - </label>
+                            <select id="lang" style="margin-top: 8px;" onchange="changeLang()">
+                                @if(TempData["lang"] == "en"){<option selected>English</option>}
+                                else{<option>English</option>}
+                                @if(TempData["lang"] == "sv"){<option selected>Svenska</option>}
+                                else{<option>Svenska</option>}
+                                @if(TempData["lang"] == "de"){<option selected>Deutsch</option>}
+                                else{<option>Deutsch</option>}
+                            </select>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -59,16 +71,16 @@
                 &copy; 2022 - ATFCM
             </div>
             <div class="container">    
-                <a href="url">Impressum</a>
+                <a href="">Imprint</a>
             </div>
             <div class="container">
-                <a href="url">Nutzungsbedingungen</a>
+                <a href="">Terms of Use</a>
             </div>
             <div class="container">
-                <a href="url">Datenschutzerklärungen</a>
+                <a href="">Privacy</a>
             </div>
             <div class="container">
-                <a href="url">Richtlinie</a>
+                <a href="">Guidelines</a>
             </div>
             
         </div>
@@ -78,5 +90,41 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        changeLang();
+        function changeLang(){
+            if(document.getElementById("lang").value == "English"){
+                for(e of document.getElementsByClassName("en")){
+                    e.style.display = "block"
+                }
+            }
+            else{
+                for(e of document.getElementsByClassName("en")){
+                    e.style.display = "none"
+                }
+            }
+            if(document.getElementById("lang").value == "Svenska"){
+                for(e of document.getElementsByClassName("sv")){
+                    e.style.display = "block"
+                }
+            }
+            else{
+                for(e of document.getElementsByClassName("sv")){
+                    e.style.display = "none"
+                }
+            }
+            if(document.getElementById("lang").value == "Deutsch"){
+                for(e of document.getElementsByClassName("de")){
+                    e.style.display = "block"
+                }
+            }
+            else{
+                for(e of document.getElementsByClassName("de")){
+                    e.style.display = "none"
+                }
+            }
+        }
+    </script>
 </body>
 </html>

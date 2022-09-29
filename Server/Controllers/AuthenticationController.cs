@@ -30,7 +30,7 @@ namespace JWTAuthentication.NET6._0.Controllers
         public async Task<IActionResult> Index()
         {
             if(User.Identity.IsAuthenticated){
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Home", "Home");
             }
             return View();
         }
@@ -59,7 +59,7 @@ namespace JWTAuthentication.NET6._0.Controllers
 
                HttpContext.Response.Cookies.Append("token", new JwtSecurityTokenHandler().WriteToken(token), new Microsoft.AspNetCore.Http.CookieOptions { Expires = token.ValidTo });
                 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Home", "Home");
             }
             return RedirectToAction("Index", "Authenticate");
         }
@@ -71,7 +71,7 @@ namespace JWTAuthentication.NET6._0.Controllers
             {
                 HttpContext.Response.Cookies.Append("token", Request.Cookies["token"], new Microsoft.AspNetCore.Http.CookieOptions { Expires = DateTime.Now.AddDays(-1d) });
             }
-            return RedirectToAction("Index", "Authenticate");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
