@@ -100,7 +100,6 @@ namespace Server.Controllers
             {
                 return NotFound();
             }
-
             var data = new List<SUSTest>();
             var temp_Ids = form["item.id"];
             var temp_Questions = form["item.Question"];
@@ -125,9 +124,10 @@ namespace Server.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
-            return _context.SUSTest != null ? 
-            View(await _context.SUSTest.ToListAsync()) :
-            Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
+            return View("~/Views/Home/Index.cshtml");
+            // return _context.SUSTest != null ? 
+            // View(await _context.SUSTest.ToListAsync()) :
+            // Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
             // return View("Index");
         }
 
