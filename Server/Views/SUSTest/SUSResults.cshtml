@@ -9,31 +9,24 @@
 
 <h4>SUSTest</h4>
 <hr />
-@using(Html.BeginForm("Edit", "SUSTest", FormMethod.Post, new { role = "form" }))
-@* @using(Html.BeginForm("Edit", "SUSTest", 
-                        new RouteValueDictionary { {"TestRoute1", "test"} },
-                        FormMethod.Post,
-                        new Dictionary<int, object> { {1, "SUSTest"} }
-                    )   
-        ) *@
+@using(Html.BeginForm("CreateForm", "SUSTest", FormMethod.Post, new { role = "form" }))
 {
-<form asp-action="Edit" method="post">
-    <div class="row">
-    <div class="col-md-4">
-         <table>
-        <tr>
-            <thead>
-                <tr>
-                    <th></th> 
-                    <th> <div id="valid1">Strongly disagree</div>     </th> 
-                    <th> <div id="valid2">Disagree</div> </th> 
-                    <th> <div id="valid3">Neutral</div></th>
-                    <th> <div id="valid4">Agree</div></th>
-                    <th> <div id="valid5">Strongly agree</div> </th>
-                </tr>  
-            </thead>
-            <tbody>
-                
+    <form asp-action="CreateForm" >
+        <div class="row">
+        <div class="col-md-4">
+            <table>
+            <tr>
+                <thead>
+                    <tr>
+                        <th></th> 
+                        <th> <div id="valid1">Strongly disagree</div>     </th> 
+                        <th> <div id="valid2">Disagree</div> </th> 
+                        <th> <div id="valid3">Neutral</div></th>
+                        <th> <div id="valid4">Agree</div></th>
+                        <th> <div id="valid5">Strongly agree</div> </th>
+                    </tr>  
+                </thead>
+                <tbody>
                 @foreach (var item in Model as IEnumerable<UIAutomate.Models.SUSTest>) 
                 {
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -47,54 +40,47 @@
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.StronglyDisagree" value="@item.StronglyDisagree" value-data ="@item.StronglyDisagree"/>
-                                @* @Html.DisplayNameFor(model => item.StronglyDisagree) *@
-                                 	@* @Html.CheckBoxFor(model => item.StronglyDisagree)  *@
+                                <input class="form-check-input" asp-for="@item.StronglyDisagree" type="checkbox" id="cb1" />
                             </label>
                         </div>
                     </th>
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.Disagree" value="@item.Disagree" /> 
-                                @* @Html.DisplayNameFor(model => item.Disagree) *@
+                                <input class="form-check-input" asp-for="@item.Disagree" type="checkbox" id="cb2"  /> 
                             </label>
                         </div>
                     </th>
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.Neutral" />
-                                @* @Html.DisplayNameFor(model => item.Neutral) *@
+                                <input class="form-check-input" asp-for="@item.Neutral" type="checkbox" id="cb3" />
                             </label>
                         </div>
                     </th>
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.Agree" /> 
-                                @* @Html.DisplayNameFor(model => item.Agree) *@
+                                <input class="form-check-input" asp-for="@item.Agree" type="checkbox" id="cb4"/> 
                             </label>
                         </div>
                     </th>
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.StronglyAgree" /> 
-                                @* @Html.DisplayNameFor(model => item.StronglyAgree) *@
+                                <input class="form-check-input" asp-for="@item.StronglyAgree" type="checkbox" id="cb5" />
                             </label>
                         </div>
                     </th>
                 </tr>
                 }
-            </tbody> 
-            
-            <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-primary"  />
+                </tbody> 
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
 }
 <div>
     <a asp-action="Index">Back to List</a>

@@ -94,43 +94,41 @@ namespace Server.Controllers
         // GET: SUSTest/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(IFormCollection list)
+        public async Task<IActionResult> CreateForm(IFormCollection form)
         {
-            if (list == null || _context.SUSTest == null)
+            if (form == null || _context.SUSTest == null)
             {
                 return NotFound();
             }
 
             var data = new List<SUSTest>();
+            var temp_Ids = form["item.id"];
+            var temp_Questions = form["item.Question"];
+            var temp_SDisagrees = form["item.StronglyDisagree"];
+            var temp_Disagrees = form["item.Disagree"];
+            var temp_Neutrals = form["item.Neutral"];
+            var temp_Agrees = form["item.Agree"];
+            var temp_SAgrees = form["item.StronglyAgree"];
 
-            // foreach( var item in list){
-            // for (int i = 0; i < list.Count(); i++)
-            // {
-            foreach (var item in list)
+            for (int i = 0; i < form["item.id"].Count(); i++)
             {
-                var erg = new SUSTest();
-                for (int i = 0; i < item.Value.Count(); i++)
+                var erg = _context.Find<SUSTest>(Convert.ToInt32(temp_Ids[i]));
+                erg.Question = temp_Questions[i];
+                erg.StronglyDisagree = ConvertToBool(temp_SDisagrees[i]);
+                erg.Disagree = ConvertToBool(temp_Disagrees[i]);
+                erg.Neutral = ConvertToBool(temp_Neutrals[i]);
+                erg.Agree = ConvertToBool(temp_Agrees[i]);
+                erg.StronglyAgree = ConvertToBool(temp_SAgrees[i]);
+                if (ModelState.IsValid)
                 {
-                    erg.Id = Convert.ToInt32(item.Value[1]);
-
-                    erg.Question = item.Value;
-                    erg.StronglyDisagree = ConvertToBool(list.FirstOrDefault().Value[3]);
-                    erg.Disagree = ConvertToBool(list.FirstOrDefault().Value[4]);
-                    erg.Neutral = ConvertToBool(list.FirstOrDefault().Value[5]);
-                    erg.Agree =  ConvertToBool(list.FirstOrDefault().Value[6]);
-                    erg.StronglyAgree = ConvertToBool(list.FirstOrDefault().Value[7]);
+                    _context.Update(erg);
+                    await _context.SaveChangesAsync();
                 }
-               
-                data.Add(erg);
             }
-
-            // var data = list as IEnumerable<SUSTest>;
-            if (ModelState.IsValid)
-            {
-                _context.UpdateRange(data);
-                await _context.SaveChangesAsync();
-            }
-            return View();
+            return _context.SUSTest != null ? 
+            View(await _context.SUSTest.ToListAsync()) :
+            Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
+            // return View("Index");
         }
 
         private bool ConvertToBool(string temp){
@@ -145,20 +143,20 @@ namespace Server.Controllers
         }
         // GET: SUSTest/Edit/5
 
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.SUSTest == null)
-            {
-                return NotFound();
-            }
+        // public async Task<IActionResult> Edit(int? id)
+        // {
+        //     if (id == null || _context.SUSTest == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            var sUSTest = await _context.SUSTest.FindAsync(id);
-            if (sUSTest == null)
-            {
-                return NotFound();
-            }
-            return View(sUSTest);
-        }
+        //     var sUSTest = await _context.SUSTest.FindAsync(id);
+        //     if (sUSTest == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return View(sUSTest);
+        // }
 
         // POST: SUSTest/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
