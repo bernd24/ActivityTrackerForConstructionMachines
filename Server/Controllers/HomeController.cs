@@ -28,6 +28,12 @@ public class HomeController : Controller
         return View();
     }
 
+    [AllowAnonymous]
+    [HttpPost]
+    public string TestESP([FromBody]List<int> list){
+        return "success";
+    }
+
     public async Task<IActionResult> ShowChart()
     {
         return View();
