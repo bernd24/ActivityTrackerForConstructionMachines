@@ -17,10 +17,15 @@ public class TestpersonContext : DbContext{
     {
         
     }
-    // public TestpersonContext(DbContextOptions<TestpersonContext> options): base(options) {}  
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+     public TestpersonContext(DbContextOptions<TestpersonContext> options)
+        : base(options)
     {
-        optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test");
     }
+    // public TestpersonContext(DbContextOptions<TestpersonContext> options): base(options) {}  
+    // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    // {
+    //     optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Test");
+    // }
 
 }
