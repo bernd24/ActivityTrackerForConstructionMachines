@@ -1,7 +1,0 @@
-{
-  "cpu": {
-    "fqbn": "arduino:avr:uno",
-    "name": "Arduino Uno",
-    "port": "serial:///dev/cu.usbmodem14301"
-  }
-}
