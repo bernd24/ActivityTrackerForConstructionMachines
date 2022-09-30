@@ -29,7 +29,7 @@ CREATE TABLE SensorConfiguration (
   PRIMARY KEY (Id)
 );
 
-INSERT INTO SensorConfiguration (Picture,Notes) VALUES ("woodig1.jpg","first test");
+INSERT INTO SensorConfiguration (Picture,Notes) VALUES ("woodig1.png","first test");
 
 CREATE TABLE Machine (
   Id INT NOT NULL AUTO_INCREMENT,
@@ -49,8 +49,13 @@ CREATE TABLE SensorNode (
   Id INT NOT NULL AUTO_INCREMENT,
   MAC VARCHAR(255),
   BatteryStatus INT,
+  Color VARCHAR(255),
   PRIMARY KEY (Id)
 );
+
+INSERT INTO SensorNode (MAC,BatteryStatus,Color) VALUES ("F0:08:D1:D4:5E:A8",100,"Orange");
+INSERT INTO SensorNode (MAC,BatteryStatus,Color) VALUES ("F0:08:D1:D4:25:F0",100,"Blue");
+INSERT INTO SensorNode (MAC,BatteryStatus,Color) VALUES ("F0:8D:1D:D2:8D:04",100,"Green");
 
 CREATE TABLE SensorNodeInstance (
   Id INT NOT NULL AUTO_INCREMENT,
@@ -63,6 +68,8 @@ CREATE TABLE SensorNodeInstance (
   PRIMARY KEY (Id)
 );
 
+INSERT INTO SensorNodeInstance (C_Id,SN_Id,hasBattery,isMaster) VALUES (1,3,false,false);
+
 CREATE TABLE Sensor (
   Id INT NOT NULL AUTO_INCREMENT,
   SensorName VARCHAR(255),
@@ -70,6 +77,12 @@ CREATE TABLE Sensor (
   Manufacturer VARCHAR(255),
   PRIMARY KEY (Id)
 );
+
+INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("MPU6050","Gyrometer","InvenSense");
+INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("MPU6050","Accelerometer","InvenSense");
+INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("HC-SR04","Ultrasonic","Elecfreaks");
+INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("TFMini","LiDAR","Benewake");
+INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("ESP-NOW","RSSI","Espressif");
 
 CREATE TABLE Activity (
   Id INT NOT NULL AUTO_INCREMENT,
@@ -82,14 +95,24 @@ CREATE TABLE SensorInstance (
   Id INT NOT NULL AUTO_INCREMENT,
   S_Id INT NOT NULL,
   SN_Id INT NOT NULL,
-  RssiPartner INT,
+  RssiPartner CHAR,
+  Axis CHAR,
   A_Id INT,
+  Position CHAR,
   FOREIGN KEY (SN_Id) REFERENCES SensorNodeInstance(Id),
   FOREIGN KEY (S_Id) REFERENCES Sensor(Id),
-  FOREIGN KEY (RssiPartner) REFERENCES SensorInstance(Id),
   FOREIGN KEY (A_Id) REFERENCES Activity(Id),
   PRIMARY KEY (Id)
 );
+
+INSERT INTO SensorInstance (S_Id,SN_Id,Axis,Position) VALUES (1,1,"X","B");
+INSERT INTO SensorInstance (S_Id,SN_Id,Axis,Position) VALUES (1,1,"Y","B");
+INSERT INTO SensorInstance (S_Id,SN_Id,Axis,Position) VALUES (1,1,"Z","B");
+INSERT INTO SensorInstance (S_Id,SN_Id,Axis,Position) VALUES (2,1,"X","B");
+INSERT INTO SensorInstance (S_Id,SN_Id,Axis,Position) VALUES (2,1,"Y","B");
+INSERT INTO SensorInstance (S_Id,SN_Id,Axis,Position) VALUES (2,1,"Z","B");
+INSERT INTO SensorInstance (S_Id,SN_Id,Position) VALUES (3,1,"A");
+
 
 CREATE TABLE WorkSession (
   Id INT NOT NULL AUTO_INCREMENT,
@@ -102,7 +125,7 @@ CREATE TABLE WorkSession (
   PRIMARY KEY (Id)
 );
 
-INSERT INTO WorkSession (Notes,Worker,C_Id,M_Id) VALUES ("test session","Bernd",1,1);
+INSERT INTO WorkSession (Notes,Worker,C_Id,M_Id) VALUES ("Test session","Bernd",1,1);
 
 CREATE TABLE WorkSessionActivity (
   Id INT NOT NULL AUTO_INCREMENT,

@@ -7,6 +7,7 @@ namespace Server.Models{
     {
         public int Id { get; set; }
         public string MAC { get; set; }
-        public int BatteryStatus { get; set; }
+        public int? BatteryStatus { get; set; }
+        public string Color { get; set; }
     }
 }

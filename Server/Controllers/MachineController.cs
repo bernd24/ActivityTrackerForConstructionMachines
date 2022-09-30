@@ -25,9 +25,6 @@ public class MachineController : Controller
     {
         var query = new Query(Db);
         var result = query.GetMachines();
-        if(TempData["toggle"] == null){
-            TempData["toggle"] = 0;
-        }
         return View(result);
     }
 

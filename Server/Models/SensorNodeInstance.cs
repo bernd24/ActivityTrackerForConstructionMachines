@@ -6,7 +6,7 @@ namespace Server.Models{
     public class SensorNodeInstance
     {
         public int C_Id { get; set; }
-        public int SN_Id { get; set; }
+        public int? SN_Id { get; set; }
 
         public int Id { get; set; }
         public SensorConfiguration Config { get; set; }
@@ -14,5 +14,7 @@ namespace Server.Models{
         public bool hasBattery { get; set; }
         public bool isMaster { get; set; }
         public string Notes { get; set; }
+
+        public List<SensorInstance> Sensors { get; set;}
     }
 }

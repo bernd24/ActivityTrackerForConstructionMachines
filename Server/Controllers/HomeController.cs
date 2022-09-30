@@ -17,12 +17,12 @@ public class HomeController : Controller
     }
     
     [AllowAnonymous]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         return View();
     }
 
-    public async Task<IActionResult> Home()
+    public IActionResult Home()
     {
         return View();
     }
@@ -33,7 +33,7 @@ public class HomeController : Controller
         return "success";
     }
 
-    public async Task<IActionResult> ShowChart()
+    public IActionResult ShowChart()
     {
         return View();
     }
