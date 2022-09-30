@@ -55,12 +55,18 @@ namespace Server.Controllers
 
         public async Task<IActionResult> VisAWIFormular()
         {
-            // if (id == null || _context.SUSTest == null)
-            // {
-            //     return NotFound();
-            // }
-
             IEnumerable<VisAWITest> vis = _context.VisAWITests.FromSqlRaw<VisAWITest>(@"SELECT * FROM VisAWITests WHERE TestpersonId == 1;").ToList<VisAWITest>();
+            if (vis == null)
+            {
+                return NotFound();
+            }
+            return View(vis);
+        }
+
+        
+        public async Task<IActionResult> UEQFormular()
+        {
+            IEnumerable<UEQTest> vis = _context.UEQTests.FromSqlRaw<UEQTest>(@"SELECT * FROM UEQTests WHERE TestpersonId == 1;").ToList<UEQTest>();
             if (vis == null)
             {
                 return NotFound();
@@ -109,7 +115,47 @@ namespace Server.Controllers
         }
 
 
+ // GET: SUSTest/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> createUEQs(IFormCollection form)
+        {
+            if (form == null || _context.Testpersons == null)
+            {
+                return NotFound();
+            }
+            // var data = new List<SUSTest>();
+            var temp_Ids = form["item.id"];
+            var temp_LeftWord = form["item.LeftWord"];
+            var temp_RightWord = form["item.RightWord"];
+            var temp_one = form["item.one"];
+            var temp_two = form["item.two"];
+            var temp_three = form["item.three"];
+            var temp_four = form["item.four"];
+            var temp_five = form["item.five"];
+            var temp_six = form["item.six"];
+            var temp_seven = form["item.seven"];
 
+            for (int i = 0; i < form["item.id"].Count(); i++)
+            {
+                var erg = _context.Find<UEQTest>(Convert.ToInt32(temp_Ids[i]));
+                erg.LeftWord = temp_LeftWord[i];
+                erg.RightWord = temp_RightWord[i];
+                erg.one = ConvertToBool(temp_one[i]);
+                erg.two = ConvertToBool(temp_two[i]);
+                erg.three = ConvertToBool(temp_three[i]);
+                erg.four = ConvertToBool(temp_four[i]);
+                erg.five = ConvertToBool(temp_five[i]);
+                erg.six = ConvertToBool(temp_six[i]);
+                erg.seven = ConvertToBool(temp_seven[i]);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(erg);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return View("~/Views/Home/Index.cshtml");
+        }
 
          // GET: SUSTest/Edit/5
         [HttpPost]

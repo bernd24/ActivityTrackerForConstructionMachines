@@ -1,0 +1,112 @@
+@model IEnumerable<UIAutomate.Models.UEQTest>
+
+@{
+    ViewData["Title"] = "VisAWI - Visual Aesthetics of Website Inventory";
+}
+
+<h1>VisAWI - Visual Aesthetics of Website Inventory</h1>
+
+<h4>Please  rate on a scale of 1 (strongly disagree) to 7 (strongly  agree) the  extent to which you agree with the following statements in  relation to  the application you have. 
+    Thank you very much!
+</h4>
+<hr />
+@using(Html.BeginForm("CreateUEQs", "Testperson", FormMethod.Post, new { role = "form" }))
+{
+    <form asp-action="CreateUEQs" ,controller="SUSTest", formaction>
+        <div class="row">
+        <div class="col-md-4">
+            <table>
+            <tr>
+                <thead>
+                    <tr>
+                        <th></th> 
+                        <th> <div id="valid1">1</div>     </th> 
+                        <th> <div id="valid2">2</div> </th> 
+                        <th> <div id="valid3">3</div> </th> 
+                        <th> <div id="valid4">4</div></th>
+                        <th> <div id="valid5">5</div></th>
+                        <th> <div id="valid6">6</div> </th>
+                        <th> <div id="valid7">7</div> </th> 
+                    </tr>  
+                </thead>
+                <tbody>
+                @foreach (var item in Model as IEnumerable<UIAutomate.Models.UEQTest>) 
+                {
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @* <input type="hidden" asp-for="@item"  /> *@
+                <input type="hidden" asp-for="@item.Id"  />
+                <input type="hidden" asp-for="@item.LeftWord"  />
+                <input type="hidden" asp-for="@item.RightWord"  />
+                <tr>
+                    <th>
+                        @Html.DisplayFor(model => item.LeftWord)
+                    </th>
+                    <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.one" type="checkbox" id="cb1" />
+                            </label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.two" type="checkbox" id="cb2"  /> 
+                            </label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.three" type="checkbox" id="cb3" />
+                            </label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.four" type="checkbox" id="cb4"/> 
+                            </label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.five" type="checkbox" id="cb5" />
+                            </label>
+                        </div>
+                    </th>
+                     <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.six" type="checkbox" id="cb6" />
+                            </label>
+                        </div>
+                    </th>
+                     <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.seven" type="checkbox" id="cb7" />
+                            </label>
+                        </div>
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => item.RightWord)
+                    </th>
+                </tr>
+                }
+                </tbody> 
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </form>
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
