@@ -2,7 +2,9 @@
 #include <WiFi.h>
 
 sensor_node Communication_Master::sensor_node_list[MAX_CONNECTIONS];
-uint8_t Communication_Master::current_count = 0;
+uint8_t Communication_Master::sensor_node_count = 0;
+
+Communication_Master::Message_queue queue;
 
 bool isSameMac(const uint8_t* mac1, const uint8_t* mac2) {
 	for(int i = 0; i < 6; ++i) {
@@ -21,7 +23,7 @@ void copyArray(T target[], const T src[], uint8_t size) {
 
 void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len) {
 	// First byte contains both sensor_node_id and message type
-	// So we do bitwise and with 00001111 to remove first 4 bits
+	// So we do bitwise AND, with 00001111 to remove first 4 bits
 	// to get message type.
 	uint8_t type = (15 & *data);
 	// For the node_id we do the same but with bitstring 11110000.
@@ -34,20 +36,23 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len) {
 	}
 	if(i == current_count) {
 		Communication_Master::sensor_node_list[i].sensor_node_id = node_id;
+		++sensor_node_count;
 	}
 
 	
 
 	// Check what is the message type
-	// And copy information to sensor_node object.
+	// If new handshake we save the dataformat
+	// Otherwise we push to queue.
 	switch (type) {
 		case HANDSHAKE:
 			copyArray(sensor_node_list[i].data_format, (sensor_format_t*)(data + 2), *(data + 1));
 			break;
 		case DATA:
-			
+			queue.push((packet_data_t*)(data + 4));
 			break;
 		case ERROR:
+			queue.push((packet_error_t*)(data + 2));
 			break;
 	}
 

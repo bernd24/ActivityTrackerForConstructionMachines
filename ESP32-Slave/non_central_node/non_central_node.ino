@@ -20,17 +20,21 @@ void setup() {
   Serial.print("Sonar count: "); Serial.println(Sensors::getSONARSensorCount());
   Serial.print("RSSI count: "); Serial.println(Sensors::getRSSIFlag());
 
-  while(!Communication::init()) {
+  if(!Communication::init()) {
     Serial.println("ERROR: Could not initialize communication");
-    delay(5000);
+    delay(3000);
   }
 }
+int32_t i = 0;
 
 void loop() {
   if(Communication::is_connected) {
     // Get Sensor data and load into the communication data packet
     Communication::packet_data.size = Sensors::getData(Communication::packet_data.payload);
 
+    float f = (float)i;
+
+    Communication::packet_data.payload[0] = f;
     // Send our data packet.
     Communication::sendData();
 
@@ -38,9 +42,8 @@ void loop() {
     if(Communication::error_flag) {
       Communication::sendErrorMessage();
     }*/
-    
+    ++i;
   }
 
-
-  delay(3000);
+  delay(50);
 }

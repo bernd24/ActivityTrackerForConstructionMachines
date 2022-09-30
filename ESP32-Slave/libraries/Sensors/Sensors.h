@@ -7,8 +7,8 @@
 #include <Adafruit_Sensor.h>
 #include <TFMPI2C.h>
 
-#define HC_SR04_TRIG_PIN 5
-#define HC_SR04_ECHO_PIN 18
+#define HC_SR04_TRIG_PIN 12
+#define HC_SR04_ECHO_PIN 13
 
 #define SOUND_SPEED 0.034
 

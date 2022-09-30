@@ -1,6 +1,11 @@
 #ifndef COMMUNICATION_MASTER_H
 #define COMMUNICATION_MASTER_H
 
+#include <esp_now.h>
+#include <WiFi.h>
+#include <esp_wifi.h> // only for esp_wifi_set_channel()
+#include <RingBuf.h>
+
 #define CHANNEL 1
 #define MAX_CONNECTIONS 4
 typedef void(*OnDataRecieveFunc)(const uint8_t*, const uint8_t*, int);
@@ -35,28 +40,24 @@ struct sensor_format_t {
 
 class Message_queue {
 public:
-	Message_queue();
+	Message_queue() = default;
 
-	void push(const packet_handshake_t& handshake);
-	void push(const packet_data_t& 		data);
-	void push(const packet_error_t& 	error);
+	bool push(const packet_handshake_t& handshake);
+	bool push(const packet_data_t&		data);
+	bool push(const packet_error_t& 	error);
 
-	packet_handshake_t& popHandshake();
-	packet_data_t&		popData();
-	packet_error_t&		popError();
+	bool popHandshake(packet_handshake_t& handshake);
+	bool popData(packet_data_t& data);
+	bool popError(packet_error_t& error);
 
 	uint8_t getHandshakeQueueSize();
 	uint8_t getDataQueueSize();
 	uint8_t getErrorQueueSize();
 
 private:
-	packet_handshake_t	handshake_queue[16];
-	packet_data_t 		data_queue[256];
-	packet_error_t 		error_queue[256];
-
-	uint8_t handshake_queue_size;
-	uint8_t data_queue_size;
-	uint8_t error_queue_size;
+	RingBuf<packet_handshake_t, 16>	handshake_queue;
+	RingBuf<packet_data_t, 		64> data_queue;
+	RingBuf<packet_error_t, 	64> error_queue;
 };
 
 
@@ -69,9 +70,9 @@ public:
 
 	static bool serverHandshake();
 
-	static void sendToServer(packet_handshake_t* 	handshake);
-	static void sendToServer(packet_data_t* 		data);
-	static void sendToServer(packet_error_t* 		error);
+	static void sendToServer(packet_handshake_t* handshake);
+	static void sendToServer(packet_data_t* 	 data);
+	static void sendToServer(packet_error_t*	 error);
 
 	static void close();
 
@@ -81,11 +82,15 @@ public:
 	struct sensor_node {
 		uint8_t sensor_node_id;
 		sensor_format_t data_format[MAX_SENSORS];
-	}
+	};
 
 	static sensor_node sensor_node_list[MAX_CONNECTIONS];
 	static uint8_t sensor_node_count;
-}
+
+private:
+	static char server_payload[1024];
+	static uint16_t size;
+};
 
 
 #endif
