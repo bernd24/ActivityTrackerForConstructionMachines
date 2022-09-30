@@ -12,9 +12,9 @@ namespace UIAutomate.Models{
 
         public string anonymName {get; set; }
 
-        public List<SUSTest> SUSTests {get; set;}
-        public List<UEQTest> UEQTests {get; set;}
-        public List<VisAWITest> VisAWITests {get; set;}
+        public List<SUSTest> SUSTests {get; set;} = new List<SUSTest>();
+        public List<UEQTest> UEQTests {get; set;} = new List<UEQTest>();
+        public List<VisAWITest> VisAWITests {get; set;} = new List<VisAWITest>();
 
     }
 }

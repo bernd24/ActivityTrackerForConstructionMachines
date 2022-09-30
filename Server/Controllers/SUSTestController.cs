@@ -11,52 +11,52 @@ namespace Server.Controllers
 {
     public class SUSTestController : Controller
     {
-        private readonly SUSTestContext _context;
+        private readonly TestpersonContext _context;
 
-        public SUSTestController(SUSTestContext context)
+        public SUSTestController(TestpersonContext context)
         {
             _context = context;
         }
 
         // GET: SUSTest
-        public async Task<IActionResult> Formular()
-        {
-              return _context.SUSTest != null ? 
-                          View(await _context.SUSTest.ToListAsync()) :
-                          Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
-        }
+        // public async Task<IActionResult> Formular()
+        // {
+        //       return _context.Find()SUSTest != null ? 
+        //                   View(await _context.Testpersons..ToListAsync()) :
+        //                   Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
+        // }
 
 
-        public async Task<IActionResult> Introduction()
-        {
-              return _context.SUSTest != null ? 
-                          View(await _context.SUSTest.ToListAsync()) :
-                          Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
-        }
+        // public async Task<IActionResult> Introduction()
+        // {
+        //       return _context.SUSTest != null ? 
+        //                   View(await _context.SUSTest.ToListAsync()) :
+        //                   Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
+        // }
 
         // GET: SUSTest/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.SUSTest == null)
-            {
-                return NotFound();
-            }
+        // public async Task<IActionResult> Details(int? id)
+        // {
+        //     if (id == null || _context.SUSTest == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            var sUSTest = await _context.SUSTest
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (sUSTest == null)
-            {
-                return NotFound();
-            }
+        //     var sUSTest = await _context.SUSTest
+        //         .FirstOrDefaultAsync(m => m.Id == id);
+        //     if (sUSTest == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            return View(sUSTest);
-        }
+        //     return View(sUSTest);
+        // }
 
-        // GET: SUSTest/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        // // GET: SUSTest/Create
+        // public IActionResult Create()
+        // {
+        //     return View();
+        // }
 
         // POST: SUSTest/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -81,8 +81,10 @@ namespace Server.Controllers
             // {
             //     return NotFound();
             // }
+//   return View(await _context.Testpersons.ToListAsync());
 
-            IEnumerable<SUSTest> sUSTest = await _context.SUSTest.ToListAsync();
+                                        //   await
+            IEnumerable<SUSTest> sUSTest = _context.Testpersons.Find(1).SUSTests.AsEnumerable<SUSTest>();
             if (sUSTest == null)
             {
                 return NotFound();
@@ -96,7 +98,7 @@ namespace Server.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateForm(IFormCollection form)
         {
-            if (form == null || _context.SUSTest == null)
+            if (form == null || _context.Testpersons == null)
             {
                 return NotFound();
             }
@@ -210,45 +212,45 @@ namespace Server.Controllers
         // }
 
         // GET: SUSTest/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.SUSTest == null)
-            {
-                return NotFound();
-            }
+        // public async Task<IActionResult> Delete(int? id)
+        // {
+        //     if (id == null || _context.SUSTest == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            var sUSTest = await _context.SUSTest
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (sUSTest == null)
-            {
-                return NotFound();
-            }
+        //     var sUSTest = await _context.SUSTest
+        //         .FirstOrDefaultAsync(m => m.Id == id);
+        //     if (sUSTest == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-            return View(sUSTest);
-        }
+        //     return View(sUSTest);
+        // }
 
-        // POST: SUSTest/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.SUSTest == null)
-            {
-                return Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
-            }
-            var sUSTest = await _context.SUSTest.FindAsync(id);
-            if (sUSTest != null)
-            {
-                _context.SUSTest.Remove(sUSTest);
-            }
+    //     // POST: SUSTest/Delete/5
+    //     [HttpPost, ActionName("Delete")]
+    //     [ValidateAntiForgeryToken]
+    //     public async Task<IActionResult> DeleteConfirmed(int id)
+    //     {
+    //         if (_context.SUSTest == null)
+    //         {
+    //             return Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
+    //         }
+    //         var sUSTest = await _context.SUSTest.FindAsync(id);
+    //         if (sUSTest != null)
+    //         {
+    //             _context.SUSTest.Remove(sUSTest);
+    //         }
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+    //         await _context.SaveChangesAsync();
+    //         return RedirectToAction(nameof(Index));
+    //     }
 
-        private bool SUSTestExists(int id)
-        {
-          return (_context.SUSTest?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+    //     private bool SUSTestExists(int id)
+    //     {
+    //       return (_context.SUSTest?.Any(e => e.Id == id)).GetValueOrDefault();
+    //     }
     }
 }

@@ -20,5 +20,11 @@ namespace UIAutomate.Models{
         // public int TestpersonId {get; set;}
         public Testperson Testperson {get; set; }
 
+
     }
+
+
+     
+
+
 }

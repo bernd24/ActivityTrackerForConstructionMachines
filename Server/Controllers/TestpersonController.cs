@@ -24,6 +24,142 @@ namespace Server.Controllers
               return View(await _context.Testpersons.ToListAsync());
         }
 
+        public async Task<IActionResult> Introduction()
+        {
+            return View(await _context.Testpersons.ToListAsync());
+            //   return _context.SUSTest != null ? 
+            //               View(await _context.SUSTest.ToListAsync()) :
+            //               Problem("Entity set 'SUSTestContext.SUSTest'  is null.");
+        }
+
+        // GET: SUSTest/Edit/5    duplicatet
+        public async Task<IActionResult> SUSResults()
+        {
+            // if (id == null || _context.SUSTest == null)
+            // {
+            //     return NotFound();
+            // }
+
+            IEnumerable<SUSTest> sUSTest = _context.SUSTests.FromSqlRaw<SUSTest>(@"SELECT * FROM SUSTests WHERE TestpersonId == 1;").ToList<SUSTest>();
+            if (sUSTest == null)
+            {
+                return NotFound();
+            }
+            return View(sUSTest);
+        }
+
+        public IEnumerable<SUSTest> DataSeeder(){
+                 var cmd = _context.SUSTests.FromSqlRaw<SUSTest>(@"SELECT * FROM SUSTests WHERE TestpersonId == 1;").ToList<SUSTest>();
+            return cmd as IEnumerable<SUSTest>;
+        }
+
+        public async Task<IActionResult> VisAWIFormular()
+        {
+            // if (id == null || _context.SUSTest == null)
+            // {
+            //     return NotFound();
+            // }
+
+            IEnumerable<VisAWITest> vis = _context.VisAWITests.FromSqlRaw<VisAWITest>(@"SELECT * FROM VisAWITests WHERE TestpersonId == 1;").ToList<VisAWITest>();
+            if (vis == null)
+            {
+                return NotFound();
+            }
+            return View(vis);
+        }
+
+   // GET: SUSTest/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> createVisAWIs(IFormCollection form)
+        {
+            if (form == null || _context.Testpersons == null)
+            {
+                return NotFound();
+            }
+            // var data = new List<SUSTest>();
+            var temp_Ids = form["item.id"];
+            var temp_Questions = form["item.Question"];
+            var temp_DisagreeEtAll = form["item.DisagreeEtAll"];
+            var temp_Disagree = form["item.Disagree"];
+            var temp_DisagreeRather = form["item.DisagreeRather"];
+            var temp_Neutrals = form["item.Neutral"];
+            var temp_AgreeRather = form["item.AgreeRather"];
+            var temp_Agree = form["item.Agree"];
+            var temp_AgreeEtAll = form["item.AgreeEtAll"];
+
+            for (int i = 0; i < form["item.id"].Count(); i++)
+            {
+                var erg = _context.Find<VisAWITest>(Convert.ToInt32(temp_Ids[i]));
+                erg.Question = temp_Questions[i];
+                erg.DisagreeEtAll = ConvertToBool(temp_DisagreeEtAll[i]);
+                erg.Disagree = ConvertToBool(temp_Disagree[i]);
+                erg.DisagreeRather = ConvertToBool(temp_DisagreeRather[i]);
+                erg.Neutral = ConvertToBool(temp_Neutrals[i]);
+                erg.AgreeRather = ConvertToBool(temp_AgreeRather[i]);
+                erg.Agree = ConvertToBool(temp_Agree[i]);
+                erg.AgreeEtAll = ConvertToBool(temp_AgreeEtAll[i]);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(erg);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return View("~/Views/Home/Index.cshtml");
+        }
+
+
+
+
+         // GET: SUSTest/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateForm(IFormCollection form)
+        {
+            if (form == null || _context.Testpersons == null)
+            {
+                return NotFound();
+            }
+            var data = new List<SUSTest>();
+            var temp_Ids = form["item.id"];
+            var temp_Questions = form["item.Question"];
+            var temp_SDisagrees = form["item.StronglyDisagree"];
+            var temp_Disagrees = form["item.Disagree"];
+            var temp_Neutrals = form["item.Neutral"];
+            var temp_Agrees = form["item.Agree"];
+            var temp_SAgrees = form["item.StronglyAgree"];
+
+            for (int i = 0; i < form["item.id"].Count(); i++)
+            {
+                var erg = _context.Find<SUSTest>(Convert.ToInt32(temp_Ids[i]));
+                erg.Question = temp_Questions[i];
+                erg.StronglyDisagree = ConvertToBool(temp_SDisagrees[i]);
+                erg.Disagree = ConvertToBool(temp_Disagrees[i]);
+                erg.Neutral = ConvertToBool(temp_Neutrals[i]);
+                erg.Agree = ConvertToBool(temp_Agrees[i]);
+                erg.StronglyAgree = ConvertToBool(temp_SAgrees[i]);
+                if (ModelState.IsValid)
+                {
+                    _context.Update(erg);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            return View("~/Views/Home/Index.cshtml");
+        }
+
+
+        private bool ConvertToBool(string temp){
+            bool erg = false;
+            if (temp.Equals("true"))
+            {
+                erg = true;
+            }else if(temp.Equals("false")){
+                erg= false;
+            }
+            return erg;
+        }
+
+
         // GET: Testperson/Details/5
         public async Task<IActionResult> Details(int? id)
         {

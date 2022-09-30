@@ -1,16 +1,18 @@
-@model IEnumerable<UIAutomate.Models.SUSTest>
+@model IEnumerable<UIAutomate.Models.VisAWITest>
 
 @{
-    ViewData["Title"] = "System Usability Scale (SUS)";
+    ViewData["Title"] = "VisAWI - Visual Aesthetics of Website Inventory";
 }
 
-<h1>System Usability Scale (SUS)</h1>
+<h1>VisAWI - Visual Aesthetics of Website Inventory</h1>
 
-<h4>Please rate on the following scale to what extent you agree with the statements.</h4>
+<h4>Please  rate on a scale of 1 (strongly disagree) to 7 (strongly  agree) the  extent to which you agree with the following statements in  relation to  the application you have. 
+    Thank you very much!
+</h4>
 <hr />
-@using(Html.BeginForm("CreateForm", "SUSTest", FormMethod.Post, new { role = "form" }))
+@using(Html.BeginForm("CreateVisAWIs", "Testperson", FormMethod.Post, new { role = "form" }))
 {
-    <form asp-action="CreateForm" ,controller="SUSTest", formaction>
+    <form asp-action="CreateVisAWI" ,controller="SUSTest", formaction>
         <div class="row">
         <div class="col-md-4">
             <table>
@@ -18,15 +20,17 @@
                 <thead>
                     <tr>
                         <th></th> 
-                        <th> <div id="valid1">Strongly disagree</div>     </th> 
+                        <th> <div id="valid1">Disagree et all</div>     </th> 
                         <th> <div id="valid2">Disagree</div> </th> 
-                        <th> <div id="valid3">Neutral</div></th>
-                        <th> <div id="valid4">Agree</div></th>
-                        <th> <div id="valid5">Strongly agree</div> </th>
+                        <th> <div id="valid3">Disagree rather</div> </th> 
+                        <th> <div id="valid4">Neutral</div></th>
+                        <th> <div id="valid5">Agree rather</div></th>
+                        <th> <div id="valid6">Agree</div> </th>
+                        <th> <div id="valid7">Agree er all</div> </th> 
                     </tr>  
                 </thead>
                 <tbody>
-                @foreach (var item in Model as IEnumerable<UIAutomate.Models.SUSTest>) 
+                @foreach (var item in Model as IEnumerable<UIAutomate.Models.VisAWITest>) 
                 {
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 @* <input type="hidden" asp-for="@item"  /> *@
@@ -39,7 +43,7 @@
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.StronglyDisagree" type="checkbox" id="cb1" />
+                                <input class="form-check-input" asp-for="@item.DisagreeEtAll" type="checkbox" id="cb1" />
                             </label>
                         </div>
                     </th>
@@ -53,21 +57,35 @@
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.Neutral" type="checkbox" id="cb3" />
+                                <input class="form-check-input" asp-for="@item.DisagreeRather" type="checkbox" id="cb3" />
                             </label>
                         </div>
                     </th>
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.Agree" type="checkbox" id="cb4"/> 
+                                <input class="form-check-input" asp-for="@item.Neutral" type="checkbox" id="cb4"/> 
                             </label>
                         </div>
                     </th>
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.StronglyAgree" type="checkbox" id="cb5" />
+                                <input class="form-check-input" asp-for="@item.AgreeRather" type="checkbox" id="cb5" />
+                            </label>
+                        </div>
+                    </th>
+                     <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.Agree" type="checkbox" id="cb6" />
+                            </label>
+                        </div>
+                    </th>
+                     <th>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.AgreeEtAll" type="checkbox" id="cb7" />
                             </label>
                         </div>
                     </th>
