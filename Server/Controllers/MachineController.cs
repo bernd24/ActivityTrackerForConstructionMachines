@@ -67,12 +67,8 @@ public class MachineController : Controller
         return View();
     }
 
-    public class toggle{
-        public int toggleVal {get; set;}
-    }
-
     [HttpPost("Machine/Delete/{Id}")]
-    public IActionResult Delete([FromForm]toggle toggle,int Id)
+    public IActionResult Delete(int Id)
     {
         if(Db.Query("WorkSession").Where("M_Id",Id).Get().Count() == 0){
             Db.Query("Machine").Where("Id",Id).Delete();
@@ -85,7 +81,6 @@ public class MachineController : Controller
             });
             TempData["Message"] = "Machine cannot be deleted because it has sessions, it got marked as unused instead.";
         }
-        TempData["toggle"] = toggle.toggleVal;
         return RedirectToAction("Index", "Machine");
     }
 

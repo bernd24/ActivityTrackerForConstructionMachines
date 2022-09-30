@@ -64,7 +64,6 @@
                 <td>@machine.Model.ModelYear</td>
                 <td>
                     <form action="Machine/Delete/@machine.Id" method="POST">
-                        <input id="toggleVal" name="toggleVal" type="hidden" value="1">
                         <div class="btn-group" role="group">
                             <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
                                 <div class="en">Update</div>
@@ -90,7 +89,6 @@
             <td>@machine.Model.ModelYear</td>
             <td>
                 <form action="Machine/Delete/@machine.Id" method="POST">
-                    <input id="toggleVal" name="toggleVal" type="hidden" value="1">
                     <div class="btn-group" role="group">
                         <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
                             <div class="en">Update</div>
@@ -157,7 +155,6 @@
                 <td>@machine.Model.ModelYear</td>
                 <td>
                     <form action="Machine/Delete/@machine.Id" method="POST">
-                        <input id="toggleVal" name="toggleVal" type="hidden" value="0">
                         <div class="btn-group" role="group">
                             <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
                                 <div class="en">Update</div>
@@ -186,26 +183,50 @@
 
 
 <script>
-    var a = @TempData["toggle"];
-    changeStyle();
+    var a = 0;
+    var toggleCookie = getCookie("toggleUnused");
+    if(toggleCookie != ""){
+        a = toggleCookie;
+    }
+    setStyle();
+
     function changeStyle(){
+        a++;
+        document.cookie = "toggleUnused=".concat(a,";path=/"); 
+        setStyle();
+    }
 
-                var unused = document.getElementById("unused");
-                var used = document.getElementById("used");
-                var toggle = document.getElementById("toggleVal");
-                var toggleButton = document.getElementById("toggleButton");
+    function setStyle(){
+        var unused = document.getElementById("unused");
+        var used = document.getElementById("used");
+        var toggleButton = document.getElementById("toggleButton");
 
-                if (a%2 == 0){
-                    unused.style.display = "none";
-                    used.style.display = "block";
-                    toggleButton.style = "background-color: #b72828";
-                }
-                else{
-                    unused.style.display = "block";
-                    used.style.display = "none";
-                    toggleButton.style = "background-color: #31b728";
-                }
-                toggle.value = a;
-            a++;
+        if (a%2 == 0){
+            unused.style.display = "none";
+            used.style.display = "block";
+            toggleButton.style = "background-color: #b72828";
         }
+        else{
+            unused.style.display = "block";
+            used.style.display = "none";
+            toggleButton.style = "background-color: #31b728";
+        }
+    }
+
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
 </script>
