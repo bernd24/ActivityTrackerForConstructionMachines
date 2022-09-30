@@ -1,0 +1,70 @@
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form method="POST" action="/Installation/Create">
+<table class="table table-bordered">
+    <tr>
+        <th>
+            <div class="en">Node Type</div>
+            <div class="de">Knotentyp</div>
+            <div class="sv">Nodtyp</div>
+        </th>
+        <th>
+            <div class="en">Battery</div>
+            <div class="de">Batterie</div>
+            <div class="sv">Batteri</div>
+        </th>
+        <th>
+            <div class="en">Sensor</div>
+            <div class="de">Sensor</div>
+            <div class="sv">Sensor</div>
+        </th>
+        <th>
+            <div class="en">Axis</div>
+            <div class="de">Achse</div>
+            <div class="sv">Axel</div>
+        </th>
+        <th>
+            <div class="en">Position</div>
+            <div class="de">Position</div>
+            <div class="sv">Position</div>
+        </th>
+        <th>
+            <div class="en">RSSI Partner</div>
+            <div class="de">RSSI Partner</div>
+            <div class="sv">RSSI Partner</div>
+        </th>
+    </tr>
+    <tr>
+        <td><select name="isMaster">
+            <option>Master</option>
+            <option>Slave</option>
+        </select></td>
+        <td><select name="hasBattery">
+            <option>Yes</option>
+            <option>No</option>
+        </select></td>
+        <td><select name="S_Id">
+            @foreach(Sensor s in Model){
+                <option value="@s.Id"><pre>@s.Manufacturer @s.SensorName @s.SensorType</pre></option>
+            }
+        </select></td>
+        <td><select name="Axis">
+            <option></option>
+            <option>X</option>
+            <option>Y</option>
+            <option>Z</option>
+        </select></td>
+        <td><select name="Position">
+            <option>A</option><option>B</option><option>C</option>
+            <option>D</option><option>E</option><option>F</option>
+        </select></td>
+        <td><select name="RssiPartner">
+            <option></option>
+            <option>A</option><option>B</option><option>C</option>
+            <option>D</option><option>E</option><option>F</option>
+        </select></td>
+    </tr>
+</table>
+</form>
