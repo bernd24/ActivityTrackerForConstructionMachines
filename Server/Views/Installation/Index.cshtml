@@ -21,7 +21,7 @@
 @foreach (Machine m in Model){
     if(m.Config != null){
         <div class="config" id="@m.Id">
-            <img src="images/@m.Config.Picture" width="533" height="300">
+            <img src="/images/@m.Config.Picture" width="533" height="300">
             <br>
             <br>
             <h4>
@@ -82,14 +82,21 @@
                         else{
                             <td rowspan="@(sn.Sensors.Count()+1)">Slave</td>
                         }
-                        @if(sn.hasBattery){
+                        @if(sn.hasBattery && sn.SensorNode != null){
                             <td rowspan="@(sn.Sensors.Count()+1)">@sn.SensorNode.BatteryStatus</td>
                         }
-                        else{
+                        else if(!sn.hasBattery){
                             <td rowspan="@(sn.Sensors.Count()+1)">
                                 <div class="en">Connected to Power.</div>
                                 <div class="de">Mit Strom verbunden.</div>
                                 <div class="sv">Ansluten till ström.</div>
+                            </td>
+                        }
+                        else{
+                            <td rowspan="@(sn.Sensors.Count()+1)">
+                                <div class="en">Has a battery but there is no charge level data available.</div>
+                                <div class="de">Hat eine Batterie, aber es sind keine Daten zum Ladezustand verfügbar.</div>
+                                <div class="sv">Har ett batteri men det finns ingen laddningsnivådata tillgänglig.</div>                                
                             </td>
                         }
                         @foreach(SensorInstance s in sn.Sensors){
@@ -122,7 +129,7 @@
             <div class="en">This Machine doesn't have a Configuration.</div>
             <div class="de">Diese Maschine besitzt keine Konfiguration.</div>
             <div class="sv">Denna maskin har ingen konfiguration.</div>
-            <a class="button" asp-area="" asp-controller="Installation" asp-action="Create"><div class="en">Create configuration</div><div class="sv">Skapa konfiguration</div><div class="de">Konfiguration erstellen</div></a>
+            <a class="button" asp-area="" asp-controller="Installation" asp-action="Create" asp-route-id="@m.Id"><div class="en">Create configuration</div><div class="sv">Skapa konfiguration</div><div class="de">Konfiguration erstellen</div></a>
         </div>
     }
 }

@@ -54,7 +54,6 @@ using SqlKata.Execution;
             .LeftJoin("SensorConfiguration","Machine.C_Id","SensorConfiguration.Id")
             .Get();
             foreach(var m in result){
-                GetSensorNodeInstances(1);
                 var machine = new Machine(){
                     Id = m.Id,
                     InternalId = m.InternalId,
@@ -70,7 +69,8 @@ using SqlKata.Execution;
                         Id = m.C_Id,
                         Picture = m.Picture,
                         Notes = m.Notes
-                    }
+                    },
+                    C_Id = m.C_Id == null ? null : m.C_Id
                 };
                 if(machine.Config != null){
                     machine.Config.SensorNodes = GetSensorNodeInstances(machine.Config.Id);
@@ -81,13 +81,51 @@ using SqlKata.Execution;
             return machines;
         }
 
+        public Machine GetMachineWithConfig(int Id){
+            var machines = new List<Machine>();
+            IEnumerable<dynamic> result = Db.Query("Machine")
+            .Select("Machine.Id","Machine.InternalId","Machine.inUse",
+            "MachineModel.Id as M_Id","MachineModel.Manufacturer","MachineModel.ModelName",
+            "MachineModel.MachineType","MachineModel.ModelYear",
+            "SensorConfiguration.Id as C_Id","SensorConfiguration.Picture","SensorConfiguration.Notes")
+            .Where("Machine.Id",Id)
+            .Join("MachineModel","Machine.M_Id","MachineModel.Id")
+            .LeftJoin("SensorConfiguration","Machine.C_Id","SensorConfiguration.Id")
+            .Get();
+            foreach(var m in result){
+                var machine = new Machine(){
+                    Id = m.Id,
+                    InternalId = m.InternalId,
+                    inUse = m.inUse,
+                    Model = new MachineModel(){
+                        Id = m.M_Id,
+                        Manufacturer = m.Manufacturer,
+                        ModelName = m.ModelName,
+                        MachineType = m.MachineType,
+                        ModelYear = m.ModelYear
+                    },
+                    Config = m.C_Id == null ? null : new SensorConfiguration(){
+                        Id = m.C_Id,
+                        Picture = m.Picture,
+                        Notes = m.Notes
+                    },
+                    C_Id = m.C_Id == null ? null : m.C_Id
+                };
+                if(machine.Config != null){
+                    machine.Config.SensorNodes = GetSensorNodeInstances(machine.Config.Id);
+                }
+                return machine;
+            }
+            return null;
+        }
+
         public List<SensorNodeInstance> GetSensorNodeInstances(int C_Id){
             var sensorNodeInstances = new List<SensorNodeInstance>();
             IEnumerable<dynamic> result = Db.Query("SensorNodeInstance")
             .Select("SensorNodeInstance.Id as SNI_Id","SensorNodeInstance.hasBattery","SensorNodeInstance.isMaster",
             "SensorNode.Id as SN_Id","SensorNode.MAC","SensorNode.BatteryStatus","SensorNode.Color")
             .Where("C_Id",C_Id)
-            .Join("SensorNode","SensorNodeInstance.SN_Id","SensorNode.Id")
+            .LeftJoin("SensorNode","SensorNodeInstance.SN_Id","SensorNode.Id")
             .Get();
             foreach(var sn in result){
                 var sensorNodeInstance = new SensorNodeInstance(){
@@ -96,7 +134,7 @@ using SqlKata.Execution;
                     SN_Id = sn.SN_Id,
                     hasBattery = sn.hasBattery,
                     isMaster = sn.isMaster,
-                    SensorNode = new SensorNode(){
+                    SensorNode = sn.SN_Id == null ? null : new SensorNode(){
                         Id = sn.SN_Id,
                         MAC = sn.MAC,
                         BatteryStatus = sn.BatteryStatus,
