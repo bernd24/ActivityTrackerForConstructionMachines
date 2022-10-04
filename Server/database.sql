@@ -83,6 +83,9 @@ INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("MPU6050","Accel
 INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("HC-SR04","Ultrasonic","Elecfreaks");
 INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("TFMini","LiDAR","Benewake");
 INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("ESP-NOW","RSSI","Espressif");
+INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("OBD","Fuel Rate","ELM ELectronics");
+INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("OBD","Speed","ELM ELectronics");
+INSERT INTO Sensor (SensorName,SensorType,Manufacturer) VALUES ("OBD","Load","ELM ELectronics");
 
 CREATE TABLE Activity (
   Id INT NOT NULL AUTO_INCREMENT,
