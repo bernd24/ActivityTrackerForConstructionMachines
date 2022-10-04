@@ -27,10 +27,40 @@ public class InstallationController : Controller
     }
 
     [HttpGet]
-    public IActionResult Create(int Id){
-        //select auto_increment from information_schema.tables where table_schema = "atfcm" and table_name = "SensorConfiguration";
+    public IActionResult Show(int Id)
+    {
+        ViewBag.M_Id = Id;
+        return View("Index",new Query(Db).GetMachinesWithConfig());
+    }
+
+    [HttpGet]
+    public IActionResult Create(int Id){     
         ViewBag.Machine = new Query(Db).GetMachineWithConfig(Id);
         return View(Db.Query("Sensor").Get<Sensor>());
+    }
+
+    public class delConfig{
+        public int? C_Id {get; set;}
+    }
+
+    [HttpGet]
+    public IActionResult CreateNew(int Id){     
+        ViewBag.Machine = new Query(Db).GetMachineWithConfig(Id);
+        Db.Query("Machine")
+        .Where("Id",Id)
+        .Update(new delConfig{
+            C_Id = null
+        });
+        return RedirectToAction("Create","Installation",new { Id = Id });
+    }
+
+    [HttpGet]
+    public IActionResult Update(int Id){     
+        ViewBag.Machine = new Query(Db).GetMachineWithConfig(Id);
+        if(Db.Query("WorkSession").Where("C_Id",(int)ViewBag.Machine.C_Id).Get().Count() > 0){
+            return View("UpdateAlert");
+        }
+        return RedirectToAction("Create","Installation",new { Id = Id });
     }
 
     public class SNI{
@@ -44,11 +74,10 @@ public class InstallationController : Controller
 
     [HttpPost]
     public IActionResult Create([FromForm]SNI sn, int Id){
-        //select auto_increment from information_schema.tables where table_schema = "atfcm" and table_name = "SensorConfiguration";
         ViewBag.Machine = new Query(Db).GetMachineWithConfig(Id);
         if(ViewBag.Machine.Config == null){
             Db.Query("SensorConfiguration").Insert(new {
-                Picture = "woodig1.jpg"
+                Notes = "created on " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss")
             });
             var result = Db.Query("SensorConfiguration")
                            .Select("Id")
@@ -79,8 +108,7 @@ public class InstallationController : Controller
                 RssiPartner = sn.RssiPartner.ElementAt(i) == '-' ? null : sn.RssiPartner.ElementAt(i)
             });
         }
-        ViewBag.Machine = new Query(Db).GetMachineWithConfig(Id);
-        return View(Db.Query("Sensor").Get<Sensor>());
+        return RedirectToAction("Create","Installation",new {Id = Id});
     }
 
     [HttpPost]
@@ -124,5 +152,16 @@ public class InstallationController : Controller
         });
 
         return Ok();
+    }
+
+    [HttpPost("Installation/DeleteSensorNode/{Id}/{SN_Id}")]
+    public IActionResult DeleteSensorNode(int Id, int SN_Id){
+        Db.Query("SensorInstance")
+        .Where("SN_Id",SN_Id)
+        .Delete();
+        Db.Query("SensorNodeInstance")
+        .Where("Id",SN_Id)
+        .Delete();
+        return RedirectToAction("Create","Installation",new { Id = Id });
     }
 }

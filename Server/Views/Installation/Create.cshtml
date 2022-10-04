@@ -1,7 +1,11 @@
 @{
     ViewData["Title"] = "Create";
 }
-
+<h1>
+    <div class="en">Create Configuration</div>
+    <div class="de">Konfiguration erstellen</div>
+    <div class="sv">Skapa konfiguration</div>
+</h1>
 <form action="/Installation/CreatePic/@ViewBag.Machine.Id" 
       enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;" 
       method="post">
@@ -44,8 +48,17 @@
     }
   }
 </script>
-<form method="POST" action="/Installation/Create/@ViewBag.Machine.Id">
-<table id="sensors" class="table table-bordered">
+
+    <h4>
+<label for="createSns">
+                <div class="en">Create Sensor Node</div>
+                <div class="de">Sensorknoten erstellen</div>
+                <div class="sv">Skapa Sensornoder</div>
+            </label>
+            </h4>
+
+<form id="createSns" method="POST" action="/Installation/Create/@ViewBag.Machine.Id" style="border: solid;">
+<table class="table table-bordered" style="margin:2px;">
     <tr>
         <th>
             <div class="en">Node Type</div>
@@ -57,6 +70,20 @@
             <div class="de">Batterie</div>
             <div class="sv">Batteri</div>
         </th>
+    </tr>
+    <tr>
+        <td><select name="isMaster">
+            <option>Master</option>
+            <option>Slave</option>
+        </select></td>
+        <td><select name="hasBattery">
+            <option>Yes</option>
+            <option>No</option>
+        </select></td>
+    </tr>
+</table>
+<table id="sensors" class="table table-bordered" style="margin:2px;">
+    <tr>
         <th>
             <div class="en">Sensor</div>
             <div class="de">Sensor</div>
@@ -78,18 +105,12 @@
             <div class="sv">RSSI Partner</div>
         </th>
         <th>
-            Actions
+            <div class="en">Actions</div>
+            <div class="de">Aktionen</div>
+            <div class="sv">Åtgärder</div>
         </th>
     </tr>
     <tr>
-        <td><select name="isMaster">
-            <option>Master</option>
-            <option>Slave</option>
-        </select></td>
-        <td><select name="hasBattery">
-            <option>Yes</option>
-            <option>No</option>
-        </select></td>
         <td><select id="sensor" name="S_Id[]">
             @foreach(Sensor s in Model){
                 <option value="@s.Id"><pre>@s.Manufacturer @s.SensorName @s.SensorType</pre></option>
@@ -111,17 +132,27 @@
             <option>D</option><option>E</option><option>F</option>
         </select></td>
         <td onclick="addSensor()">
-            <p style="background-color:grey">Add Sensor</p>
+            <p style="background-color:grey; text-align:center;">
+                Add
+            </p>
         </td>
     </tr>
 </table>
-<input type="submit" value="Add Sensornode">
+<button class="btn btn-secondary" style="margin:2px;">
+    <div class="en">Add Sensor Node</div>
+    <div class="de">Sensorknoten hinzufügen</div>
+    <div class="sv">Lägg till sensornod</div>
+</button>
 </form>
 <br>
 @if(ViewBag.Machine.Config != null){
+    @if(ViewBag.Machine.Config.Picture != null){
     <img src="/images/@ViewBag.Machine.Config.Picture" width="533" height="300">
     <br>
     <br>
+    }
+    
+@if(ViewBag.Machine.Config.SensorNodes != null && ViewBag.Machine.Config.SensorNodes.Count > 0){
     <h4>
 <label for="nodeTable">
                 <div class="en">Sensor Nodes</div>
@@ -131,6 +162,11 @@
             </h4>
             <table id="nodeTable" class="table table-bordered">
                 <tr>
+                    <th>
+                        <div class="en">Actions</div>
+                        <div class="de">Aktionen</div>
+                        <div class="sv">Åtgärder</div>
+                    </th>
                     <th>
                         <div class="en">Node Type</div>
                         <div class="de">Knotentyp</div>
@@ -174,6 +210,11 @@
                 </tr>
                 @foreach(SensorNodeInstance sn in ViewBag.Machine.Config.SensorNodes){
                     <tr>
+                        <td rowspan="@(sn.Sensors.Count()+1)">
+                            <form method="post" action="/Installation/DeleteSensorNode/@ViewBag.Machine.Id/@sn.Id">
+                                <button class="btn btn-secondary">Delete</button>
+                            </form>
+                        </td>
                         @if(sn.isMaster){
                             <td rowspan="@(sn.Sensors.Count()+1)">Master</td>
                         }
@@ -221,18 +262,17 @@
                 }
             </table>
 }
+}
 
 <script>
     function addSensor(){
         var table = document.getElementById("sensors");
         var row = table.insertRow(2);
-        var isMasterCell = row.insertCell(0);
-        var hasBatteryCell = row.insertCell(1);
-        var sensorCell = row.insertCell(2);
-        var axisCell = row.insertCell(3);
-        var positionCell = row.insertCell(4);
-        var rssiPartnerCell = row.insertCell(5);
-        var del = row.insertCell(6);
+        var sensorCell = row.insertCell(0);
+        var axisCell = row.insertCell(1);
+        var positionCell = row.insertCell(2);
+        var rssiPartnerCell = row.insertCell(3);
+        var del = row.insertCell(4);
 
         var selectSensor = document.getElementById("sensor");
         var selectAxis = document.getElementById("axis");
@@ -243,7 +283,9 @@
         positionCell.innerHTML = '<input name="Position[]" value="' + selectPosition.value + '" type="hidden">' + selectPosition.options[selectPosition.selectedIndex].text;
         rssiPartnerCell.innerHTML = '<input name="RssiPartner[]" value="' + selectRssiPartner.value + '" type="hidden">' + selectRssiPartner.options[selectRssiPartner.selectedIndex].text;
         del.setAttribute("onclick","deleteSensor(this);");
-        del.innerHTML = '<p style="background-color:grey">Delete</p>';
+        del.innerHTML = '<p style="background-color:grey; text-align:center;">\
+            Delete\
+        </p>';
 
     }
     function deleteSensor(delCell){

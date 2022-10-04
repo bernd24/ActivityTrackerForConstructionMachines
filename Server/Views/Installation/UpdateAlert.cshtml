@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "Alert";
+}
+
+<font color="red">
+<div class="en">The configuraton was used in at least one session, please be advised that changing it will affect the configuration data of all the sessions they were used in. Create a new configuration to save this data.</div>
+<div class="de">Die Konfiguration wurde in mindestens einer Sitzung verwendet. Bitte beachten Sie, dass eine Änderung die Konfigurationsdaten aller Sitzungen betrifft, in denen sie verwendet wurden. Erstellen Sie eine neue Konfiguration, um diese Daten zu speichern.</div>
+<div class="sv">Konfigurationen användes i minst en session. Observera att ändring av den kommer att påverka konfigurationsdata för alla sessioner de användes i. Skapa en ny konfiguration för att spara dessa data.</div>
+</font>
+<br>
+<a asp-controller="Installation" asp-action="CreateNew" asp-route-id="@ViewBag.Machine.Id" type="button" class="btn btn-primary">
+    <div class="en">Create new configuraton</div>
+    <div class="de">Neue Konfiguration erstellen</div>
+    <div class="sv">Skapa ny konfiguration</div>
+</a>
+<a asp-controller="Installation" asp-action="Create" asp-route-id="@ViewBag.Machine.Id" type="button" class="btn btn-secondary">
+    <div class="en">Update old configuration</div>
+    <div class="de">Alte Konfiguration aktualisieren</div>
+    <div class="sv">Uppdatera gammal konfiguration</div>
+</a>

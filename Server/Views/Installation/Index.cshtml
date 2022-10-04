@@ -1,10 +1,10 @@
 @{
-    ViewData["Title"] = "Installation";
+    ViewData["Title"] = "Configuration";
 }
 <h1>
-    <div class="en">Installation</div>
-    <div class="de">Installation</div>
-    <div class="sv">Installation</div>
+    <div class="en">Configuration</div>
+    <div class="de">Konfiguration</div>
+    <div class="sv">Konfiguration</div>
 </h1>
 <label for="machine">
     <div class="en">Machine</div>
@@ -13,7 +13,12 @@
 </label>
 <select id="machine" onchange="switchConfig()">
     @foreach (Machine m in Model){
-        <option value="@m.Id">@m.InternalId</option>
+        @if(ViewBag.M_Id != null && ViewBag.M_Id == m.Id){
+            <option value="@m.Id" selected>@m.InternalId</option>
+        }
+        else{
+            <option value="@m.Id">@m.InternalId</option>
+        }
     }
 </select>
 <br>
@@ -21,9 +26,12 @@
 @foreach (Machine m in Model){
     if(m.Config != null){
         <div class="config" id="@m.Id">
+            @if(m.Config.Picture != null){
             <img src="/images/@m.Config.Picture" width="533" height="300">
             <br>
             <br>
+            }
+            @if(m.Config.SensorNodes != null && m.Config.SensorNodes.Count > 0){
             <h4>
             <label for="nodeTable">
                 <div class="en">Sensor Nodes</div>
@@ -122,6 +130,12 @@
                     </tr>
                 }
             </table>
+            }
+            <a class="button" asp-area="" asp-controller="Installation" asp-action="Update" asp-route-id="@m.Id">
+                <div class="en">Update configuration</div>
+                <div class="sv">Uppdatera konfiguration</div>
+                <div class="de">Konfiguration erneuern</div>
+            </a>
         </div>
     }
     else{
@@ -129,7 +143,11 @@
             <div class="en">This Machine doesn't have a Configuration.</div>
             <div class="de">Diese Maschine besitzt keine Konfiguration.</div>
             <div class="sv">Denna maskin har ingen konfiguration.</div>
-            <a class="button" asp-area="" asp-controller="Installation" asp-action="Create" asp-route-id="@m.Id"><div class="en">Create configuration</div><div class="sv">Skapa konfiguration</div><div class="de">Konfiguration erstellen</div></a>
+            <a class="button" asp-area="" asp-controller="Installation" asp-action="Create" asp-route-id="@m.Id">
+                <div class="en">Create configuration</div>
+                <div class="sv">Skapa konfiguration</div>
+                <div class="de">Konfiguration erstellen</div>
+            </a>
         </div>
     }
 }
