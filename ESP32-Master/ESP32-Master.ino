@@ -25,7 +25,7 @@ void setup() {
 
   // Initialize the hardware Serial1
   Serial2.begin(115200);
-
+/*
   WiFi.mode(WIFI_AP);
   const char *SSID = "Slave_1";
   bool result = WiFi.softAP(SSID, "Slave_1_Password", CHANNEL, 0);
@@ -41,9 +41,9 @@ void setup() {
     Serial.println("Error initializing ESP-NOW");
     return;
   }
-
+*/
   delay(1000);
-   
+   /*
   // Initialize SIM800L driver with an internal buffer of 200 bytes and a reception buffer of 512 bytes, debug disabled
   sim800l = new SIM800L((Stream *)&Serial2, SIM800_RST_PIN, 200, 512);
 
@@ -51,7 +51,7 @@ void setup() {
   // sim800l = new SIM800L((Stream *)&Serial1, SIM800_RST_PIN, 200, 512, (Stream *)&Serial);
 
   // Setup module for GPRS communication
-  setupModule();
+  setupModule();*/
 }
 
 char PAYLOAD[255];
@@ -61,6 +61,13 @@ void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
 }
  
 void loop() {
+  if(Serial2.available()) {
+    Serial.write(Serial2.read());
+  }
+  if(Serial.available()) {
+    Serial2.write(Serial.read());
+  }
+  
   // Establish GPRS connectivity (5 trials)
   bool connected = false;
   for(uint8_t i = 0; i < 5 && !connected; i++) {
@@ -113,7 +120,7 @@ void loop() {
     /*for(int i = 0; i < 100; i++){
       const int32_t incomingData = 24;
       q_push(&q,(const int32_t*)incomingData);
-    }*/
+    }*//*
     const int32_t incomingData = 24;
     const int32_t incomingData2 = 22;
     q_push(&q,&incomingData);

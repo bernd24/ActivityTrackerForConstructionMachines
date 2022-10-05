@@ -72,9 +72,9 @@ uint8_t Sensors::getData(float* handle) {
 		handle[float_count++] = a.acceleration.y;
 		handle[float_count++] = a.acceleration.z;
 
-		handle[float_count++] = b.acceleration.x;
-		handle[float_count++] = b.acceleration.y;
-		handle[float_count++] = b.acceleration.z;
+		handle[float_count++] = b.gyro.x;
+		handle[float_count++] = b.gyro.y;
+		handle[float_count++] = b.gyro.z;
 	}
 
 	if(MPU6050_1_FLAG) {
@@ -83,9 +83,9 @@ uint8_t Sensors::getData(float* handle) {
 		handle[float_count++] = a.acceleration.y;
 		handle[float_count++] = a.acceleration.z;
 
-		handle[float_count++] = b.acceleration.x;
-		handle[float_count++] = b.acceleration.y;
-		handle[float_count++] = b.acceleration.z;
+		handle[float_count++] = b.gyro.x;
+		handle[float_count++] = b.gyro.y;
+		handle[float_count++] = b.gyro.z;
 	}
 
 

@@ -8,6 +8,7 @@
 
 bool Communication::is_connected  = false;
 bool Communication::error_flag    = false;
+bool Communication::rssi_flag     = false;
 
 packet_handshake_t Communication::packet_handshake;
 packet_data_t      Communication::packet_data;
@@ -122,7 +123,7 @@ void createHandshakePacket(sensor_format_t arr[]) {
   uint8_t mpu_count         = Sensors::getMPUSensorCount();
   uint8_t lidar_count       = Sensors::getLIDARSensorCount();
   uint8_t supersonic_count  = Sensors::getSONARSensorCount();
-  bool rssi                 = Sensors::getRSSIFlag();
+  bool rssi                 = false;//rssi_flag;
 
   Communication::packet_handshake.size = mpu_count + lidar_count + supersonic_count + rssi;
 
@@ -142,10 +143,11 @@ void createHandshakePacket(sensor_format_t arr[]) {
   }
 }
 
-bool Communication::init() {
+bool Communication::init(bool rssi) {
   // Inits Wifi and esp-now, also sets channel and cb function
   is_connected = false;
   error_flag = false;
+  rssi_flag = rssi;
   packet_handshake.message_type = SENSOR_NODE_ID | HANDSHAKE;
   packet_data.message_type      = SENSOR_NODE_ID | DATA;
   packet_error.message_type     = SENSOR_NODE_ID | ERROR;
@@ -175,29 +177,52 @@ bool Communication::init() {
   is_connected = true;
   return true;
 }
-/*
-void sendData(void* buffer, size_t size) {
-  const uint8_t *peer_addr = slave.peer_addr;
-  Serial.println("Sending: ");
-  esp_err_t result = esp_now_send(peer_addr, (uint8_t*)buffer, size);
-  Serial.print("Send Status: ");
-  if (result == ESP_OK) {
-    Serial.println("Success");
-  } else if (result == ESP_ERR_ESPNOW_NOT_INIT) {
-    // How did we get so far!!
-    Serial.println("ESPNOW not Init.");
-  } else if (result == ESP_ERR_ESPNOW_ARG) {
-    Serial.println("Invalid Argument");
-  } else if (result == ESP_ERR_ESPNOW_INTERNAL) {
-    Serial.println("Internal Error");
-  } else if (result == ESP_ERR_ESPNOW_NO_MEM) {
-    Serial.println("ESP_ERR_ESPNOW_NO_MEM");
-  } else if (result == ESP_ERR_ESPNOW_NOT_FOUND) {
-    Serial.println("Peer not found.");
-  } else {
-    Serial.println("Not sure what happened");
+
+int32_t ScanForRSSI(uint8_t mac[6]) {
+  int16_t scanResults = WiFi.scanNetworks(false, false, false, 300, CHANNEL); // Scan only on one channel
+  if(scanResults == 0) {
+    Serial.println("No wifi devices found when scanning for RSSI.");
+    WiFi.scanDelete();
+    return 0;
   }
-}*/
+
+  int32_t rssi = 0;
+  for(int i = 0; i < scanResults; ++i) {
+    String SSID = WiFi.SSID(i);
+    if(SSID.indexOf("Slave") == 0) {
+      rssi = WiFi.RSSI(i);
+      Serial.print("Measuring RSSI: "); Serial.println(rssi);
+      break;
+    }
+  }
+
+  WiFi.scanDelete();
+  return rssi;
+}
+
+int32_t Communication::getRSSI(uint8_t mac[6]) {
+  int16_t scanResults = WiFi.scanNetworks(false, false, false, 300, CHANNEL); // Scan only on one channel
+  if(scanResults == 0) {
+    Serial.println("No wifi devices found when scanning for RSSI.");
+    WiFi.scanDelete();
+    return 0;
+  }
+
+  int32_t rssi = 0;
+  uint8_t mac_t[6];
+  for(int i = 0; i < scanResults; ++i) {
+    String SSID = WiFi.SSID(i);
+    String bssid_str = WiFi.BSSIDstr(i);
+    if(6 == sscanf(bssid_str.c_str(), "%x:%x:%x:%x:%x:%x",  
+      &mac_t[0], &mac_t[1], &mac_t[2], &mac_t[3], &mac_t[4], &mac_t[5] )) {
+      rssi = WiFi.RSSI(i);
+      break;
+    }
+  }
+
+  WiFi.scanDelete();
+  return rssi;
+}
 
 void Communication::sendData() {
   // Packet size has to be 2 extra bytes to correct for payload offset.
@@ -254,30 +279,6 @@ bool Communication::sendHandshake() {
       break;
   }
   return false;
-}
-
-
-
-int32_t ScanForRSSI() {
-  int16_t scanResults = WiFi.scanNetworks(false, false, false, 300, CHANNEL); // Scan only on one channel
-  if(scanResults == 0) {
-    Serial.println("No wifi devices found when scanning for RSSI.");
-    WiFi.scanDelete();
-    return 0;
-  }
-
-  int32_t rssi = 0;
-  for(int i = 0; i < scanResults; ++i) {
-    String SSID = WiFi.SSID(i);
-    if(SSID.indexOf("Slave") == 0) {
-      rssi = WiFi.RSSI(i);
-      Serial.print("Measuring RSSI: "); Serial.println(rssi);
-      break;
-    }
-  }
-
-  WiFi.scanDelete();
-  return rssi;
 }
 
 

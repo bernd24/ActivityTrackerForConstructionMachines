@@ -52,7 +52,9 @@ class Communication {
 public:
 	// Init communication
 	// We find and connect to master then send the data format for the session.
-	static bool init();
+	static bool init(bool rssi = false);
+
+	static int32_t getRSSI(uint8_t mac[6]);
 
 	// Sends whatever is in the package_data to master.
 	static void sendData();
@@ -69,6 +71,7 @@ public:
 
 	// Error_flag, sets to 1 if we encountered an error.
 	static bool error_flag;
+	static bool rssi_flag;
 public:
 	static packet_handshake_t 	packet_handshake;
 	static packet_data_t	 	packet_data;
