@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS Measurement;
 DROP TABLE IF EXISTS WorkSessionActivity;
 DROP TABLE IF EXISTS WorkSession;
+DROP TABLE IF EXISTS Handshake;
 DROP TABLE IF EXISTS SensorInstance;
 DROP TABLE IF EXISTS Activity;
 DROP TABLE IF EXISTS Sensor;
@@ -106,6 +107,15 @@ CREATE TABLE SensorInstance (
   FOREIGN KEY (S_Id) REFERENCES Sensor(Id),
   FOREIGN KEY (A_Id) REFERENCES Activity(Id),
   PRIMARY KEY (Id)
+);
+
+CREATE TABLE Handshake(
+  SNI_Id INT NOT NULL,
+  SI_Id INT NOT NULL,
+  Nr INT NOT NULL,
+  FOREIGN KEY (SNI_Id) REFERENCES SensorNodeInstance(Id),
+  FOREIGN KEY (SI_Id) REFERENCES SensorInstance(Id),
+  PRIMARY KEY (SNI_Id,SI_Id,Nr)
 );
 
 INSERT INTO SensorInstance (S_Id,SN_Id,Axis,Position) VALUES (1,1,"X","B");

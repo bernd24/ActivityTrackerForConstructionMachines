@@ -11,10 +11,10 @@ namespace Server.Controllers;
 [Authorize]
 public class InstallationController : Controller
 {
-    private readonly ILogger<MachineController> _logger;
+    private readonly ILogger<InstallationController> _logger;
     private readonly QueryFactory Db;
 
-    public InstallationController(ILogger<MachineController> logger, QueryFactory db)
+    public InstallationController(ILogger<InstallationController> logger, QueryFactory db)
     {
         _logger = logger;
         Db = db;
