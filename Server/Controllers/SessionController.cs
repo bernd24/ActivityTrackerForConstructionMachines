@@ -131,18 +131,56 @@ public class SessionController : Controller
             .Where("Id",d.node_ID)
             .Get<SensorNodeInstance>().First();
 
-            for(int i = 0; (i+1)*sni.elementCount <= d.payload.Count; i++){
+            IEnumerable<dynamic> lastSessionQuery = Db.Query("WorkSession")
+            .Select("Measurement.TimeOfMeasure","WorkSession.Id")
+            .Where("WorkSession.C_Id",sni.C_Id)
+            .OrderByDesc("Measurement.TimeOfMeasure")
+            .LeftJoin("Measurement","WorkSession.Id","Measurement.WS_Id")
+            .Limit(1)
+            .Get();
+
+            Machine m = Db.Query("Machine")
+            .Where("C_Id",sni.C_Id)
+            .Get<Machine>().First();
+
+            int WS_Id;
+            if(lastSessionQuery.Count() > 0 && lastSessionQuery.First().TimeOfMeasure != null){
+                dynamic lastSession = lastSessionQuery.First();
+                
+                if(lastSession.TimeOfMeasure.AddMinutes(2) < DateTime.Now){
+                    WS_Id = createSession(sni.C_Id,m.Id);
+                }
+                else{
+                    WS_Id = lastSession.Id;
+                }
+            }
+            else{
+                WS_Id = createSession(sni.C_Id,m.Id);
+            }
+
+            for(int packetNr = 0; (packetNr+1)*sni.elementCount < d.payload.Count; packetNr++){
                 foreach(var hs in handshake){
                     Db.Query("Measurement").Insert(new {
-                        WS_Id = 1,
+                        WS_Id = WS_Id,
                         SI_Id = hs.SI_Id,
-                        Nr = i,
+                        Nr = packetNr,
                         TimeOfMeasure = DateTime.Now,
-                        SensorData = d.payload[hs.Nr+i*sni.elementCount]
+                        SensorData = d.payload[hs.Nr+packetNr*sni.elementCount]
                     });
                 }
             }
         }
         return "success";
+    }
+
+    public int createSession(int C_Id, int M_Id){
+        Db.Query("WorkSession").Insert(new{
+            C_Id = C_Id,
+            M_Id = M_Id
+        });
+        return Db.Query("WorkSession")
+        .OrderByDesc("WorkSession.Id")
+        .Limit(1)
+        .Get<WorkSession>().First().Id;
     }
 }
