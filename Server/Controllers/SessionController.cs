@@ -111,6 +111,11 @@ public class SessionController : Controller
             }
             i += hs.elements;
         }
+        Db.Query("SensorNodeInstance")
+        .Where("Id",handshakes.node_ID)
+        .Update(new {
+            elementCount = i
+        }); 
         return "success";
     }
 
@@ -120,23 +125,21 @@ public class SessionController : Controller
         foreach(SensorData<float> d in data){
             IEnumerable<dynamic> handshake = Db.Query("Handshake")
             .Where("SNI_Id",d.node_ID)
-            .OrderBy("Nr")
             .Get();
 
-            int sensorNr = 0;
-            int packetNr = 0;
-            foreach(float f in d.payload){
-                Db.Query("Measurement").Insert(new {
-                    WS_Id = 1,
-                    SI_Id = handshake.ElementAt(sensorNr).SI_Id,
-                    Nr = packetNr,
-                    TimeOfMeasure = DateTime.Now,
-                    SensorData = f
-                });
-                sensorNr++;
-                if(sensorNr == handshake.Count()){
-                    sensorNr = 0;
-                    packetNr++;
+            SensorNodeInstance sni = Db.Query("SensorNodeInstance")
+            .Where("Id",d.node_ID)
+            .Get<SensorNodeInstance>().First();
+
+            for(int i = 0; (i+1)*sni.elementCount <= d.payload.Count; i++){
+                foreach(var hs in handshake){
+                    Db.Query("Measurement").Insert(new {
+                        WS_Id = 1,
+                        SI_Id = hs.SI_Id,
+                        Nr = i,
+                        TimeOfMeasure = DateTime.Now,
+                        SensorData = d.payload[hs.Nr+i*sni.elementCount]
+                    });
                 }
             }
         }

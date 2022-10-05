@@ -64,6 +64,7 @@ CREATE TABLE SensorNodeInstance (
   SN_Id INT,
   hasBattery BOOLEAN,
   isMaster BOOLEAN,
+  elementCount INT,
   FOREIGN KEY (C_Id) REFERENCES SensorConfiguration(Id),
   FOREIGN KEY (SN_Id) REFERENCES SensorNode(Id),
   PRIMARY KEY (Id)

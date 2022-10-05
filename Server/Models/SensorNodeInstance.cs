@@ -16,5 +16,7 @@ namespace Server.Models{
         public string Notes { get; set; }
 
         public List<SensorInstance> Sensors { get; set;}
+
+        public int elementCount {get; set;}
     }
 }
