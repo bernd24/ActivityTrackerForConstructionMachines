@@ -122,6 +122,7 @@ public class SessionController : Controller
     [AllowAnonymous]
     [HttpPost]
     public string Data([FromBody]List<SensorData<float>> data){
+        DateTime timestamp = DateTime.Now;
         foreach(SensorData<float> d in data){
             IEnumerable<dynamic> handshake = Db.Query("Handshake")
             .Where("SNI_Id",d.node_ID)
@@ -139,9 +140,14 @@ public class SessionController : Controller
             .Limit(1)
             .Get();
 
-            Machine m = Db.Query("Machine")
+            Machine m;
+            IEnumerable<Machine> mQuery = Db.Query("Machine")
             .Where("C_Id",sni.C_Id)
-            .Get<Machine>().First();
+            .Get<Machine>();
+            if(mQuery.Count() == 0){
+                continue;
+            }
+            m = mQuery.First();
 
             int WS_Id;
             if(lastSessionQuery.Count() > 0 && lastSessionQuery.First().TimeOfMeasure != null){
@@ -164,7 +170,7 @@ public class SessionController : Controller
                         WS_Id = WS_Id,
                         SI_Id = hs.SI_Id,
                         Nr = packetNr,
-                        TimeOfMeasure = DateTime.Now,
+                        TimeOfMeasure = timestamp,
                         SensorData = d.payload[hs.Nr+packetNr*sni.elementCount]
                     });
                 }
