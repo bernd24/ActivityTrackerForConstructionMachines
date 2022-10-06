@@ -42,6 +42,9 @@
             <table id="nodeTable" class="table table-bordered">
                 <tr>
                     <th>
+                        ID
+                    </th>
+                    <th>
                         <div class="en">Node Type</div>
                         <div class="de">Knotentyp</div>
                         <div class="sv">Nodtyp</div>
@@ -84,6 +87,7 @@
                 </tr>
                 @foreach(SensorNodeInstance sn in m.Config.SensorNodes){
                     <tr>
+                        <td rowspan="@(sn.Sensors.Count()+1)">@sn.Id</td>
                         @if(sn.isMaster){
                             <td rowspan="@(sn.Sensors.Count()+1)">Master</td>
                         }
