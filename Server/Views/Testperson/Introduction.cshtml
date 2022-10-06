@@ -1,3 +1,5 @@
+@* @model UIAutomate.Models.Testperson *@
+
 @{
     ViewData["Title"] = "Introduction";
 }
@@ -56,6 +58,24 @@ By analysing the audio recording of the Thinking Loud method, misinterpretations
         <li>Questionnaires Final questions/post-survey</li>
     </h3>    
         <p>The three questionnaires are presented to you below.</p>
+
+    @* <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create" asp-controller="Testperson">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="anonymName" class="control-label"></label>
+                    <input asp-for="anonymName" class="form-control" />
+                    <span asp-validation-for="anonymName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div> *@
+
+
 
 </ol>
 

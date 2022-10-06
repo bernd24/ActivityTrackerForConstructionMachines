@@ -1,13 +1,29 @@
 @model IEnumerable<UIAutomate.Models.UEQTest>
 
 @{
-    ViewData["Title"] = "VisAWI - Visual Aesthetics of Website Inventory";
+    ViewData["Title"] = "UEQ - User Experience Questionnaire";
 }
 
-<h1>VisAWI - Visual Aesthetics of Website Inventory</h1>
+<h1>UEQ - User Experience Questionnaire</h1>
 
-<h4>Please  rate on a scale of 1 (strongly disagree) to 7 (strongly  agree) the  extent to which you agree with the following statements in  relation to  the application you have. 
-    Thank you very much!
+<h4>For the assessment of the product, please fill out the following questionnaire. 
+The questionnaire consists of pairs of contrasting attributes that may apply to 
+the product. The circles between the attributes represent gradations between 
+the opposites. You can express your agreement with the attributes by ticking 
+the circle that most closely reflects your impression.
+@* Example:
+attractive        unattractive *@
+This response would mean that you rate the application as more attractive
+than unattractive.
+Please decide spontaneously. Don’t think too long about your decision to 
+make sure that you convey your original impression.
+Sometimes you may not be completely sure about your agreement with a 
+particular attribute or you may find that the attribute does not apply completely 
+to the particular product. Nevertheless, please tick a circle in every line.
+It is your personal opinion that counts. Please remember: there is no wrong or 
+right answer!
+
+Please assess the product now by ticking one circle per line.
 </h4>
 <hr />
 @using(Html.BeginForm("CreateUEQs", "Testperson", FormMethod.Post, new { role = "form" }))
@@ -44,7 +60,7 @@
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.one" type="checkbox" id="cb1" />
+                                <input class="form-check-input" asp-for="@item.one" type="checkbox" id="cb1" value="true"/>
                             </label>
                         </div>
                     </th>

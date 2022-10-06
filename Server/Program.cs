@@ -1,11 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+
 // using System.Data.Entity;
+using MySql.Data.MySqlClient;
 using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TestpersonContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("TestpersonContext") ?? throw new InvalidOperationException("Connection string 'UITestContext' not found.")));
-// builder.Services.AddDbContext<SUSTestContext>(options =>
-//     options.UseSqlite(builder.Configuration.GetConnectionString("SUSTestContext")));
+
+// var serverVersion = new MySqlServerVersion(new Version(8, 0, 27));
+// builder.Services.AddDbContext<TestpersonContext>(options => 
+//         options.UseMySql("server=127.0.0.1;user id=root;password=atfcm2022;port=3306;database=atfcmUser;",serverVersion));
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

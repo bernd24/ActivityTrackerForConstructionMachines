@@ -39,35 +39,35 @@
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.StronglyDisagree" type="checkbox" id="cb1" />
+                                <input class="form-check-input" asp-for="@item.StronglyDisagree" type="checkbox" id="cb1" value="true" data-val=1/>
                             </label>
                         </div>
                     </th>
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.Disagree" type="checkbox" id="cb2"  /> 
+                                <input class="form-check-input" asp-for="@item.Disagree" type="checkbox" id="cb2" value="false" /> 
+                            </label>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="@item.Neutral" type="checkbox" id="cb3" value="1"/>
                             </label>
                         </div>
                     </th>
                     <th>
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.Neutral" type="checkbox" id="cb3" />
+                                <input class="form-check-input" asp-for="@item.Agree"  type="checkbox" id="cb4" value="2"/> 
                             </label>
                         </div>
                     </th>
                     <th>
-                        <div class="form-group form-check">
+                        <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.Agree" type="checkbox" id="cb4"/> 
-                            </label>
-                        </div>
-                    </th>
-                    <th>
-                        <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" asp-for="@item.StronglyAgree" type="checkbox" id="cb5" />
+                                <input class="form-check-input" asp-for="@item.StronglyAgree"  type="checkbox" id="cb5" value="0"/>
                             </label>
                         </div>
                     </th>
