@@ -75,7 +75,7 @@ public class SessionController : Controller
                                         Db.Query("Handshake")
                                         .Insert(new {
                                             SNI_Id = handshakes.node_ID,
-                                            Nr = i+3,
+                                            Nr = hs.elements == 6 ? i+3 : i,
                                             SI_Id = si.Id
                                         });
                                         break;
@@ -83,7 +83,7 @@ public class SessionController : Controller
                                         Db.Query("Handshake")
                                         .Insert(new {
                                             SNI_Id = handshakes.node_ID,
-                                            Nr = i+4,
+                                            Nr = hs.elements == 6 ? i+4 : i+1,
                                             SI_Id = si.Id
                                         });                            
                                         break;
@@ -91,7 +91,7 @@ public class SessionController : Controller
                                         Db.Query("Handshake")
                                         .Insert(new {
                                             SNI_Id = handshakes.node_ID,
-                                            Nr = i+5,
+                                            Nr = hs.elements == 6 ? i+5 : i+2,
                                             SI_Id = si.Id
                                         });                            
                                         break;
