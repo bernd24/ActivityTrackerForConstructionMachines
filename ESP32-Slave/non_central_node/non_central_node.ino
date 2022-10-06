@@ -3,6 +3,8 @@
 
 
 #define SEND_ERRORS 0
+const uint64_t SECOND = 1000;
+const uint64_t HZ = 10;
 
 
 void setup() {
@@ -26,17 +28,16 @@ void setup() {
   }
   delay(1000);
 }
-int32_t i = 0;
+float f = 0.0;
 
 void loop() {
+  uint64_t timer = millis();
   if(Communication::is_connected) {
     // Get Sensor data and load into the communication data packet
     Communication::packet_data.size = Sensors::getData(Communication::packet_data.payload);
     //if(Sensor)
 
-    float f = (float)i;
-
-    Communication::packet_data.payload[0] = f;
+    //Communication::packet_data.payload[0] = f;
     // Send our data packet.
     Communication::sendData();
 
@@ -44,8 +45,10 @@ void loop() {
     if(Communication::error_flag) {
       Communication::sendErrorMessage();
     }*/
-    ++i;
+    //f += 1.0;
   }
 
-  delay(100);
+  uint64_t elapsed_time = millis() - timer;
+
+  delay((SECOND / HZ) - elapsed_time);
 }

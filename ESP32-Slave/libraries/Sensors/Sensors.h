@@ -5,12 +5,17 @@
 #include <Arduino.h>
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
-#include <TFMPI2C.h>
+#include <SoftwareSerial.h>
+
+const uint8_t lidar_rx_pin = 33;
+const uint8_t lidar_tx_pin = 32;
 
 #define HC_SR04_TRIG_PIN 12
 #define HC_SR04_ECHO_PIN 13
 
 #define SOUND_SPEED 0.034
+
+const uint64_t timeout_micro = 100 * 1000;
 
 struct HC_SR04 {
 	uint8_t trigger_pin = HC_SR04_TRIG_PIN;
@@ -23,7 +28,7 @@ struct HC_SR04 {
 		delayMicroseconds(10);
 		digitalWrite(HC_SR04_TRIG_PIN, LOW);
 
-		unsigned long duration = pulseIn(HC_SR04_ECHO_PIN, HIGH);
+		unsigned long duration = pulseIn(HC_SR04_ECHO_PIN, HIGH, timeout_micro);
 		float distance = (float)duration*SOUND_SPEED / 2;
 
 		return distance;
@@ -59,7 +64,8 @@ private:
 
 	static HC_SR04 sonar_0;
 
-	static TFMPI2C lidar_0;
+	static SoftwareSerial lidar_serial;
+	static void getTFminiDistance(int16_t& dist);
 
 	static bool MPU6050_0_FLAG;
 	static bool MPU6050_1_FLAG;

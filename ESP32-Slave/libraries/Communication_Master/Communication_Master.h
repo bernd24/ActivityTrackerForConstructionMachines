@@ -6,6 +6,12 @@
 #include <WiFi.h>
 #include <esp_wifi.h> // only for esp_wifi_set_channel()
 #include <RingBuf.h>
+#include <SPIFFS.h>
+
+#define PRINT_DATA 1
+#define WRITE_TO_FILE 0
+static File file_data;
+static bool file_flag = false;
 
 #define CHANNEL 1
 #define SIM800_RST_PIN 4
@@ -16,6 +22,10 @@ const char URL1[] = "http://h2986165.stratoserver.net/Session/Handshake";
 const char CONTENT_TYPE[] = "application/json";
 
 #define MAX_CONNECTIONS 4
+#define MASTER_NODE_ID 48
+
+const uint32_t node_id_to_instance_id_map[] = {3,4,2};
+
 typedef void(*OnDataRecieveFunc)(const uint8_t*, const uint8_t*, int);
 
 const uint8_t HANDSHAKE = 1;
@@ -80,9 +90,12 @@ private:
 const uint16_t JSON_MAX_PAYLOAD = 4096;
 struct JSON_data_packet {
 	char payload[JSON_MAX_PAYLOAD] = {'\0'};
-	uint8_t node_id = 0;
 	uint16_t current_index = 0;
 	uint8_t number_of_packets = 0;
+
+	uint8_t node_id = 0;
+	bool handshake_flag = false;
+	bool is_full = false;
 
 	void initPayload(const packet_data_t& packet);
 	bool addDataToPayload(const packet_data_t& packet);
@@ -92,7 +105,7 @@ struct JSON_data_packet {
 	void resetPayload();
 
 	static void setIndex(uint8_t id);
-	static uint8_t getIndex(const packet_data_t& packet);
+	static uint8_t getIndex(uint8_t id);
 };
 
 class Communication_Master {
@@ -107,6 +120,7 @@ public:
 	static void loadPacketIntoJSON(packet_data_t packet, char payload[]);
 	static void loadPacketIntoJSON(packet_error_t packet, char payload[]);
 
+	static int16_t sendToServer(const char					payload[]);
 	static int16_t sendToServer(const JSON_data_packet& 	packet);
 	static int16_t sendToServer(const packet_handshake_t& 	handshake);
 	static int16_t sendToServer(const packet_data_t& 	 	data);
@@ -125,13 +139,13 @@ public:
 	static sensor_node sensor_node_list[MAX_CONNECTIONS];
 	static uint8_t sensor_node_count;
 
-
+	static bool concatJsonArrays(char big_arr[]);
 	static JSON_data_packet server_packet[MAX_CONNECTIONS];
 	static char small_packet[256];
-/*
-	static char big_packet[65536];
-	static char sensor_data[2048][32];
-	*/
+
+	static char big_packet[16384];
+	//static char sensor_data[2048][32];
+	
 private:
 	static SIM800L* sim800;
 

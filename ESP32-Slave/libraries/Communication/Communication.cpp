@@ -107,11 +107,12 @@ void createFormats(sensor_format_t arr[], uint8_t start_index, uint8_t count, ui
     sensor_format_t format;
     copy_name(format.name, name, NAME_SIZE);
 
+    /*
     // Find and change last non null character.
     uint8_t last_char = NAME_SIZE - 1;
     while(format.name[last_char] == '\0') { --last_char; }
     format.name[last_char] = intToChar(i);
-
+*/
     format.data_count = data_count;
 
     arr[start_index + i] = format;

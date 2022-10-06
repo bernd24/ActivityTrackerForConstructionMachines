@@ -17,16 +17,16 @@ const uint8_t HANDSHAKE = 1;
 const uint8_t DATA 		= 2;
 const uint8_t ERROR 	= 3;
 
-const uint8_t SENSOR_NODE_ID = 16;
+const uint8_t SENSOR_NODE_ID = 32;
 
 const uint8_t NAME_SIZE = 10;
 const uint8_t MAX_SENSORS = 16;
 const uint8_t MAX_PACKET_SIZE = 250;
 
 // Basename for our supported sensors
-const char MPU_BASENAME[] 	= "MPU6050_0";
-const char LIDAR_BASENAME[]	= "LIDAR_0\0\0";
-const char SONAR_BASENAME[]	= "SONAR_0\0\0";
+const char MPU_BASENAME[] 	= "MPU6050";
+const char LIDAR_BASENAME[]	= "TFMini\0";
+const char SONAR_BASENAME[]	= "HC-SR04";
 const char RSSI_BASENAME[]  = "RSSI\0\0\0\0\0";
 
 #define packet_handshake_t 	packet_t<sensor_format_t, MAX_SENSORS>

@@ -5,13 +5,16 @@ Adafruit_MPU6050 Sensors::mpu0;
 Adafruit_MPU6050 Sensors::mpu1;
 
 HC_SR04 Sensors::sonar_0;
-TFMPI2C Sensors::lidar_0;
+SoftwareSerial Sensors::lidar_serial(lidar_rx_pin, lidar_tx_pin);
 
 bool Sensors::MPU6050_0_FLAG = false;
 bool Sensors::MPU6050_1_FLAG = false;
 bool Sensors::LIDAR_0_FLAG 	 = false;
 bool Sensors::SONAR_0_FLAG 	 = false;
 bool Sensors::RSSI_FLAG 	 = false;
+
+uint64_t lidar_timer;
+const uint64_t lidar_timeout = 2000;		
 
 void Sensors::setAllFlags(bool b) {
 	MPU6050_0_FLAG = b;
@@ -21,8 +24,42 @@ void Sensors::setAllFlags(bool b) {
 	RSSI_FLAG = b;
 }
 
+void Sensors::getTFminiDistance(int16_t& dist) {
+	static char i = 0;
+	char j = 0;
+	int checksum = 0;
+	static int rx[9];
+	if(!lidar_serial.available()) return;
+	
+	rx[i] = lidar_serial.read();
+	if (rx[0] != 0x59) {
+      i = 0;
+    }
+    else if (i == 1 && rx[1] != 0x59) {
+      i = 0;
+    }
+    else if (i == 8)
+    {
+      for (j = 0; j < 8; j++)
+      {
+        checksum += rx[j];
+      }
+      if (rx[8] == (checksum % 256))
+      {
+        dist = rx[2] + rx[3] * 256;
+      }
+      i = 0;
+    }
+    else
+    {
+      i++;
+    }
+
+}
 bool Sensors::init(bool rssi) {
 	// Try every sensor object to see what is connected.
+	//lidar_serial(lidar_rx_pin, lidar_tx_pin);
+	lidar_serial.begin(115200);
 	setAllFlags(false);
 	bool is_any_flag_set = false;
 	if(mpu0.begin()) {
@@ -46,11 +83,20 @@ bool Sensors::init(bool rssi) {
 		is_any_flag_set = true;
 	}
 
-	if(lidar_0.sendCommand(SOFT_RESET, 0)) {
+	int16_t dist = 0;
+	lidar_timer = millis();
+	while(!dist) {
+		getTFminiDistance(dist);
+		delay(5);
+		if(millis() - lidar_timer > lidar_timeout) {
+			Serial.println("Timeout reached for lidar");
+			break;
+		}
+	}
+	if(dist) {
 		LIDAR_0_FLAG = true;
 		is_any_flag_set = true;
 	}
-
 
 	RSSI_FLAG = rssi;
 	if(rssi) is_any_flag_set = true;
@@ -95,7 +141,13 @@ uint8_t Sensors::getData(float* handle) {
 
 	if(LIDAR_0_FLAG) {
 		int16_t dist = 0;
-		lidar_0.getData(dist);
+		lidar_timer = millis();
+		while(!dist) {
+			getTFminiDistance(dist);
+			delay(5);
+			if(millis() - lidar_timer > lidar_timeout)
+				break;
+		}
 		handle[float_count++] = (float)dist;
 	}
 

@@ -13,7 +13,7 @@ SIM800L* Communication_Master::sim800;
 JSON_data_packet Communication_Master::server_packet[MAX_CONNECTIONS];
 char Communication_Master::small_packet[] = {'\0'};
 
-//char Communication_Master::big_packet[] = {'\0'};
+char Communication_Master::big_packet[] = {'\0'};
 
 bool Message_queue::push(const packet_handshake_t& handshake) {
 	return handshake_queue.push(handshake);
@@ -64,6 +64,7 @@ void copyArray(T target[], const T src[], uint16_t size) {
 	}
 }
 
+char file_json[1024] = {'\0'};
 void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len) {
 	// First byte contains both sensor_node_id and message type
 	// So we do bitwise AND, with 00001111 to remove first 4 bits
@@ -90,9 +91,27 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len) {
 	switch (type) {
 		case HANDSHAKE:
 			Communication_Master::queue.push(*(packet_handshake_t*)data);
+			JSON_data_packet::setIndex(node_id);
 			copyArray(Communication_Master::sensor_node_list[i].data_format, (sensor_format_t*)(data + 2), *(data + 1));
 			break;
 		case DATA:
+			if(PRINT_DATA) {
+				strcpy(file_json, "");
+				Communication_Master::loadPacketIntoJSON(*(packet_data_t*)data, file_json);
+				Serial.println(file_json);
+			}
+		/*
+			if(file_flag) {
+				file_data = SPIFFS.open("/data.txt", FILE_APPEND);
+				strcpy(file_json, "");
+				Communication_Master::loadPacketIntoJSON(*(packet_data_t*)data, file_json);
+				strcat(file_json, "\n");
+				if(!file_data.print(file_json)) {
+					Serial.println("Couldnt print sensor_data to file");
+				}
+				file_data.close();
+			}
+			*/
 			Communication_Master::queue.push(*(packet_data_t*)data);
 			break;
 		case ERROR:
@@ -111,13 +130,13 @@ bool Communication_Master::setupSIM800() {
 
 	while(!sim800->isReady()) {
 		Serial.println("Problem to initialize AT command, retry in 1 sec");
-		delay(500);
+		delay(1000);
 		if(millis() - start_time > timeout)
 			return false;
 	}
 	uint8_t signal = sim800->getSignal();
 	while(signal < 1) {
-		delay(500);
+		delay(1000);
 		Serial.println("No Signal :(");
 		signal = sim800->getSignal();
 		if(millis() - start_time > timeout)
@@ -126,7 +145,7 @@ bool Communication_Master::setupSIM800() {
 
 	NetworkRegistration network = sim800->getRegistrationStatus();
 	while(network != REGISTERED_HOME && network != REGISTERED_ROAMING) {
-		delay(500);
+		delay(2000);
 		Serial.println("NetworkRegistration error");
 		network = sim800->getRegistrationStatus();
 		if(millis() - start_time > timeout)
@@ -146,7 +165,7 @@ bool Communication_Master::setupSIM800() {
 	while(!connected) {
 		connected = sim800->connectGPRS();
 		Serial.println("Connect GPRS error");
-		delay(500);
+		delay(2000);
 		if(millis() - start_time > timeout)
 			return false;
 	}
@@ -165,6 +184,24 @@ bool Communication_Master::init(char ssid[], char pass[], uint8_t channel, bool 
 	if(esp_now_init() != ESP_OK)
 		return false;
 
+	// Setup file as backup
+	if(WRITE_TO_FILE) {
+		Serial.println("Write mode");
+		file_flag = true;
+		if(!SPIFFS.begin(true)) {
+			Serial.println("Error mounting filesystem");
+			file_flag = false;
+		}
+		file_data = SPIFFS.open("/data.txt", FILE_WRITE);
+		if(!file_data) {
+			Serial.println("Error opening file");
+			file_flag = false;
+		}
+		if(file_flag) Serial.println("Flag is set to true");
+		else 		  Serial.println("Flag is set to FALSE");
+		file_data.close();
+	}
+
 	Serial2.begin(115200);
 	delay(1000);
 	sim800 = new SIM800L((Stream*)&Serial2, SIM800_RST_PIN, 200, 512);
@@ -173,7 +210,38 @@ bool Communication_Master::init(char ssid[], char pass[], uint8_t channel, bool 
 		return false;
 	}
 	esp_now_register_recv_cb(OnDataRecv);
+	delay(100);
 
+	packet_handshake_t handshake;
+	handshake.message_type = MASTER_NODE_ID;
+	handshake.size = 1;
+
+	sensor_format_t format;
+	snprintf(format.name, sizeof(format.name), "%s", "MPU6050");
+	format.data_count = 3;
+
+	handshake.payload[0] = format;
+
+	int16_t result = sendToServer(handshake);
+	int counter = 0;
+	while(result != 200) {
+		if(counter > 5) break;
+		delay(500);
+		Serial.println("Error while sending master handshake to server");
+		Serial.print("Error: "); Serial.println(result);
+		counter++;
+
+		result = sendToServer(handshake);
+	}
+	if(counter < 6)
+		Serial.println("Successful handshake sent");
+	else
+		Serial.println("We gave up trying to send handshake");
+
+	server_packet[0].node_id = MASTER_NODE_ID;
+	server_packet[0].handshake_flag = true;
+	server_packet[1].node_id = 16;
+	server_packet[2].node_id = 32;
 	return true;
 }
 
@@ -193,12 +261,15 @@ uint16_t getNextInsertionPoint(const char str[], uint16_t index) {
 }
 
 void loadJsonAttribute(const char attr_name[], uint8_t name_sz, const char attr_val[], uint8_t val_sz, char payload[], uint16_t& index) {
+	strcat(payload, attr_name);
+	strcat(payload, attr_val);
+	/*
 	copyArray(payload + index, attr_name, name_sz);
 	index += name_sz - 1;
 
 	copyArray(payload + index, attr_val, val_sz);
 	index += val_sz;
-	index = getNextInsertionPoint(payload, index);
+	index = getNextInsertionPoint(payload, index);*/
 }
 // JSON Constants
 const char bracket_open 	= '{';
@@ -218,20 +289,32 @@ const char packets_nr[]		= "\"packets\":";
 
 template<typename T>
 void JSONFormat(T packet, char payload[], uint16_t& index) {
+	strcat(payload, "{");
+
+	char id_str[4];
+	uint8_t id = packet.getSensorNodeID() >> 4;
+	uint32_t instance_id = node_id_to_instance_id_map[id - 1];
+
+	snprintf(id_str, sizeof(id_str), "%d", instance_id);
+	//snprintf(id_str, sizeof(id_str), "%d", packet.getSensorNodeID());
+	loadJsonAttribute(sensor_str, sizeof(sensor_str), id_str, sizeof(id_str), payload, index);
+
+	strcat(payload, ",");
+	strcat(payload, payload_str);
+
+	/*
 	payload[index++] = bracket_open;
 
 	char id_str[4];
-	if(packet.getSensorNodeID() == 16) {
-		snprintf(id_str, sizeof(id_str), "%d", 1);
-	}
-	else if(packet.getSensorNodeID() == 32) {
-		snprintf(id_str, sizeof(id_str), "%d", 2);
-	}
+	uint8_t id = packet.getSensorNodeID() >> 4;
+	uint32_t instance_id = node_id_to_instance_id_map[id - 1];
+
+	snprintf(id_str, sizeof(id_str), "%d", instance_id);
 	//snprintf(id_str, sizeof(id_str), "%d", packet.getSensorNodeID());
 	loadJsonAttribute(sensor_str, sizeof(sensor_str), id_str, sizeof(id_str), payload, index);
 	payload[index++] = delimiter;
 
-/*	Message Type is not needed because we will use different api endpoints for
+/*	Message Type is not needed because we will use different web-api endpoints for
 	the different message types.
 
 	char message_type[3];
@@ -246,24 +329,32 @@ void JSONFormat(T packet, char payload[], uint16_t& index) {
 	loadJsonAttribute(count_str, sizeof(count_str), count, sizeof(count), payload, index);
 	payload[index++] = delimiter;
 */
-	
+	/*
 	copyArray(payload + index, payload_str, sizeof(payload_str));
-	index += sizeof(payload_str) - 1;
+	index += sizeof(payload_str) - 1;*/
 }
 
 void Communication_Master::loadPacketIntoJSON(packet_handshake_t packet, char payload[]) {
 	uint16_t index = 0;
 	JSONFormat(packet, payload, index);
+	strcat(payload, "{");
 	for(uint8_t i = 0; i < packet.size; ++i) {
 		if(i != 0)
-			payload[index++] = delimiter;
+			strcat(payload, ",");//payload[index++] = delimiter;
 
+		char name_str[10];
+		copyArray(name_str, packet.payload[i].name, sizeof(packet.payload[i].name));
+		loadJsonAttribute(name, sizeof(name), name_str, sizeof(name_str), payload, index);
+		strcat(payload, "\",");
 
+		char data_str[3];
+		snprintf(data_str, sizeof(data_str), "%d", packet.payload[i].data_count);
+		loadJsonAttribute(data_count, sizeof(data_count), data_str, sizeof(data_str), payload, index);
+		strcat(payload, "}");
+/*
 		payload[index++] = bracket_open;
 		char name_str[10];
-		char new_name[] = "MPU6050";
-		copyArray(name_str, new_name, sizeof(new_name));
-
+		copyArray(name_str, packet.payload[i].name, sizeof(packet.payload[i].name));
 		loadJsonAttribute(name, sizeof(name), name_str, sizeof(name_str), payload, index);
 		payload[index++] = '\"';
 		payload[index++] = delimiter;
@@ -272,10 +363,12 @@ void Communication_Master::loadPacketIntoJSON(packet_handshake_t packet, char pa
 		char data_str[3];
 		snprintf(data_str, sizeof(data_str), "%d", packet.payload[i].data_count);
 		loadJsonAttribute(data_count, sizeof(data_count), data_str, sizeof(data_str), payload, index);
-		payload[index++] = bracket_close;
+		payload[index++] = bracket_close;*/
 	}
+	strcat(payload, "]}");
+	/*
 	payload[index++] = array_end;
-	payload[index++] = bracket_close;
+	payload[index++] = bracket_close;*/
 }
 
 void Communication_Master::loadPacketIntoJSON(packet_data_t packet, char payload[]) {
@@ -284,21 +377,29 @@ void Communication_Master::loadPacketIntoJSON(packet_data_t packet, char payload
 
 	for(uint8_t i = 0; i < packet.size; ++i) {
 		if(i != 0)
-			payload[index++] = delimiter;
+			strcat(payload, ",");
 
 		char data_str[6];
 		snprintf(data_str, sizeof(data_str), "%f", packet.payload[i]);
+		strcat(payload, data_str);
+		/*
 		copyArray(payload + index, data_str, sizeof(data_str));
 		index += sizeof(data_str);
-		index = getNextInsertionPoint(payload, index);
+		index = getNextInsertionPoint(payload, index);*/
 	}
+	strcat(payload, "]}");
+	/*
 	payload[index++] = array_end;
-	payload[index++] = bracket_close;
+	payload[index++] = bracket_close;*/
 }
 
 void Communication_Master::loadPacketIntoJSON(packet_error_t packet, char payload[]) {
 	uint16_t index = 0;
 	JSONFormat(packet, payload, index);
+}
+
+int16_t Communication_Master::sendToServer(const char payload[]) {
+	return sim800->doPost(URL2, CONTENT_TYPE, payload, 10000, 10000);
 }
 
 int16_t Communication_Master::sendToServer(const JSON_data_packet& packet) {
@@ -307,8 +408,14 @@ int16_t Communication_Master::sendToServer(const JSON_data_packet& packet) {
 
 int16_t Communication_Master::sendToServer(const packet_handshake_t& handshake) {
 	loadPacketIntoJSON(handshake, small_packet);
-
-	return sim800->doPost(URL1, CONTENT_TYPE, small_packet, 10000, 10000);
+	int16_t result = sim800->doPost(URL1, CONTENT_TYPE, small_packet, 10000, 10000);
+	Serial.println("Inside send to server");
+	for(int i = 0; i < 256; ++i) {
+		Serial.print(small_packet[i]);
+		small_packet[i] = '\0';
+	}
+	Serial.println("");
+	return result;
 }
 
 int16_t Communication_Master::sendToServer(const packet_data_t& data) {
@@ -328,18 +435,16 @@ void JSON_data_packet::initPayload(const packet_data_t& packet) {
 	
 	//this->node_id = packet.getSensorNodeID();
 	Serial.println("Init new json packet");
-	payload[current_index++] = '[';
 	JSONFormat(packet, payload, current_index);
 	
 	for(uint8_t i = 0; i < packet.size; ++i) {
 		if(i != 0)
-			payload[current_index++] = delimiter;
+			strcat(payload, ",");
 
 		char data_str[6];
 		snprintf(data_str, sizeof(data_str), "%f", packet.payload[i]);
-		copyArray(payload + current_index, data_str, sizeof(data_str));
-		current_index += sizeof(data_str);
-		current_index = getNextInsertionPoint(payload, current_index);
+		if(data_str[4] == '.') data_str[4] = '\0';
+		strcat(payload, data_str);
 	}
 	number_of_packets = 1;
 }
@@ -350,28 +455,33 @@ bool JSON_data_packet::addDataToPayload(const packet_data_t& packet) {
 		initPayload(packet);
 		return true;
 	}
-		
+	
 
 	// Payload cannot fit the data.
-	uint8_t added_data_size = packet.size * 6 + 16;
-	if(JSON_MAX_PAYLOAD - current_index < added_data_size)
+	uint8_t added_data_size = packet.size * 8 + 16;
+	uint16_t index_of_null = 0;
+	for(uint16_t i = 0; i < JSON_MAX_PAYLOAD; ++i) {
+		if(payload[i] == '\0') {
+			index_of_null = i;
+			break;
+		}
+	}
+	if((JSON_MAX_PAYLOAD - index_of_null) < added_data_size)
 		return false;
 
-	for(uint8_t i = 0; i < packet.size; ++i) {
-		payload[current_index++] = delimiter;
 
+	for(uint8_t i = 0; i < packet.size; ++i) {
+		strcat(payload, ",");
 		char data_str[6];
 		snprintf(data_str, sizeof(data_str), "%f", packet.payload[i]);
-		copyArray(payload + current_index, data_str, sizeof(data_str));
-		current_index += sizeof(data_str);
-		current_index = getNextInsertionPoint(payload, current_index);
+		if(data_str[4] == '.') data_str[4] = '\0';
+		strcat(payload, data_str);
 	}
 	++number_of_packets;
 	return true;
 }
 
 void JSON_data_packet::finalizePayload() {
-	payload[current_index++] = array_end;
 	/*
 	copyArray(payload + current_index, packets_nr, sizeof(packets_nr));
 	current_index += sizeof(packets_nr) - 1;
@@ -380,8 +490,10 @@ void JSON_data_packet::finalizePayload() {
 	snprintf(p_nr, sizeof(p_nr), "%d", number_of_packets);
 	strcat(payload, p_nr);
 	*/
-	strcat(payload, "}]");
+	strcat(payload, "]}");
+	is_full = true;
 }
+
 
 void JSON_data_packet::resetPayload() {
 	for(uint16_t i = 0; i < JSON_MAX_PAYLOAD; ++i) {
@@ -389,23 +501,36 @@ void JSON_data_packet::resetPayload() {
 	}
 	current_index = 0;
 	number_of_packets = 0;
-	node_id = 0;
+	is_full = false;
 }
 
-uint8_t JSON_data_packet::getIndex(const packet_data_t& packet) {
+uint8_t JSON_data_packet::getIndex(uint8_t id) {
 	uint8_t i = 0;
-	uint8_t j = 0;
+
 	for(; i < MAX_CONNECTIONS; ++i) {
-		if(Communication_Master::server_packet[i].node_id == packet.getSensorNodeID())
+		if(Communication_Master::server_packet[i].node_id == id)
 			break;
 	}
 
+	if(id == 16 && i != 1)
+		return 1;
+	else if(id == 32 && i != 2)
+		return 2;
+
+	if(id == 48 && i != 0) {
+		return 0;
+	}
+
+	Serial.println("Returning index automatically");
 	return i;
 }
 
 void JSON_data_packet::setIndex(uint8_t id) {
+	Serial.print("Trying to set index for id: "); Serial.println(id);
 	for(uint8_t i = 0; i < MAX_CONNECTIONS; ++i) {
 		if(Communication_Master::server_packet[i].node_id == id) {
+			Serial.println("There already was a json assigned");
+			Communication_Master::server_packet[i].handshake_flag = true;
 			return;
 		}
 	}
@@ -413,9 +538,31 @@ void JSON_data_packet::setIndex(uint8_t id) {
 	for(uint8_t i = 0; i < MAX_CONNECTIONS; ++i) {
 		if(Communication_Master::server_packet[i].node_id == 0) {
 			Communication_Master::server_packet[i].node_id = id;
+			Communication_Master::server_packet[i].handshake_flag = true;
 			return;
 		}
 	}
+	Serial.println("No json packet was 0");
+}
+
+bool Communication_Master::concatJsonArrays(char big_arr[]) {
+	bool any_packets = false;
+	strcpy(big_arr, "[");
+	for(int i = 0; i < MAX_CONNECTIONS; ++i) {
+		if(server_packet[i].number_of_packets >= 1) {
+			if(i != 0)	strcat(big_arr, ",");
+			if(!server_packet[i].is_full) server_packet[i].finalizePayload();
+
+			strcat(big_arr, server_packet[i].payload);
+			any_packets = true;
+			server_packet[i].resetPayload();
+		}
+	}
+
+	strcat(big_arr, "]");
+	if(!any_packets)
+		strcpy(big_arr, "");
+	return any_packets;
 }
 /*
 int getSensorIDFromJson(const char arr[]) {
