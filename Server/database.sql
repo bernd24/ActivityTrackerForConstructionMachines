@@ -6,8 +6,8 @@ DROP TABLE IF EXISTS Handshake;
 DROP TABLE IF EXISTS SensorInstance;
 DROP TABLE IF EXISTS Activity;
 DROP TABLE IF EXISTS Sensor;
-DROP TABLE IF EXISTS SensorNodeInstance;
 DROP TABLE IF EXISTS SensorNode;
+DROP TABLE IF EXISTS SensorNodeInstance;
 DROP TABLE IF EXISTS Machine;
 DROP TABLE IF EXISTS SensorConfiguration;
 DROP TABLE IF EXISTS MachineModel;
@@ -46,31 +46,31 @@ CREATE TABLE Machine (
 INSERT INTO Machine (M_Id,C_Id,InternalId) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Fredrik"),1,"Wood Model #1");
 INSERT INTO Machine (M_Id,InternalId,inUse) VALUES ((SELECT Id FROM MachineModel WHERE Manufacturer = "Volvo"),"Test Machine #1",false);
 
-CREATE TABLE SensorNode (
-  Id INT NOT NULL AUTO_INCREMENT,
-  MAC VARCHAR(255),
-  BatteryStatus INT,
-  Color VARCHAR(255),
-  PRIMARY KEY (Id)
-);
-
-INSERT INTO SensorNode (MAC,BatteryStatus,Color) VALUES ("F0:08:D1:D4:5E:A8",100,"Orange");
-INSERT INTO SensorNode (MAC,BatteryStatus,Color) VALUES ("F0:08:D1:D4:25:F0",100,"Blue");
-INSERT INTO SensorNode (MAC,BatteryStatus,Color) VALUES ("F0:8D:1D:D2:8D:04",100,"Green");
-
 CREATE TABLE SensorNodeInstance (
   Id INT NOT NULL AUTO_INCREMENT,
   C_Id INT NOT NULL,
-  SN_Id INT,
   hasBattery BOOLEAN,
   isMaster BOOLEAN,
   elementCount INT,
   FOREIGN KEY (C_Id) REFERENCES SensorConfiguration(Id),
-  FOREIGN KEY (SN_Id) REFERENCES SensorNode(Id),
   PRIMARY KEY (Id)
 );
 
-INSERT INTO SensorNodeInstance (C_Id,SN_Id,hasBattery,isMaster) VALUES (1,3,false,false);
+INSERT INTO SensorNodeInstance (C_Id,hasBattery,isMaster) VALUES (1,false,false);
+
+CREATE TABLE SensorNode (
+  Id INT NOT NULL AUTO_INCREMENT,
+  SNI_Id INT,
+  MAC VARCHAR(255),
+  BatteryStatus INT,
+  Color VARCHAR(255),
+  PRIMARY KEY (Id),
+  FOREIGN KEY (SNI_Id) REFERENCES SensorNodeInstance(Id)
+);
+
+INSERT INTO SensorNode (MAC,BatteryStatus,Color) VALUES ("F0:08:D1:D4:5E:A8",100,"Orange");
+INSERT INTO SensorNode (MAC,BatteryStatus,Color) VALUES ("F0:08:D1:D4:25:F0",100,"Blue");
+INSERT INTO SensorNode (SNI_Id,MAC,BatteryStatus,Color) VALUES (1,"F0:8D:1D:D2:8D:04",100,"Green");
 
 CREATE TABLE Sensor (
   Id INT NOT NULL AUTO_INCREMENT,

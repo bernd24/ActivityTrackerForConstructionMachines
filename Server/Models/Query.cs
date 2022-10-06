@@ -125,7 +125,7 @@ using SqlKata.Execution;
             .Select("SensorNodeInstance.Id as SNI_Id","SensorNodeInstance.hasBattery","SensorNodeInstance.isMaster",
             "SensorNode.Id as SN_Id","SensorNode.MAC","SensorNode.BatteryStatus","SensorNode.Color")
             .Where("C_Id",C_Id)
-            .LeftJoin("SensorNode","SensorNodeInstance.SN_Id","SensorNode.Id")
+            .LeftJoin("SensorNode","SensorNodeInstance.Id","SensorNode.SNI_Id")
             .Get();
             foreach(var sn in result){
                 var sensorNodeInstance = new SensorNodeInstance(){

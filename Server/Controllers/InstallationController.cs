@@ -156,6 +156,16 @@ public class InstallationController : Controller
 
     [HttpPost("Installation/DeleteSensorNode/{Id}/{SN_Id}")]
     public IActionResult DeleteSensorNode(int Id, int SN_Id){
+        Db.Query("Handshake")
+        .Where("SNI_Id",SN_Id)
+        .Delete();
+
+        Db.Query("SensorNode")
+        .Where("SNI_Id",SN_Id)
+        .Update(new {
+            SNI_Id = (int?)null
+        });
+
         Db.Query("SensorInstance")
         .Where("SN_Id",SN_Id)
         .Delete();
