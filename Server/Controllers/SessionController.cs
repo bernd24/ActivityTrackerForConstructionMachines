@@ -164,7 +164,7 @@ public class SessionController : Controller
                 WS_Id = createSession(sni.C_Id,m.Id);
             }
 
-            for(int packetNr = 0; (packetNr+1)*sni.elementCount < d.payload.Count; packetNr++){
+            for(int packetNr = 0; (packetNr+1)*sni.elementCount <= d.payload.Count; packetNr++){
                 foreach(var hs in handshake){
                     Db.Query("Measurement").Insert(new {
                         WS_Id = WS_Id,
