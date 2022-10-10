@@ -1,0 +1,12 @@
+.chartjs{
+/* Global values */
+    width: inherit;
+    width: initial;
+    width: revert;
+    width: revert-layer;
+    width: unset;
+
+    /* <percentage> value */
+    width: 1000%;
+    height: 1000%;
+}

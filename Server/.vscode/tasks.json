@@ -35,7 +35,8 @@
                 "--project",
                 "${workspaceFolder}/Server.csproj"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "options": { "cwd": "${workspaceFolder}/" },
         }
     ]
 }
