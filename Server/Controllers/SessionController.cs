@@ -189,4 +189,22 @@ public class SessionController : Controller
         .Limit(1)
         .Get<WorkSession>().First().Id;
     }
+
+    [AllowAnonymous]
+    [HttpPost("Session/LogData/{WS_Id}/{SI_Id}")]
+    public string LogData([FromBody]List<float> data, int SI_Id, int WS_Id){
+        int i = 0;
+        foreach(float f in data){
+            Db.Query("Measurement")
+            .Insert(new{
+                WS_Id = WS_Id,
+                SI_Id = SI_Id,
+                Nr = i,
+                TimeOfMeasure = new DateTime(2022,10,7,10,0,0),
+                SensorData = f
+            });
+            i++;
+        }
+        return "success";
+    }
 }
