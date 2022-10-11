@@ -74,9 +74,19 @@
         </div>
 
     </footer>
+
+
+    @* **************scripts*********** *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+   
+    @* **************charts*********** *@
+    <script src="~/js/lineChart.js" asp-append-version="true"></script>
+    <script src="~/js/steppedLineChart.js" asp-append-version="true"></script>
+    <script src="~/js/doughnutChart.js" asp-append-version="true"></script>
+    <script src="~/js/areaChart.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>
