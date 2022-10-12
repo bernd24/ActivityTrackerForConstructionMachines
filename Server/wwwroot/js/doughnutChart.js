@@ -20,6 +20,18 @@
   const doghnutConfig = {
     type: 'doughnut',
     data: doughnutData,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+        },
+        title: {
+          display: false,
+          text: 'Chart.js Doughnut Chart'
+        }
+      }
+    }
   };
 
   const myDoughnutChart = new Chart(

@@ -8,13 +8,13 @@ const AreaData = {
       {
         label: 'Dataset 1',
         data: [300, 50, 100],
-        borderColor:  'rgb(255, 99, 132)',
-        backgroundColor:  'rgb(255, 99, 132)',
+        borderColor:  'rgb(205, 99, 100)',
+        backgroundColor:  'rgb(200, 99, 132)',
         fill: true
       },
       {
         label: 'Dataset 2',
-        data: [300, 50, 100],
+        data: [40, 100, 10],
         borderColor:  'rgb(255, 99, 132)',
         backgroundColor: 'rgb(255, 99, 132)',
         // Utils.transparentize( 'rgb(255, 99, 132)'),
@@ -23,17 +23,26 @@ const AreaData = {
     ]
   };
 
-const areaConfig = {
+  const areaConfig = {
     type: 'line',
     data: AreaData,
     options: {
+      scales: {
+        myAreaChart: {
+          type: 'logarithmic',
+          position: 'right', // `axis` is determined by the position as `'y'`
+        },
+      },
       plugins: {
+        legend: {
+          position: 'bottom',
+        },
         filler: {
           propagate: false,
         },
         title: {
-          display: true,
-          text: (ctx) => 'drawTime: ' + ctx.chart.options.plugins.filler.drawTime
+          display: false,
+          text: 'Emisions'
         }
       },
       pointBackgroundColor: '#fff',
@@ -44,7 +53,7 @@ const areaConfig = {
     },
   };
 
-const myAreaChart = new Chart(
+  const myAreaChart = new Chart(
     document.getElementById('myAreaChart'),
     areaConfig 
   );

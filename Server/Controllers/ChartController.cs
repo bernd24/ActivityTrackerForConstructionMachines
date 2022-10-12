@@ -25,6 +25,12 @@ public class ChartController : Controller
         return View();
     }
 
+    [AllowAnonymous]
+    public IActionResult SpecificMaschine()
+    {
+        return View();
+    }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
