@@ -5,16 +5,24 @@
     <h1> Hello, Manager(Peter) </h1> 
   </div>
 
-  <div class="flexbox-item-6">
+  <div class="flexbox-item-cardheader">
     <h2 class="h2-white">Excavator EC950F</h2>
   </div>
   @* ******************chart.js******https://www.chartjs.org/docs/latest/ *@
   <div class="flexbox-item flexbox-item-2">
-    <canvas id="myAreaChart" ></canvas>
+    <div class="flexbox-item-6">
+        <div class="flexbox-item-cardheader">
+          <h2 class="h2-white">Emissions</h2>
+          <h4 class="h2-white">subtitle</h4>
+        </div>
+        <div class="content">
+          <canvas id="myLineChart" ></canvas>
+        </div>
+    </div>
   </div>
   <div class="flexbox-item flexbox-item-3">
     <div class="flexbox-item-card flexbox-item-4">
-        <div class="flexbox-item-6">
+        <div class="flexbox-item-cardheader">
           <h2 class="h2-white">Activity</h2>
           <h4 class="h2-white">subtitle</h4>
         </div>
@@ -25,7 +33,7 @@
 
     <div class="flexbox-item-card flexbox-item-5">
       @* ******************bootstrap******https://mdbootstrap.com/docs/standard/extended/timeline/ *@
-      <div class="flexbox-item-6">
+      <div class="flexbox-item-cardheader">
           <h2 class="h2-white">status</h2>
           <h4 class="h2-white">Maschine status chart</h4>
       </div>

@@ -6,6 +6,7 @@
 .flexbox-item {
     /* margin: 50px; */
     /* padding: 10px; */
+    margin-top: 20px; 
 }
 
 .flexbox-item-1{
@@ -16,6 +17,7 @@
 .flexbox-item-2{
     min-height: 100px;
     flex-grow: 1;
+    margin-top: 50px;
 }
 
 .flexbox-item-3{
@@ -28,13 +30,24 @@
   flex-shrink: 0;
   min-height: 100px;
   order: 1;
-  margin: 20px;
+  margin-right: 10px;
 }
 
 .flexbox-item-5{
   min-height: 100px;
   order: 2;
-  margin: 20px;
+  margin-left: 10px;
+}
+
+.flexbox-item-6{
+  min-height: 100px;
+  width: 100%;
+  order: 0;
+  align-items: center;
+  background: #F3F6F9;
+  border-radius: 20px;
+  box-shadow: 0 0 10px 5px #9d9c9c;
+  /* margin: 20px; */
 }
 
 .doughnutChart{
@@ -48,8 +61,8 @@ h3{
 }
 
 
-/* ****************** style for Maschinename ******************** */
-.flexbox-item-6{
+/* ****************** style for Maschinename and card title ******************** */
+.flexbox-item-cardheader{
   min-height: 100px;
   align-items: center;
   width: 100%;
