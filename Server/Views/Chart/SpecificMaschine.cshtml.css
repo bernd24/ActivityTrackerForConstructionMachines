@@ -1,7 +1,6 @@
 /* ********************* structure styles for the ManagerChartView ************** */
 .flexbox-container { 
     width: 100%;
-    /* margin: 20px; */
 }
 
 .flexbox-item {
@@ -30,16 +29,12 @@
   min-height: 100px;
   order: 1;
   margin: 20px;
-  /* flex-grow: 2; */
 }
 
 .flexbox-item-5{
-  /* flex-shrink: 1; */
   min-height: 100px;
   order: 2;
   margin: 20px;
-  /* margin: 20px; */
-  /* flex-grow: 2; */
 }
 
 .doughnutChart{
@@ -52,115 +47,41 @@ h3{
   text-align: center;
 }
 
-/* h1 {
-  font-weight: 900;
-}
-
-h2 {
-  font-weight: bold;
-} */
-
-
 
 /* ****************** style for Maschinename ******************** */
-
 .flexbox-item-6{
-  /* flex-grow: 1; */
   min-height: 100px;
   align-items: center;
-  /* margin: 10px; */
-  /* padding: 10px; */
   width: 100%;
   background: #4C6A73;
-  /* overflow: hidden; */
   border-radius: 10px;
-  /* cursor: pointer; */
 }
 
 .h2-white{
   font-weight: 900;
   color: white;
   padding: 10px;
-  /* margin: 10px; */
   width: 100%;
-
-  /* align-items: center; */
-  /* vertical-align: middle; */
   text-align: center;
-  
 }
-
-/* ********************* style for the Timeline ************** */
-.timeline-with-icons {
-    border-left: 1px solid hsl(0, 0%, 90%);
-    position: relative;
-    list-style: none;
-  }
-  
-  .timeline-with-icons .timeline-item {
-    position: relative;
-  }
-  
-  /* .timeline-with-icons .timeline-item:after {
-    position: absolute;
-    display: block;
-    top: 0;
-  } */
-  
-  .timeline-with-icons .timeline-icon {
-    position: absolute;
-    left: -48px;
-    background-color: hsl(217, 88.2%, 90%);
-    color: hsl(217, 88.8%, 35.1%);
-    border-radius: 50%;
-    height: 31px;
-    width: 31px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 
   /* **********card styles ************** */
 
   .flexbox-item-card{
     /* flex-grow: 1; */
+    /* flex-shrink: 0; */
     min-height: 100px;
     align-items: center;
-    /* flex-shrink: 0; */
-    /* flex-grow: 0.5; */
-    /* height: max-content;
-    width: max-content; */
-    /* margin: 10px; */
-    /* padding: 10px; */
     width: 50%;
-    /* flex-grow: 2; */
-    /* position: absolute; */
-    /* left: 50%;
-    top: 50%; */
-    /* transform: translate(-50%, -50%); */
-    /* height: 400px;
-    width: 600px; */
     background: #F3F6F9;
-    /* overflow: hidden; */
     border-radius: 20px;
-    /* cursor: pointer; */
     box-shadow: 0 0 10px 5px #9d9c9c;
     order: 1;
   }
 
 .content {
-  /* position: absolute; */
-  /* top: 50%; */
-  /* transform: translatey(-50%); */
-  /* text-align: center; */
   align-items: center;
-  /* text-align: center; */
   margin: 0 auto;
-  /* color: rgb(247, 239, 239); */
   padding: 30px;
-  /* margin: 30px; */
   font-family: 'Merriweather', serif;
 }
-
-
-
