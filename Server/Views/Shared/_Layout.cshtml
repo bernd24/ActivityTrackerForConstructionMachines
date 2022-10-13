@@ -22,12 +22,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><div class="en">About</div><div class="sv">Om oss</div><div class="de">Über</div></a>
                         </li>
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Chart" asp-action="SpecificMaschine"><div class="en">About</div><div class="sv">Om oss</div><div class="de">Über</div></a>
-                        </li>
                         @if(User.Identity.IsAuthenticated){
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Home">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Overview">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Chart" asp-action="SpecificMaschine"><div class="en">specific maschine</div><div class="sv">Om oss</div><div class="de">Über</div></a>
                         </li>
                         }
                     </ul>

@@ -27,6 +27,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Overview()
+    {
+        return View();
+    }
+
     [AllowAnonymous]
     [HttpPost]
     public string TestESP([FromBody]List<int> list){
