@@ -1,4 +1,6 @@
-
+@{
+    ViewData["Title"] = "Charts";
+}
 
 @* ***********body***************** *@
 <div class="container flexbox-container">
@@ -77,4 +79,50 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+   var model = @Html.Raw(Json.Serialize(Model));
+
+    var data = {
+    labels: model[0].timestamps,
+    datasets: [
+        @*, {
+        label: 'Cubic interpolation',
+        data: datapoints,
+        borderColor: 'rgb(255, 99, 132)',
+        fill: false,
+        tension: 0.4
+        }, {
+        label: 'Linear interpolation (default)',
+        data: datapoints,
+        borderColor: 'rgb(200, 99, 50)',
+        fill: false
+        }*@
+    ]
+    };
+    colors = ['rgb(100, 99, 132)','rgb(255, 99, 132)','rgb(200, 99, 50)'];
+    i = 0;
+    model.forEach(m =>
+      data.datasets.push({
+        label: m.sensorName,
+        data: m.datapoints,
+        borderColor: colors[i++],
+        //  @* borderColor: Utils.CHART_COLORS.blue,     this shit is not working  Utils file is not there https://github.com/chartjs/Chart.js/blob/master/docs/scripts/utils.js*@  
+        //  @* but i dont think we need that *@
+        fill: false,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4
+        })
+    );
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {}
+  };
+
+    const myChart = new Chart(
+    document.getElementById('myLineChart'),
+    config 
+  );
+</script>
 
