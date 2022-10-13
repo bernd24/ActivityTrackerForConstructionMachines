@@ -29,14 +29,15 @@ public class ChartController : Controller
 
         System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
         var sensors = Db.Query("Measurement")
-        .Select("Sensor.SensorName","Sensor.SensorType","SensorInstance.Axis","Measurement.SI_Id")
+        .Select("Sensor.SensorName","Sensor.SensorType","SensorInstance.Axis","Measurement.SI_Id","SensorInstance.SN_Id")
         .Where("WS_Id",Id)
         .GroupBy("SI_Id")
         .Join("SensorInstance","SensorInstance.Id","Measurement.SI_Id")
         .Join("Sensor","Sensor.Id","SensorInstance.S_Id")
+        .OrderBy("SensorInstance.SN_Id")
         .Get();
 
-        var ret = new List<MeasureData>();
+        var ret = new List<NodeData>();
 
         foreach(var s in sensors){
             var result = Db.Query("Measurement")
@@ -51,7 +52,13 @@ public class ChartController : Controller
                 timestamps.Add(m.TimeOfMeasure.AddMilliseconds(i*100).ToString());
                 i++;
             }
-            ret.Add(new MeasureData{
+            if(ret.Count == 0 || ret.Last().SN_Id != s.SN_Id){
+                ret.Add(new NodeData{
+                    SN_Id = s.SN_Id,
+                    data = new List<MeasureData>()
+                });
+            }
+            ret.Last().data.Add(new MeasureData{
                 sensorName = s.SensorName + " " + s.SensorType + (s.Axis == null ? "" : " " + s.Axis + "-Axis"),
                 datapoints = datapoints,
                 timestamps = timestamps
