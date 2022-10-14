@@ -11,9 +11,29 @@
   @* ******************chart.js******https://www.chartjs.org/docs/latest/ *@
   @foreach (var item in Model)
   {
+    <div class="flexbox-item flexbox-item-1">
     <h4>Node @item.SN_Id</h4>
     <div class="flexbox-item flexbox-item-2">
       <canvas id="@item.SN_Id"></canvas>
+    </div>
+    <form method="POST">
+      <dl>
+           <dt>
+            <label for="fromDate">
+                From - Till
+            </label>
+        </dt>
+        <dd>
+            <input name="fromDate" class="btn btn-secondary" type="date" value='@ViewBag.fromDate.ToString("yyyy-MM-dd")'>
+            <input name="fromTime" class="btn btn-secondary" type="time" step="1" value='@ViewBag.fromTime.ToString("HH:mm:ss")'>
+            -
+            <input name="tillDate" class="btn btn-secondary" type="date" value='@ViewBag.tillDate.ToString("yyyy-MM-dd")'>
+            <input name="tillTime" class="btn btn-secondary" type="time" step="1" value='@ViewBag.tillTime.ToString("HH:mm:ss")'>
+
+            <input class="btn btn-secondary" type="submit">
+        </dd>
+    </dl>
+    </form>
     </div>
   }
   

@@ -21,8 +21,8 @@ public class ChartController : Controller
         _logger = logger;
         Db = db;
     }
-    [AllowAnonymous]
-    public IActionResult Index(int Id)
+
+    public IActionResult Index(int Id, DateTime fromDate, DateTime fromTime, DateTime tillDate, DateTime tillTime)
     {
         System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
         customCulture.NumberFormat.NumberDecimalSeparator = ".";
@@ -37,16 +37,36 @@ public class ChartController : Controller
         .OrderBy("SensorInstance.SN_Id")
         .Get();
 
+        DateTime from = new DateTime(fromDate.Year,fromDate.Month,fromDate.Day,fromTime.Hour,fromTime.Minute,fromTime.Second);
+        DateTime till = new DateTime(tillDate.Year,tillDate.Month,tillDate.Day,tillTime.Hour,tillTime.Minute,tillTime.Second);
+        DateTime lowestFrom = new DateTime();
 
         var ret = new List<NodeData>();
 
         foreach(var s in sensors){
-            var result = Db.Query("Measurement")
-            .Where("WS_Id",Id)
-            .Where("SI_Id",(int)s.SI_Id)
-            .OrderBy("TimeOfMeasure")
-            .OrderBy("Nr")
-            .Get<Measurement>();
+            SqlKata.Query query;
+            if(fromDate.Year == 1){
+                query = Db.Query("Measurement")
+                .Where("WS_Id",Id)
+                .Where("SI_Id",(int)s.SI_Id)
+                .OrderBy("TimeOfMeasure")
+                .OrderBy("Nr");
+            }
+            else{
+                query = Db.Query("Measurement")
+                .Where("WS_Id",Id)
+                .Where("SI_Id",(int)s.SI_Id)
+                .Where("TimeOfMeasure",">",from.AddSeconds(-10))
+                .Where("TimeOfMeasure","<",till)
+                .OrderBy("TimeOfMeasure")
+                .OrderBy("Nr");
+            }
+            var result = query.Get<Measurement>();
+
+            if(result.Count() > 0 && from.Year == 1 && (lowestFrom.Year == 1 || lowestFrom > result.First().TimeOfMeasure)){
+                from = result.First().TimeOfMeasure;
+            }
+
             List<float> datapoints = new List<float>();
             List<String> timestamps = new List<String>();
             int i = 0;
@@ -54,8 +74,16 @@ public class ChartController : Controller
                 if(m.Nr == 0){
                     i = 0;
                 }
-                datapoints.Add(m.SensorData);
-                timestamps.Add(m.TimeOfMeasure.AddMilliseconds(i*100).ToString());
+                if(tillDate.Year != 1 && m.TimeOfMeasure.AddMilliseconds(i*100) > till){
+                    break;
+                }
+                if(m.TimeOfMeasure.AddMilliseconds(i*100) >= from){
+                    datapoints.Add(m.SensorData);
+                    timestamps.Add(m.TimeOfMeasure.AddMilliseconds(i*100).ToString());
+                }
+                if(m.TimeOfMeasure.AddMilliseconds(i*100) > till){
+                    till = m.TimeOfMeasure.AddMilliseconds(i*100);
+                }
                 i++;
             }
             if(ret.Count == 0 || ret.Last().SN_Id != s.SN_Id){
@@ -70,10 +98,17 @@ public class ChartController : Controller
                 timestamps = timestamps
             });
         }
+        if(from.Year == 1){
+            from = lowestFrom;
+        }
+        ViewBag.fromDate = from;
+        ViewBag.fromTime = from;
+        ViewBag.tillDate = till;
+        ViewBag.tillTime = till;
         return View(ret);
     }
 
-    [AllowAnonymous]
+
     public IActionResult SpecificMaschine()
     {
         return View();
