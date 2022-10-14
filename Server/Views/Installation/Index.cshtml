@@ -42,6 +42,9 @@
             <table id="nodeTable" class="table table-bordered">
                 <tr>
                     <th>
+                        ID
+                    </th>
+                    <th>
                         <div class="en">Node Type</div>
                         <div class="de">Knotentyp</div>
                         <div class="sv">Nodtyp</div>
@@ -81,9 +84,13 @@
                         <div class="de">Hersteller</div>
                         <div class="sv">Tillverkare</div>
                     </th>
+                    <th>
+                        ID
+                    </th>
                 </tr>
                 @foreach(SensorNodeInstance sn in m.Config.SensorNodes){
                     <tr>
+                        <td rowspan="@(sn.Sensors.Count()+1)">@sn.Id</td>
                         @if(sn.isMaster){
                             <td rowspan="@(sn.Sensors.Count()+1)">Master</td>
                         }
@@ -124,7 +131,8 @@
                                     <td>-</td>
                                 }
                                 <td>@s.Sensor.SensorName</td>
-                                <td>@s.Sensor.Manufacturer</td>                                
+                                <td>@s.Sensor.Manufacturer</td>
+                                <td>@s.Id</td>                                
                             </tr>
                         }
                     </tr>

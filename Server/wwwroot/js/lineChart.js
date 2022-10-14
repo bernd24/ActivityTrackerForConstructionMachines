@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
     const labels = [-20,0,1,2,3,4,5,6,7,8,9,10,11,12];
 
     const datapoints = [-100, 0, 20, 20, 60, 60, 120, NaN, 180, 120, 125, 105, 110, 170];
@@ -58,5 +59,8 @@
     document.getElementById('myLineChart'),
     config 
   );
+=======
+
+>>>>>>> backend
 
 
