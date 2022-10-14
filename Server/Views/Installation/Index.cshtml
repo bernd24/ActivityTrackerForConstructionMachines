@@ -84,6 +84,9 @@
                         <div class="de">Hersteller</div>
                         <div class="sv">Tillverkare</div>
                     </th>
+                    <th>
+                        ID
+                    </th>
                 </tr>
                 @foreach(SensorNodeInstance sn in m.Config.SensorNodes){
                     <tr>
@@ -128,7 +131,8 @@
                                     <td>-</td>
                                 }
                                 <td>@s.Sensor.SensorName</td>
-                                <td>@s.Sensor.Manufacturer</td>                                
+                                <td>@s.Sensor.Manufacturer</td>
+                                <td>@s.Id</td>                                
                             </tr>
                         }
                     </tr>
