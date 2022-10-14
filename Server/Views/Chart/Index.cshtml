@@ -154,7 +154,7 @@ function addChart(m){
           x: {
             ticks: {
               callback: function(label) {
-                return new Date(label).toLocaleString();
+                return new Date(label).toLocaleString([], { hour12: false, hour: '2-digit', minute: '2-digit', fractionalSecondDigits: 2 });
               }
             }
           }
@@ -163,7 +163,7 @@ function addChart(m){
           tooltip: {
             callbacks: {
                 label: function(context) {
-                  return "(" + new Date(context.parsed.x).toLocaleTimeString() + ", " + context.parsed.y + ")";
+                  return new Date(context.parsed.x).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', fractionalSecondDigits: 2 }) + ": " + context.parsed.y;
                 }
             }
           }
