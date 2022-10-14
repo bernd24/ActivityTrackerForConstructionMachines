@@ -190,7 +190,6 @@ public class SessionController : Controller
         .Get<WorkSession>().First().Id;
     }
 
-    [AllowAnonymous]
     [HttpPost]
     public async Task<ActionResult> LogData(IFormFile log, int SI_Id, int WS_Id, DateTime time, DateTime date){
         var filePath = Path.GetTempFileName();
