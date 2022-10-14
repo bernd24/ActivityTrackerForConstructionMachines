@@ -149,8 +149,28 @@ function addChart(m){
     const config = {
       type: 'scatter',
       data: data,
-      options: {}
+      options: {
+        scales: {
+          x: {
+            ticks: {
+              callback: function(label) {
+                return new Date(label).toLocaleString();
+              }
+            }
+          }
+        },
+        plugins:{
+          tooltip: {
+            callbacks: {
+                label: function(context) {
+                  return "(" + new Date(context.parsed.x).toLocaleTimeString() + ", " + context.parsed.y + ")";
+                }
+            }
+          }
+        }
+      }
     }; 
+
     const myChart = new Chart(
       document.getElementById(m.sN_Id),
       config
