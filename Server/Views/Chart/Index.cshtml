@@ -9,15 +9,7 @@
     <h1>Visualization</h1> 
   </div>
   @* ******************chart.js******https://www.chartjs.org/docs/latest/ *@
-  @foreach (var item in Model)
-  {
-    <div class="flexbox-item flexbox-item-1">
-    <h4>Node @item.SN_Id</h4>
-    <div class="flexbox-item flexbox-item-2">
-      <canvas id="@item.SN_Id"></canvas>
-    </div>
-    </div>
-  }
+  <div class="flexbox-item flexbox-item-1">
   <form method="POST">
       <dl>
            <dt>
@@ -36,6 +28,17 @@
         </dd>
     </dl>
     </form>
+    </div>
+  @foreach (var item in Model)
+  {
+    <div class="flexbox-item flexbox-item-1">
+    <h4>Node @item.SN_Id</h4>
+    <div class="flexbox-item flexbox-item-2">
+      <canvas id="@item.SN_Id"></canvas>
+    </div>
+    </div>
+  }
+  
   @*<div class="flexbox-item flexbox-item-3">
     <canvas id="myDoughnutChart" ></canvas>
   </div>
