@@ -5,9 +5,13 @@ public class NodeData{
     public List<MeasureData> data{get; set;}
 }
 
+public class Point{
+    public Int64 x{get; set;}
+    public float y{get; set;}
+}
+
 public class MeasureData {
             public string sensorName {get; set;}
-            public List<float> datapoints {get; set;}
-            public List<string> timestamps {get; set;}
+            public List<Point> datapoints {get; set;}
         }
 }

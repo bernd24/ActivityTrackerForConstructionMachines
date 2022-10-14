@@ -67,22 +67,21 @@ public class ChartController : Controller
                 from = result.First().TimeOfMeasure;
             }
 
-            List<float> datapoints = new List<float>();
-            List<String> timestamps = new List<String>();
+            List<Point> datapoints = new List<Point>();
             int i = 0;
             foreach(Measurement m in result){
                 if(m.Nr == 0){
                     i = 0;
                 }
-                if(tillDate.Year != 1 && m.TimeOfMeasure.AddMilliseconds(i*100) > till){
+                DateTime NrTime = m.TimeOfMeasure.AddMilliseconds(i*100);
+                if(tillDate.Year != 1 && NrTime > till){
                     break;
                 }
-                if(m.TimeOfMeasure.AddMilliseconds(i*100) >= from){
-                    datapoints.Add(m.SensorData);
-                    timestamps.Add(m.TimeOfMeasure.AddMilliseconds(i*100).ToString());
+                if(NrTime >= from){
+                    datapoints.Add(new Point{x = ((DateTimeOffset)NrTime).ToUnixTimeMilliseconds(), y = m.SensorData});
                 }
-                if(m.TimeOfMeasure.AddMilliseconds(i*100) > till){
-                    till = m.TimeOfMeasure.AddMilliseconds(i*100);
+                if(NrTime > till){
+                    till = NrTime;
                 }
                 i++;
             }
@@ -94,8 +93,7 @@ public class ChartController : Controller
             }
             ret.Last().data.Add(new MeasureData{
                 sensorName = s.SensorName + " " + s.SensorType + (s.Axis == null ? "" : " " + s.Axis + "-Axis"),
-                datapoints = datapoints,
-                timestamps = timestamps
+                datapoints = datapoints
             });
         }
         if(from.Year == 1){

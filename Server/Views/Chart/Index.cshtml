@@ -112,7 +112,7 @@ model.forEach(m => addChart(m));
 
 function addChart(m){
     var data = {
-    labels: m.data[0].timestamps,
+    //labels: m.data[0].timestamps,
     datasets: [
         @*, {
         label: 'Cubic interpolation',
@@ -139,12 +139,13 @@ function addChart(m){
         //  @* but i dont think we need that *@
         fill: false,
         cubicInterpolationMode: 'monotone',
-        tension: 0.4
+        tension: 0.4,
+        showLine: true
       })
     );
 
     const config = {
-      type: 'line',
+      type: 'scatter',
       data: data,
       options: {}
     }; 
