@@ -35,8 +35,7 @@
                 "--project",
                 "${workspaceFolder}/Server.csproj"
             ],
-            "problemMatcher": "$msCompile",
-            "options": { "cwd": "${workspaceFolder}/Views/Chart" },
+            "problemMatcher": "$msCompile"
         }
     ]
 }

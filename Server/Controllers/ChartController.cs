@@ -37,17 +37,23 @@ public class ChartController : Controller
         .OrderBy("SensorInstance.SN_Id")
         .Get();
 
+
         var ret = new List<NodeData>();
 
         foreach(var s in sensors){
             var result = Db.Query("Measurement")
             .Where("WS_Id",Id)
             .Where("SI_Id",(int)s.SI_Id)
+            .OrderBy("TimeOfMeasure")
+            .OrderBy("Nr")
             .Get<Measurement>();
             List<float> datapoints = new List<float>();
             List<String> timestamps = new List<String>();
             int i = 0;
             foreach(Measurement m in result){
+                if(m.Nr == 0){
+                    i = 0;
+                }
                 datapoints.Add(m.SensorData);
                 timestamps.Add(m.TimeOfMeasure.AddMilliseconds(i*100).ToString());
                 i++;

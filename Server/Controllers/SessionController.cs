@@ -191,20 +191,38 @@ public class SessionController : Controller
     }
 
     [AllowAnonymous]
-    [HttpPost("Session/LogData/{WS_Id}/{SI_Id}")]
-    public string LogData([FromBody]List<float> data, int SI_Id, int WS_Id){
+    [HttpPost]
+    public async Task<ActionResult> LogData(IFormFile log, int SI_Id, int WS_Id, DateTime time, DateTime date){
+        var filePath = Path.GetTempFileName();
+        if(log.Length > 0){
+            using(var stream = System.IO.File.Create(filePath)){
+                await log.CopyToAsync(stream);
+            }
+        }
+        string text = System.IO.File.ReadAllText(filePath);
+        string[] values = text.Split(' '); 
         int i = 0;
-        foreach(float f in data){
+        DateTime timestamp = new DateTime(date.Year,date.Month,date.Day,time.Hour,time.Minute,time.Second);
+        foreach(string val in values){
+            if(i == 100){
+                i = 0;
+                timestamp = timestamp.AddSeconds(10);
+            }
             Db.Query("Measurement")
             .Insert(new{
                 WS_Id = WS_Id,
                 SI_Id = SI_Id,
                 Nr = i,
-                TimeOfMeasure = new DateTime(2022,10,7,10,0,0),
-                SensorData = f
+                TimeOfMeasure = timestamp,
+                SensorData = float.Parse(val, System.Globalization.CultureInfo.InvariantCulture.NumberFormat)
             });
             i++;
         }
-        return "success";
+        return Ok();
+    }
+
+    [HttpGet]
+    public IActionResult LogData(){
+        return View();
     }
 }
