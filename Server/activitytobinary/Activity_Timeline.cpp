@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algortihm>
 
 Activity_Timeline::Activity_Timeline(std::string name, size_t size): activity_name(name)
 {
@@ -53,7 +54,7 @@ void Activity_Timeline::operator>>(size_t steps)
 		timeline.push_back(false);
 	}
 
-	rotate(timeline.begin(), timeline.end() - steps, timeline.end());
+	std::rotate(timeline.begin(), timeline.end() - steps, timeline.end());
 }
 
 float Activity_Timeline::segment_accuracy(const Activity_Timeline & target)
