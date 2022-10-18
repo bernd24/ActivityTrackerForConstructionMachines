@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <assert.h>
 #include <filesystem>
+#include <cstring>
 
 #include "Activity_Timeline.h"
 #include "Data_Analysis.h"
@@ -135,7 +136,7 @@ int main(int argc, char *argv[])
 	Activity_Timeline empty("empty", 465);
 	std::cout << "Reference Acc: " << empty.bit_accuracy(rotate2_timeline) << "\n";*/
 
-    for (const auto & entry : std::__fs::filesystem::directory_iterator(argv[1])){
+    for (const auto & entry : std::filesystem::directory_iterator(argv[1])){
 
 		char filePath[255];
 		std::strcpy(filePath,entry.path().string().c_str());
