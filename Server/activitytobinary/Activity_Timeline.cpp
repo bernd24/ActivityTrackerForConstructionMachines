@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <algortihm>
+#include <algorithm>
 
 Activity_Timeline::Activity_Timeline(std::string name, size_t size): activity_name(name)
 {
