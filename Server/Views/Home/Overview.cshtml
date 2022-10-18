@@ -1,56 +1,95 @@
   
 @* that will be the start page from the manager after the login *@
-<div class="flexbox-container">
-  <div class="flexbox-item flexbox-item-1">
+@* <div class="container1"> *@
+  @* <div > *@
     @*  here should be the name of the User *@
     <h1> Hello, Manager(Peter) </h1> 
-  </div>
+  @* </div> *@
 
-  <div class="flexbox-item-cardheader">
+  @* <div class="flexbox-container">
     <h2 class="h2-white">Average Emission:  200 CO2 per HDM</h2>
-  </div>
+  </div> *@
   @* ******************chart.js******https://www.chartjs.org/docs/latest/ *@
-  @* <div class="flexbox-item flexbox-item-1">
-    <div class="flexbox-item-card flexbox-item-2">
-      <div class="flexbox-item-4">
 
+  <div class="flexbox-container">
+    @* <div class=""> *@
+    <div class="flexbox-item flexbox-item-1">
+      <div class="flexbox-item flexbox-item-2 item-card">
+        <div class="flexbox-item flexbox-item-5">
+            <canvas id="mySteppedLineChart"></canvas>
+          @* <canvas id="myLineChart" class="lineChart"></canvas> *@
+        </div>
+        <div class="flexbox-item flexbox-item-5">
+            u
+        </div>
       </div>
-      <div class="flexbox-item-horizontal">
+      <div class="flexbox-item flexbox-item-3">
+         @* <div class="card-1 text-center"> *@
+          <div class="flexbox-item-card">
+        @* <div class="card-body"> *@
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">select ma</a>
+        @* </div> *@
+      </div>
+        @* kasten 1.2 *@
+      </div>
+    </div>
+    <div class="flexbox-item flexbox-item-1 item-card">
+      <div class="flexbox-item flexbox-item-4">
+        <canvas id="myBarChart" >
+        </canvas>
+      </div>
+      <div class="flexbox-item flexbox-item-4">
+        <canvas id="myDoughnutChart" class="doughnutChart" >
+        </canvas>
+      </div>
+    </div>
+  </div>
+  
+    @* <div class="">
+      <div class="card-1 text-center">
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">select ma</a>
+        </div>
+      </div>
+    </div> *@
 
-          
 
+
+  @* <div class="">
+      <div class="">
+        <div class="card text-center">
+          <div class="card-header">
+            Featured
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+          <div class="card-footer text-muted">
+            2 days ago
+          </div>
+        </div>
       </div>
 
-    </div>
-    <div class="flexbox-item-card flexbox-item-3">
-        <div class="flexbox-item">
-
-
+      <div class="">
+        <div class="card-1 text-center">
+          <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">select ma</a>
+          </div>
         </div>
+      </div>
 
-    </div>
-
-
-  </div>
-
-  <div class="flexbox-item flexbox-item-1">
-    <div class="flexbox-item-card flexbox-item-2">
-        <div >
-
-        </div>
-    </div>
-    <div class="flexbox-item-card flexbox-item-3">
-        <div >
-          
-        </div>
-    </div>
-  </div>
-  *@
+  </div> *@
 
 
-
-
-</div>
+@* </div> *@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

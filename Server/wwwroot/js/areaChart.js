@@ -53,7 +53,7 @@ const AreaData = {
     },
   };
 
-  const myAreaChart = new Chart(
-    document.getElementById('myAreaChart'),
-    areaConfig 
-  );
+  // const myAreaChart = new Chart(
+  //   document.getElementById('myAreaChart'),
+  //   areaConfig 
+  // );

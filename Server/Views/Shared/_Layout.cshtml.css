@@ -44,14 +44,14 @@ button.accept-policy {
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px;
+  line-height: 30px;
 }
-
 
 .container {
+  height: 100%;
   width: 100%;
-  /* display: flex; */
   /* justify-content: space-between; */
 }
+
 
 
