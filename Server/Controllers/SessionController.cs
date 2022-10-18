@@ -121,12 +121,16 @@ public class SessionController : Controller
 
     [AllowAnonymous]
     [HttpPost]
-    public string Data([FromBody]List<SensorData<float>> data){
+    public IActionResult Data([FromBody]List<SensorData<float>> data){
         DateTime timestamp = DateTime.Now;
         foreach(SensorData<float> d in data){
             IEnumerable<dynamic> handshake = Db.Query("Handshake")
             .Where("SNI_Id",d.node_ID)
             .Get();
+
+            if(handshake.Count() == 0){
+                return Ok("no handshake");
+            }
 
             SensorNodeInstance sni = Db.Query("SensorNodeInstance")
             .Where("Id",d.node_ID)
@@ -176,9 +180,11 @@ public class SessionController : Controller
                 }
             }
         }
-        return "success";
+
+        return Ok();
     }
 
+    [NonAction]
     public int createSession(int C_Id, int M_Id){
         Db.Query("WorkSession").Insert(new{
             C_Id = C_Id,

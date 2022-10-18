@@ -1,6 +1,7 @@
 #include "Activity_Timeline.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 
 Activity_Timeline::Activity_Timeline(std::string name, size_t size): activity_name(name)
 {
@@ -240,4 +241,12 @@ void Activity_Timeline::print(size_t rowsize) const
 size_t Activity_Timeline::size() const
 {
 	return timeline.size();
+}
+
+void Activity_Timeline::printToFile(std::string filePath) const {
+	std::ofstream out(filePath);
+	for(bool b: timeline){
+		out << b << " ";
+	}
+	out.close();
 }

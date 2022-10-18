@@ -13,5 +13,6 @@ namespace Server.Models{
         public string Notes { get; set; }
         public SensorConfiguration Config { get; set; }
         public Machine Machine { get; set; }
+        public bool isProcessed {get; set;}
     }
 }

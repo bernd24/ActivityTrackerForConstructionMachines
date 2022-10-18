@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+#include <string>
+#include <cmath>
 
 const std::pair<int, int> test1_node3_ranges[]	= { {37, 53}, {77, 78}, {81, 82}, {84, 85}, {94, 98}, {101, 105}, {115, 117}, {120, 121}, {124, 125}, 
 													{131, 132}, {182, 183}, {186, 197}, {201, 207}, {209, 213}, {225, 226}, {230, 231}, {233, 234}, {238, 239},
@@ -42,6 +44,8 @@ public:
 	size_t get_total_time() const;
 	void print(size_t rowsize = 10) const;
 	size_t size() const;
+
+	void printToFile(std::string filePath) const;
 
 public:
 	std::string activity_name;

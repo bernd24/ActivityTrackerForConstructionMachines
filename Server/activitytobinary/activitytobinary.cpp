@@ -6,14 +6,15 @@
 #include <fstream>
 #include <algorithm>
 #include <assert.h>
+#include <filesystem>
 
 #include "Activity_Timeline.h"
 #include "Data_Analysis.h"
 #include "File_Parser.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-	Activity_Timeline dig_timeline("Digging", 335, &test1_dig_ranges[0], &test1_dig_ranges[9]);
+	/*Activity_Timeline dig_timeline("Digging", 335, &test1_dig_ranges[0], &test1_dig_ranges[9]);
 	Activity_Timeline rotate_timeline("Rotating", 335, &test1_rotate_ranges[0], &test1_rotate_ranges[9]);
 	Activity_Timeline idle_timeline("Idle", 335, &test1_idle_ranges[0], &test1_idle_ranges[3]);
 
@@ -132,6 +133,31 @@ int main()
 	std::cout << "Time acc: " << dig.time_accuracy(dig_timeline) << "\n";
 
 	Activity_Timeline empty("empty", 465);
-	std::cout << "Reference Acc: " << empty.bit_accuracy(rotate2_timeline) << "\n";
+	std::cout << "Reference Acc: " << empty.bit_accuracy(rotate2_timeline) << "\n";*/
+
+    for (const auto & entry : std::__fs::filesystem::directory_iterator(argv[1])){
+
+		char filePath[255];
+		std::strcpy(filePath,entry.path().string().c_str());
+		std::strtok(filePath,"/");
+		std::string sensorName = std::string(std::strtok(NULL,"_"));
+		std::string sensorType = std::string(std::strtok(NULL,"_"));
+		std::string sensorAxis = std::string(std::strtok(NULL,"_"));
+		std::string sensorID = std::string(std::strtok(NULL,"."));
+		
+		Activity_Timeline at = predict(filePath,sensorName,sensorType,sensorAxis);
+		at.printToFile(std::string(argv[1]) + "/" + entry.path().stem().string() + "_timeline.txt");
+	}
+		
+		
+	
+
+	/*
+		1. copy_file_to_array()
+		2. derviative()
+		3.	
+	*/
+
+	return 0;
 
 }

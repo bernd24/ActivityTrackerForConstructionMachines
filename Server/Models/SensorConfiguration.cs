@@ -9,5 +9,7 @@ namespace Server.Models{
         public int Id { get; set; }
         public string Picture { get; set; }
         public string Notes { get; set; }
+
+        public bool hasBinary {get; set;}
     }
 }
