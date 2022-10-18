@@ -53,7 +53,7 @@ void Activity_Timeline::operator>>(size_t steps)
 		timeline.push_back(false);
 	}
 
-	std::rotate(timeline.begin(), timeline.end() - steps, timeline.end());
+	rotate(timeline.begin(), timeline.end() - steps, timeline.end());
 }
 
 float Activity_Timeline::segment_accuracy(const Activity_Timeline & target)
