@@ -4,6 +4,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
+ServerTest/bin/*
+ServerTest/obj/*
 obj/*
 libraries/
