@@ -470,9 +470,12 @@ Activity_Timeline best_fit(const Activity_Timeline & a1, const Activity_Timeline
 	return best;
 }
 
-Activity_Timeline predict(std::string filePath, std::string sensorName, std::string sensorType, std::string sensorAxis){
-	Activity_Timeline a;
-	std::vector<bool> tl = {true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
-	a.timeline = tl;
-	return a;
+std::vector<Activity_Timeline> predict(std::vector<Data> data){
+	std::vector<Activity_Timeline> ats;
+	for(Data d: data){
+		Activity_Timeline at;
+		at.timeline = {true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
+		ats.push_back(at);
+	}
+	return ats;
 }

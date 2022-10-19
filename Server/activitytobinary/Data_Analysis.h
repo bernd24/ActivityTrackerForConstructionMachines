@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <deque>
+#include "Data.h"
 
 struct conversion_format {
 	size_t window_size = 100;
@@ -42,4 +43,4 @@ std::vector<float> derivative(const std::vector<float>& arr);
 
 Activity_Timeline best_fit(const Activity_Timeline& a1, const Activity_Timeline& a2, const Activity_Timeline& a3, const Activity_Timeline& target);
 
-Activity_Timeline predict(std::string filePath, std::string sensorName, std::string sensorType, std::string sensorAxis);
+std::vector<Activity_Timeline> predict(std::vector<Data> data);
