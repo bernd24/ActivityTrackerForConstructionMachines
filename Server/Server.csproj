@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,11 +20,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.TestPlatform" Version="17.3.2" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
     <PackageReference Include="MySql.Data" Version="8.0.30" />
     <PackageReference Include="MySqlConnector" Version="2.1.13" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
     <PackageReference Include="SqlKata" Version="2.4.0" />
     <PackageReference Include="SqlKata.Execution" Version="2.4.0" />
+    <PackageReference Include="Xunit" Version="2.4.2" />
   </ItemGroup>
 
 </Project>

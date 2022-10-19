@@ -13,12 +13,10 @@ namespace Server.Controllers;
 [Authorize]
 public class SessionController : Controller
 {
-    private readonly ILogger<SessionController> _logger;
     private readonly QueryFactory Db;
 
-    public SessionController(ILogger<SessionController> logger, QueryFactory db)
+    public SessionController(QueryFactory db)
     {
-        _logger = logger;
         Db = db;
     }
 
@@ -36,7 +34,9 @@ public class SessionController : Controller
             .Where("Sensor.SensorName",hs.ID)
             .Where("SensorInstance.SN_Id",handshakes.node_ID)
             .Join("Sensor","Sensor.Id","SensorInstance.S_Id")
+            .OrderBy("SensorInstance.Id")
             .Get();
+            int assignedSensors = 0;
             foreach(var si in si_list){
                 switch(hs.ID){
                     case "MPU6050": 
@@ -107,6 +107,10 @@ public class SessionController : Controller
                             SI_Id = si.Id
                         }); 
                         break;
+                }
+                assignedSensors++;
+                if(assignedSensors >= hs.elements){
+                    break;
                 }
             }
             i += hs.elements;

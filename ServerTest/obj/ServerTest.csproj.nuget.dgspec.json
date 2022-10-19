@@ -1,0 +1,225 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/ServerTest/ServerTest.csproj": {}
+  },
+  "projects": {
+    "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/Server.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/Server.csproj",
+        "projectName": "Server",
+        "projectPath": "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/Server.csproj",
+        "packagesPath": "/Users/bernd/.nuget/packages/",
+        "outputPath": "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/bernd/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.9, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.9, )"
+            },
+            "Microsoft.TestPlatform": {
+              "target": "Package",
+              "version": "[17.3.2, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.30, )"
+            },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[2.1.13, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "SqlKata": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "SqlKata.Execution": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "Xunit": {
+              "target": "Package",
+              "version": "[2.4.2, )"
+            },
+            "microsoft-web-helpers": {
+              "target": "Package",
+              "version": "[2.1.20710.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/ServerTest/ServerTest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/ServerTest/ServerTest.csproj",
+        "projectName": "ServerTest",
+        "projectPath": "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/ServerTest/ServerTest.csproj",
+        "packagesPath": "/Users/bernd/.nuget/packages/",
+        "outputPath": "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/ServerTest/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/bernd/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/Server.csproj": {
+                "projectPath": "/Users/bernd/Documents/ActivityTrackerForConstructionMachines/Server/Server.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.1.0, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.31, )"
+            },
+            "MySqlConnector": {
+              "target": "Package",
+              "version": "[2.1.13, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "SqlKata": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "SqlKata.Execution": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
