@@ -234,4 +234,14 @@ public class SessionController : Controller
     public IActionResult LogData(){
         return View();
     }
+
+    [HttpGet("Session/MachineSessions/{M_Id}")]
+    public IActionResult MachineSessions(int M_Id){
+        return Json(Db.Query("WorkSession").Where("M_Id",M_Id).Get());
+    }
+
+    [HttpGet("Session/Data/{WS_Id}")]
+    public IActionResult Data(int WS_Id){
+        return Json(Db.Query("Measurement").Where("WS_Id",WS_Id).Get());
+    }
 }
