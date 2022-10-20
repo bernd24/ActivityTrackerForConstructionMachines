@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Server.styles.css" asp-append-version="true" />
 </head>
-<body class="body" >
+<body>
+
+    @* HEADER SECTION *@
     <header>
     @* maybe put the icons in an seperate file to made it cleaner here *@
       <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -37,9 +39,11 @@
         </symbol>
       </svg>
       
+
+
       <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
           <div class="container-fluid">
-              <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ATFCM</a>
+              <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index1">ATFCM</a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                       aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
@@ -47,22 +51,15 @@
               <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                   <ul class="navbar-nav flex-grow-1">
 
+                      @if(User.Identity.IsAuthenticated){
                       <li class="nav-item">
-                          <a  class="nav-link text-secondary" asp-area="" asp-controller="Home" asp-action="Index">
+                          <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Overview" asp-route-id="1">
                               <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#home"/></svg>
                               Home
                           </a>
                       </li>
-                    
-                      @if(User.Identity.IsAuthenticated){
                       <li class="nav-item">
-                          <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Overview" asp-route-id="1">
-                              <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#speedometer2"/></svg>
-                              Home
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="1">
+                          <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Index1" asp-route-id="1">
                               <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#gear-fill"/></svg>
                               Machines
                           </a>
@@ -93,9 +90,13 @@
                           </div>
                       </li>
                       }
-                      <li class="nav-item">
-                          <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><div class="en">| &nbsp&nbspPrivacy Policy</div><div class="sv">| &nbsp&nbspIntegritetspolicy</div><div class="de">| &nbsp&nbspDatenschutzvereinbarung</div></a>
-                      </li>
+                      @* <li class="nav-item">
+                          <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index1">
+                            <div class="en">| &nbsp&nbspPrivacy Policy</div>
+                            <div class="sv">| &nbsp&nbspIntegritetspolicy</div>
+                            <div class="de">| &nbsp&nbspDatenschutzvereinbarung</div>
+                            </a>
+                      </li> *@
                       <li class="nav-item">
                           <label for="lang">| &nbsp&nbspLanguage - </label>
                           <select id="lang" style="margin-top: 8px;" onchange="changeLang()">
@@ -112,13 +113,13 @@
 
     </header>
 
-    <div class="container">
-        @* <main role="main" class="container"> *@
+    @* <div class="container">
+        <main role="main" class="container"> *@
             @RenderBody()
-        @* </main> *@
-    </div>
+        @* </main>
+    </div> *@
 
-    <footer class="border-top footer text-muted">
+    @* <footer class="border-top footer text-muted">
 
         <div class="container">
             <div class="container">
@@ -126,7 +127,7 @@
             </div> 
         </div>
 
-    </footer>
+    </footer> *@
 
 
     @* **************scripts*********** *@
@@ -141,6 +142,11 @@
     <script src="~/js/areaChart.js" asp-append-version="true"></script>
     <script src="~/js/barChart.js" asp-append-version="true"></script>
 
+    <script src="~/js/chart-area-demo.js" asp-append-version="true"></script>
+    <script src="~/js/chart-bar-demo.js" asp-append-version="true"></script>
+    <script src="~/js/chart-pie-demo.js" asp-append-version="true"></script>
+    <script src="~/js/datatables-demo.js" asp-append-version="true"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 
     <script>

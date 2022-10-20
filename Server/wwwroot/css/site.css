@@ -1,22 +1,75 @@
-html {
-  font-size: 14px;
-  /* background-color: rgb(188, 72, 72);  */
+/* GLOBAL STYLES */
+
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-@media (min-width: 768px) {
+html {
+  font-family: 'Poppins',sans-serif;
+  font-size: 10px;
+}
+
+/* @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
-}
+} */
 
-html {
+/* html {
   position: relative;
   height: 100%;
   width: 100%;
-}
+} */
 
 body {
-  /* height: 100%; */
-  /* height: 100%; */
+  width: 100%;
   margin-bottom: 30px;
 }
+
+p {
+  font-size: 1.6rem;
+  color: var(--grayish-violet);
+  line-height: 1.6;
+}
+
+section {
+  padding: 5rem 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+/* VARIABLES */
+:root {
+  --cyan: hsl(180,66%, 49%);
+  --dark-violet: hsl(257, 27%, 26%);
+  --gray: hsl(0, 0%. 75%);
+  --dark-gray: #EFF1F7;
+  --grayish-violet: hsl(260, 7%, 59%);
+  --very-dark-blue: hsl(255, 11%, 22%);
+  --very-dark-violet: hsl(260, 8%, 14%);
+  --white: #fff;
+}
+
+/* UTILITY CLASSES */
+.u-mb-small {
+  margin-bottom: 1.6rem;
+}
+
+.u-mb-medium {
+  margin-bottom: 3rem;
+}
+
+.u-mb-large {
+  margin-bottom: 5rem;
+}
+

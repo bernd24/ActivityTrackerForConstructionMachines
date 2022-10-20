@@ -34,6 +34,7 @@
     }
   };
 
+  
   const myDoughnutChart = new Chart(
     document.getElementById('myDoughnutChart'),
     doghnutConfig 
