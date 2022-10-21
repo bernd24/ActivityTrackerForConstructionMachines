@@ -218,7 +218,7 @@ public class Callback{
                     }
                 }
 
-                //new DirectoryInfo("" + ws.Id).Delete(true);
+                new DirectoryInfo("" + ws.Id).Delete(true);
 
                 Console.WriteLine("finished processing");
             }
