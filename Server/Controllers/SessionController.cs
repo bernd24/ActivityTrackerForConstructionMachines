@@ -31,14 +31,14 @@ public class SessionController : Controller
         foreach(Handshake hs in handshakes.payload){
             IEnumerable<dynamic> si_list = Db.Query("SensorInstance")
             .Select("SensorInstance.Id","Sensor.SensorType","SensorInstance.Axis")
-            .Where("Sensor.SensorName",hs.ID)
+            .Where("Sensor.SensorName",hs.id)
             .Where("SensorInstance.SN_Id",handshakes.node_ID)
             .Join("Sensor","Sensor.Id","SensorInstance.S_Id")
             .OrderBy("SensorInstance.Id")
             .Get();
             int assignedSensors = 0;
             foreach(var si in si_list){
-                switch(hs.ID){
+                switch(hs.id){
                     case "MPU6050": 
                         switch(si.SensorType){
                             case "Accelerometer":
