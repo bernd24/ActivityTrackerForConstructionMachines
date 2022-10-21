@@ -479,19 +479,25 @@ std::vector<Activity_Timeline> predict(std::vector<Data> data){
 			float last3[] = {0,0,0};
 			int i = 0;
 			bool digging = false;
+			int index = 0;
 			for(float f: d.data){
 				last3[i] = f;
 				i++; 
 				if(i == 3){
 					if(last3[0] > 0.06f && last3[1] > 0.06f && last3[2] > 0.06f){
 						digging = true;
+						at.timeline[index-1] = true;
+						at.timeline[index-2] = true;
 					}
 					else if(last3[0] < 0.06f && last3[1] < 0.06f && last3[2] < 0.06f){
 						digging = false;
+						at.timeline[index-1] = false;
+						at.timeline[index-2] = false;
 					}
 					i = 0;
 				}
 				at.timeline.push_back(digging);
+				index++;
 			}
 		}
 		ats.push_back(at);
