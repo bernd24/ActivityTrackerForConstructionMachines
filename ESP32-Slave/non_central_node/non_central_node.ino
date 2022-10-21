@@ -24,11 +24,11 @@ void setup() {
 
   while(!Communication::init()) {
     Serial.println("ERROR: Could not initialize communication");
-    delay(3000);
+    delay(2000);
   }
   delay(1000);
 }
-float f = 0.0;
+//float f = 0.0;
 
 void loop() {
   uint64_t timer = millis();
@@ -49,6 +49,11 @@ void loop() {
   }
 
   uint64_t elapsed_time = millis() - timer;
-
-  delay((SECOND / HZ) - elapsed_time);
+  if(elapsed_time > 100) {
+    Serial.println("No delay");
+  }
+  else {
+    Serial.print("delaying for: "); Serial.println(100 - elapsed_time);
+    delay(100 - elapsed_time);
+  }
 }

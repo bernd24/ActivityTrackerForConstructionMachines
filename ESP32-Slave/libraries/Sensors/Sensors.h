@@ -7,8 +7,8 @@
 #include <Adafruit_Sensor.h>
 #include <SoftwareSerial.h>
 
-const uint8_t lidar_rx_pin = 33;
-const uint8_t lidar_tx_pin = 32;
+const uint8_t lidar_rx_pin = 32;
+const uint8_t lidar_tx_pin = 33;
 
 #define HC_SR04_TRIG_PIN 12
 #define HC_SR04_ECHO_PIN 13
@@ -65,7 +65,7 @@ private:
 	static HC_SR04 sonar_0;
 
 	static SoftwareSerial lidar_serial;
-	static void getTFminiDistance(int16_t& dist);
+	static void getTFminiDistance(int* dist, int* str);
 
 	static bool MPU6050_0_FLAG;
 	static bool MPU6050_1_FLAG;

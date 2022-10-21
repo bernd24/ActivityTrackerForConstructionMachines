@@ -14,7 +14,8 @@ bool Sensors::SONAR_0_FLAG 	 = false;
 bool Sensors::RSSI_FLAG 	 = false;
 
 uint64_t lidar_timer;
-const uint64_t lidar_timeout = 2000;		
+const uint64_t lidar_init_timeout = 2000;
+const uint64_t lidar_measure_timeout = 100;
 
 void Sensors::setAllFlags(bool b) {
 	MPU6050_0_FLAG = b;
@@ -24,12 +25,14 @@ void Sensors::setAllFlags(bool b) {
 	RSSI_FLAG = b;
 }
 
-void Sensors::getTFminiDistance(int16_t& dist) {
+void Sensors::getTFminiDistance(int* dist, int* str) {
 	static char i = 0;
 	char j = 0;
 	int checksum = 0;
 	static int rx[9];
-	if(!lidar_serial.available()) return;
+	if(!lidar_serial.available()) {
+		return;
+	}
 	
 	rx[i] = lidar_serial.read();
 	if (rx[0] != 0x59) {
@@ -46,7 +49,8 @@ void Sensors::getTFminiDistance(int16_t& dist) {
       }
       if (rx[8] == (checksum % 256))
       {
-        dist = rx[2] + rx[3] * 256;
+        *dist = rx[2] + rx[3] * 256;
+        *str = rx[4] + rx[5] * 256;
       }
       i = 0;
     }
@@ -54,11 +58,11 @@ void Sensors::getTFminiDistance(int16_t& dist) {
     {
       i++;
     }
-
 }
 bool Sensors::init(bool rssi) {
 	// Try every sensor object to see what is connected.
 	//lidar_serial(lidar_rx_pin, lidar_tx_pin);
+	//lidar_serail = SoftwareSerial()
 	lidar_serial.begin(115200);
 	setAllFlags(false);
 	bool is_any_flag_set = false;
@@ -83,19 +87,20 @@ bool Sensors::init(bool rssi) {
 		is_any_flag_set = true;
 	}
 
-	int16_t dist = 0;
+	int dist = 0;
+	int str = 0;
 	lidar_timer = millis();
 	while(!dist) {
-		getTFminiDistance(dist);
-		delay(5);
-		if(millis() - lidar_timer > lidar_timeout) {
+		getTFminiDistance(&dist, &str);
+		if(dist) {
+			LIDAR_0_FLAG = true;
+			is_any_flag_set = true;
+			break;
+		}
+		if(millis() - lidar_timer > lidar_init_timeout) {
 			Serial.println("Timeout reached for lidar");
 			break;
 		}
-	}
-	if(dist) {
-		LIDAR_0_FLAG = true;
-		is_any_flag_set = true;
 	}
 
 	RSSI_FLAG = rssi;
@@ -140,13 +145,18 @@ uint8_t Sensors::getData(float* handle) {
 	}
 
 	if(LIDAR_0_FLAG) {
-		int16_t dist = 0;
+		int dist = 0;
+		int str = 0;
 		lidar_timer = millis();
 		while(!dist) {
-			getTFminiDistance(dist);
-			delay(5);
-			if(millis() - lidar_timer > lidar_timeout)
+			getTFminiDistance(&dist, &str);
+			if(dist) {
 				break;
+			}
+			if(millis() - lidar_timer > lidar_measure_timeout) {
+				Serial.println("Timeout reached for lidar");
+				break;
+			}
 		}
 		handle[float_count++] = (float)dist;
 	}

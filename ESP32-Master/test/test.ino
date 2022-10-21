@@ -58,6 +58,7 @@ char file_arr[1024] = {'\0'};
 void loop() {
   packet_handshake_t handshake;
   packet_data_t data;
+  
   while(Communication_Master::queue.popHandshake(handshake)) {
     //Communication_Master::loadPacketIntoJSON(handshake, Communication_Master::small_packet);
     Serial.println("");
@@ -92,20 +93,8 @@ void loop() {
       getGyro(master_data.payload, i*3);
       delay(100);
     }
-    if(PRINT_DATA) {
-      strcpy(file_arr, "");
-      Communication_Master::loadPacketIntoJSON(master_data, file_arr);
-      Serial.println(file_arr);
-    }
     Communication_Master::queue.push(master_data);
-  }/*
-  else {
-    for(int i = 0; i < 30; ++i) {
-      master_data.payload[i] = (float)i;
-    }
-    Communication_Master::queue.push(master_data);
-    delay(1000);
-  }*/
+  }
   
   while(Communication_Master::queue.popData(data) && (millis() - timer < SERVER_SEND_RATE)) {
     uint8_t index = JSON_data_packet::getIndex(data.getSensorNodeID());
@@ -114,11 +103,12 @@ void loop() {
       Serial.print("Index: "); Serial.println(index);
       continue;
     }
-/*
+    
+
     if(!Communication_Master::server_packet[index].handshake_flag) {
       Serial.println("No handshake flag set in json array object, fuck");
       continue;
-    }*/
+    }
 
     if(Communication_Master::server_packet[index].is_full) {
       Serial.println("Json array full, we throw away data packet");

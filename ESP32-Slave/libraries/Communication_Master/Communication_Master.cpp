@@ -95,6 +95,7 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len) {
 			copyArray(Communication_Master::sensor_node_list[i].data_format, (sensor_format_t*)(data + 2), *(data + 1));
 			break;
 		case DATA:
+			Serial.println("Recieved data!");
 			if(PRINT_DATA) {
 				strcpy(file_json, "");
 				Communication_Master::loadPacketIntoJSON(*(packet_data_t*)data, file_json);
@@ -202,13 +203,14 @@ bool Communication_Master::init(char ssid[], char pass[], uint8_t channel, bool 
 		file_data.close();
 	}
 
-	Serial2.begin(115200);
-	delay(1000);
+	Serial2.begin(9600);
+	delay(3000);
 	sim800 = new SIM800L((Stream*)&Serial2, SIM800_RST_PIN, 200, 512);
 	if(!setupSIM800()) {
 		delete sim800;
 		return false;
 	}
+	
 	esp_now_register_recv_cb(OnDataRecv);
 	delay(100);
 
@@ -521,7 +523,7 @@ uint8_t JSON_data_packet::getIndex(uint8_t id) {
 		return 0;
 	}
 
-	Serial.println("Returning index automatically");
+	//Serial.println("Returning index automatically");
 	return i;
 }
 
