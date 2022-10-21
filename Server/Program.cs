@@ -173,7 +173,7 @@ public class Callback{
                         string[] values = text.Split(' '); 
                         DateTime start = db.Query("Measurement")
                         .Where("WS_Id",ws.Id)
-                        .OrderByDesc("TimeOfMeasure")
+                        .OrderBy("TimeOfMeasure")
                         .Limit(1)
                         .Get<Measurement>()
                         .First()
