@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <deque>
+#include <numeric>
 
 #define MOVING 0
 
@@ -470,13 +471,22 @@ Activity_Timeline best_fit(const Activity_Timeline & a1, const Activity_Timeline
 	return best;
 }
 
+float average(std::vector<float> const& v){
+    if(v.empty()){
+        return 0;
+    }
+
+    auto const count = static_cast<float>(v.size());
+    return std::reduce(v.begin(), v.end()) / count;
+}
+
 std::vector<Activity_Timeline> predict(std::vector<Data> data){
 	std::vector<Activity_Timeline> ats;
 	for(Data d: data){
 		Activity_Timeline at;
 		at.timeline = std::vector<bool>();
 		if(d.sensorName == "MPU6050" && d.sensorType == "Gyrometer" && d.sensorAxis == "Z"){
-			float last5[] = {0,0,0,0,0};
+			/*float last5[] = {0,0,0,0,0};
 			int i = 0;
 			bool digging = false;
 			int index = 0;
@@ -502,6 +512,16 @@ std::vector<Activity_Timeline> predict(std::vector<Data> data){
 				}
 				at.timeline.push_back(digging);
 				index++;
+			}*/
+
+			for(int i = 0; i < d.data.size(); i++){
+				std::vector<float> window((i-3 < 0 ? d.data.begin() : d.data.begin()+i-3), (i+3 >= d.data.size() ? d.data.end() : d.data.begin()+i+3));
+				if(average(window) < 0.06){
+					at.timeline.push_back(false);
+				}
+				else{
+					at.timeline.push_back(true);
+				}
 			}
 		}
 		ats.push_back(at);
