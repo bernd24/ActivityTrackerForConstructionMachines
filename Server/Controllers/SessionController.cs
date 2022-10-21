@@ -125,7 +125,7 @@ public class SessionController : Controller
 
     [AllowAnonymous]
     [HttpPost]
-    public IActionResult Data([FromBody]List<SensorData<float>> data){
+    public string Data([FromBody]List<SensorData<float>> data){
         DateTime timestamp = DateTime.Now;
         Console.Write("received data");
         foreach(SensorData<float> d in data){
@@ -186,7 +186,7 @@ public class SessionController : Controller
             }
         }
 
-        return Ok();
+        return "success";
     }
 
     [NonAction]

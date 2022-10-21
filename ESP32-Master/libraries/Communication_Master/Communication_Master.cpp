@@ -226,7 +226,7 @@ bool Communication_Master::init(char ssid[], char pass[], uint8_t channel, bool 
 
 	int16_t result = sendToServer(handshake);
 	int counter = 0;
-	while(result != 200 && result != 703 && result != 701) {
+	while(result != 200) {
 		if(counter > 5) break;
 		delay(500);
 		Serial.println("Error while sending master handshake to server!");
@@ -401,11 +401,11 @@ void Communication_Master::loadPacketIntoJSON(packet_error_t packet, char payloa
 }
 
 int16_t Communication_Master::sendToServer(const char payload[]) {
+    Serial.print(strlen(payload));
 	return sim800->doPost(URL2, CONTENT_TYPE, payload, 10000, 10000);
 }
 
 int16_t Communication_Master::sendToServer(const JSON_data_packet& packet) {
-    Serial.println(strlen(packet.payload));
 	return sim800->doPost(URL2, CONTENT_TYPE, packet.payload, 10000, 10000);
 }
 

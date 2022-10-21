@@ -63,10 +63,10 @@ void loop() {
     //Communication_Master::loadPacketIntoJSON(handshake, Communication_Master::small_packet);
     Serial.println("");
     int16_t result = Communication_Master::sendToServer(handshake);
-    if(result == 200 || result != 701 || result != 703) {
+    if(result == 200) {
       Serial.println("Handshake successfully sent");
       uint8_t i = JSON_data_packet::getIndex(handshake.getSensorNodeID());
-      
+      Serial.println(result);
       if(i > MAX_CONNECTIONS - 1) {
         Serial.println("Error, successful handshake sent to server. But no json buffer was assigned to this node_id???");
         continue;
@@ -76,7 +76,7 @@ void loop() {
     }
     else {
       int counter = 0;
-      while(result != 200 && result != 703 && result != 701) {
+      while(result != 200) {
         if(counter > 5) break;
         Serial.println("Could not send handshake");
         Serial.print("Error: "); Serial.println(result);
@@ -128,11 +128,12 @@ void loop() {
     }
 
     int16_t result = Communication_Master::sendToServer(Communication_Master::big_packet);
-    if(result == 200 || result != 701 || result != 703) {
+    if(result == 200) {
       Serial.println("Data successfully sent");
       timer = millis();
       counter = 0;
       fail_send = false;
+      Serial.println(result);
       Serial.println("Json packet----");
       Serial.println(Communication_Master::big_packet);
     }
