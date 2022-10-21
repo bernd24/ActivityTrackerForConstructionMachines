@@ -474,7 +474,17 @@ std::vector<Activity_Timeline> predict(std::vector<Data> data){
 	std::vector<Activity_Timeline> ats;
 	for(Data d: data){
 		Activity_Timeline at;
-		at.timeline = {true,true,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true};
+		at.timeline = std::vector<bool>();
+		if(d.sensorName == "MPU6050" && d.sensorType == "Gyrometer" && d.sensorAxis == "Z"){
+			for(float f: d.data){
+				if(f > 0.06f){
+					at.timeline.push_back(true);
+				}
+				else{
+					at.timeline.push_back(false);
+				}
+			}
+		}
 		ats.push_back(at);
 	}
 	return ats;

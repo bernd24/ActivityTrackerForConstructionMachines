@@ -195,7 +195,7 @@ public class Callback{
                                 }
                                 period = false;
                             }   
-                            else{
+                            else if(val == "1"){
                                 if(!period){
                                     period = true;
                                     start = current;
@@ -218,7 +218,7 @@ public class Callback{
                     }
                 }
 
-                new DirectoryInfo("" + ws.Id).Delete(true);
+                //new DirectoryInfo("" + ws.Id).Delete(true);
 
                 Console.WriteLine("finished processing");
             }

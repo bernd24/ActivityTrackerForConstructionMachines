@@ -24,6 +24,12 @@ int main(int argc, char *argv[]){
 		std::strtok(filePath,"/");
 
 		Data d;
+		std::ifstream in(entry.path().string());
+		float f;
+		d.data = std::vector<float>();
+		while(in >> f){
+			d.data.push_back(f);
+		}
 		d.sensorName = std::string(std::strtok(NULL,"_"));
 		d.sensorType = std::string(std::strtok(NULL,"_"));
 		d.sensorAxis = std::string(std::strtok(NULL,"_"));
