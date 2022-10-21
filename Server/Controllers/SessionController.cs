@@ -127,6 +127,7 @@ public class SessionController : Controller
     [HttpPost]
     public IActionResult Data([FromBody]List<SensorData<float>> data){
         DateTime timestamp = DateTime.Now;
+        Console.Write("received data");
         foreach(SensorData<float> d in data){
             IEnumerable<dynamic> handshake = Db.Query("Handshake")
             .Where("SNI_Id",d.node_ID)

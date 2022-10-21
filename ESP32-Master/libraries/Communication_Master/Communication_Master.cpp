@@ -226,10 +226,10 @@ bool Communication_Master::init(char ssid[], char pass[], uint8_t channel, bool 
 
 	int16_t result = sendToServer(handshake);
 	int counter = 0;
-	while(result != 200) {
+	while(result != 200 && result != 703 && result != 701) {
 		if(counter > 5) break;
 		delay(500);
-		Serial.println("Error while sending master handshake to server");
+		Serial.println("Error while sending master handshake to server!");
 		Serial.print("Error: "); Serial.println(result);
 		counter++;
 
@@ -405,12 +405,14 @@ int16_t Communication_Master::sendToServer(const char payload[]) {
 }
 
 int16_t Communication_Master::sendToServer(const JSON_data_packet& packet) {
+    Serial.println(strlen(packet.payload));
 	return sim800->doPost(URL2, CONTENT_TYPE, packet.payload, 10000, 10000);
 }
 
 int16_t Communication_Master::sendToServer(const packet_handshake_t& handshake) {
 	loadPacketIntoJSON(handshake, small_packet);
-	int16_t result = sim800->doPost(URL1, CONTENT_TYPE, small_packet, 10000, 10000);
+
+	int16_t result = sim800->doPost(URL1, CONTENT_TYPE, "{\"node_ID\":2,\"payload\":[{\"id\":\"MPU6050\",\"elements\":3}]}", 10000, 10000);
 	Serial.println("Inside send to server");
 	for(int i = 0; i < 256; ++i) {
 		Serial.print(small_packet[i]);
