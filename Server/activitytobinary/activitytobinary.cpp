@@ -24,6 +24,7 @@ int main(int argc, char *argv[]){
 		std::strtok(filePath,"/");
 
 		Data d;
+		std::cout << entry.path().string() << std::endl;
 		std::ifstream in(entry.path().string());
 		float f;
 		d.data = std::vector<float>();

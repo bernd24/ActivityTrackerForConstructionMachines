@@ -184,7 +184,7 @@ public class Callback{
 
                         foreach(string val in values){
                             if(val == "0"){
-                                if(period){
+                                if(period && start != end){
                                     db.Query("WorkSessionActivity")
                                     .Insert(new{
                                         A_Id = s.A_Id,
@@ -199,6 +199,7 @@ public class Callback{
                                 if(!period){
                                     period = true;
                                     start = current;
+                                    end = current;
                                 }
                                 else{
                                     end = current;

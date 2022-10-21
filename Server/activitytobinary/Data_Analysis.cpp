@@ -471,13 +471,15 @@ Activity_Timeline best_fit(const Activity_Timeline & a1, const Activity_Timeline
 	return best;
 }
 
-float average(std::vector<float> const& v){
+float average(std::vector<float>& v){
     if(v.empty()){
         return 0;
     }
+	float idleCount = 0;
+	std::for_each(v.begin(), v.end(),[&](float& f){if(std::abs(f) < 0.1f)idleCount++;});
 
     auto const count = static_cast<float>(v.size());
-    return std::reduce(v.begin(), v.end()) / count;
+    return idleCount / count;
 }
 
 std::vector<Activity_Timeline> predict(std::vector<Data> data){
@@ -514,9 +516,10 @@ std::vector<Activity_Timeline> predict(std::vector<Data> data){
 				index++;
 			}*/
 
+			int window_size = 2;
 			for(int i = 0; i < d.data.size(); i++){
-				std::vector<float> window((i-3 < 0 ? d.data.begin() : d.data.begin()+i-3), (i+3 >= d.data.size() ? d.data.end() : d.data.begin()+i+3));
-				if(average(window) < 0.06){
+				std::vector<float> window((i-window_size < 0 ? d.data.begin() : d.data.begin()+i-window_size), (i+window_size >= d.data.size() ? d.data.end() : d.data.begin()+i+window_size));
+				if(average(window) > 0.5f){
 					at.timeline.push_back(false);
 				}
 				else{
