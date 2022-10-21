@@ -1,6 +1,78 @@
 ﻿@{
     ViewData["Title"] = "Machines";
 }
+
+
+@* Modal for the Create a Machine *@
+@* TODO close dont work *@
+<form method="POST" action="/Machine/Create">
+    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h5 class="modal-title " id="exampleModalLabel">New Machine</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- Machinename input -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                 <input type="text" name="Machinename" id="Machinename" class="form-control" />
+                                <label class="form-label" for="Machinename">
+                                    <div class="en">Machinename</div>
+                                    <div class="de">Maschinenname</div>
+                                    <div class="sv">Användarnamn</div>
+                                </label>
+
+                                <div class="row">
+                                    <div class="col-8 col-sm-6">
+                                        <input type="text" name="Brand" id="Brand" class="form-control" />
+                                        <label class="form-label" for="Brand">
+                                            <div class="en">Brand</div>
+                                            <div class="de">Typ</div>
+                                            <div class="sv">Brand</div>
+                                        </label>
+                                    </div>
+                                    <div class="col-4 col-sm-6">
+                                        <input type="text" name="Model" id="Model" class="form-control" />
+                                        <label class="form-label" for="Model">
+                                            <div class="en">Model</div>
+                                            <div class="de">Model</div>
+                                            <div class="sv">Model</div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <div class="en">Create</div>
+                        <div class="de">Erstellen</div>
+                        <div class="sv">Create</div>
+                    </button>
+                    <a id="closemodal" href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <div class="en">Close</div>
+                        <div class="de">Schließen</div>
+                        <div class="sv">Closa</div>
+                    </button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
 <h1>
     <div style="float: left; margin-right: 10px;" class="en">Machines</div>
     <div style="float: left; margin-right: 10px;" class="de">Maschinen</div>
@@ -176,7 +248,7 @@
                                 <div class="de">Löschen</div>
                                 <div class="sv">Släcka</div>
                             </button>
-                            <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                            <a asp-controller="Chart" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
                                 <div class="en">Show</div>
                                 <div class="de">Anzeigen</div>
                                 <div class="sv">Visa</div>

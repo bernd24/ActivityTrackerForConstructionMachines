@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 
 
+
 namespace Server.Controllers;
 
 [Authorize]
@@ -20,6 +21,14 @@ public class ChartController : Controller
     {
         _logger = logger;
         Db = db;
+    }
+
+
+    [HttpGet]
+    public IActionResult Show(int Id)
+    {
+        ViewBag.M_Id = Id;
+        return View("SpecificMachine",new Query(Db).GetMachinesWithConfig());
     }
 
     public IActionResult Index(int Id, DateTime fromDate, DateTime fromTime, DateTime tillDate, DateTime tillTime)

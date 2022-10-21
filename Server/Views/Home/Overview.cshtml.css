@@ -11284,9 +11284,15 @@ body.sidebar-toggled footer.sticky-footer {
 
 
 
-
-
-
+/* // line Chart */
+.chart-line {
+  position: relative;
+  height: 10rem;
+  width: 100%;
+  @include media-breakpoint-up(md) {
+    height: 20rem;
+  }
+}
 
 /* // Area Chart */
 .chart-area {
