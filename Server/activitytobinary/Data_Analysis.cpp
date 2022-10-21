@@ -481,7 +481,7 @@ std::vector<Activity_Timeline> predict(std::vector<Data> data){
 			bool digging = false;
 			int index = 0;
 			for(float f: d.data){
-				last5[i] = f;
+				last5[i] = std::abs(f);
 				i++; 
 				if(i == 5){
 					if(last5[0] > 0.06f && last5[1] > 0.06f && last5[2] > 0.06f && last5[3] > 0.06f && last5[4] > 0.06f){
