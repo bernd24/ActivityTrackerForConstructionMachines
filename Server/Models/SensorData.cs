@@ -1,6 +1,6 @@
 namespace Server.Models{
     public class Handshake{
-        public string ID {get; set;}
+        public string id {get; set;}
         public int elements {get; set;}
     }
 
