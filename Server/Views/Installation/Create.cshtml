@@ -1,0 +1,294 @@
+@{
+    ViewData["Title"] = "Create";
+}
+<h1>
+    <div class="en">Create Configuration</div>
+    <div class="de">Konfiguration erstellen</div>
+    <div class="sv">Skapa konfiguration</div>
+</h1>
+<form action="/Installation/CreatePic/@ViewBag.Machine.Id" 
+      enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;" 
+      method="post">
+    <dl>
+        <dt>
+            <label for="ConfigPic">
+                <div class="en">Configuration Picture</div>
+                <div class="de">Konfigurationsbild</div>
+                <div class="sv">Konfigurationsbild</div>
+            </label>
+        </dt>
+        <dd>
+            <input id="ConfigPic" type="file" 
+                name="ConfigPic" />
+        </dd>
+    </dl>
+
+    <input class="btn btn-secondary" type="submit" value="Upload" />
+
+    <div style="margin-top:15px">
+        <output name="result"></output>
+    </div>
+</form>
+
+<script>
+  async function AJAXSubmit (oFormElement) {
+    var resultElement = oFormElement.elements.namedItem("result");
+    const formData = new FormData(oFormElement);
+
+    try {
+    const response = await fetch(oFormElement.action, {
+      method: 'POST',
+      body: formData
+    });
+
+    resultElement.value = 'Result: ' + response.status + ' ' + 
+      response.statusText;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+</script>
+
+    <h4>
+<label for="createSns">
+                <div class="en">Create Sensor Node</div>
+                <div class="de">Sensorknoten erstellen</div>
+                <div class="sv">Skapa Sensornoder</div>
+            </label>
+            </h4>
+
+<form id="createSns" method="POST" action="/Installation/Create/@ViewBag.Machine.Id" style="border: solid;">
+<table class="table table-bordered" style="margin:2px;">
+    <tr>
+        <th>
+            <div class="en">Node Type</div>
+            <div class="de">Knotentyp</div>
+            <div class="sv">Nodtyp</div>
+        </th>
+        <th>
+            <div class="en">Battery</div>
+            <div class="de">Batterie</div>
+            <div class="sv">Batteri</div>
+        </th>
+    </tr>
+    <tr>
+        <td><select name="isMaster">
+            <option>Master</option>
+            <option>Slave</option>
+        </select></td>
+        <td><select name="hasBattery">
+            <option>Yes</option>
+            <option>No</option>
+        </select></td>
+    </tr>
+</table>
+<table id="sensors" class="table table-bordered" style="margin:2px;">
+    <tr>
+        <th>
+            <div class="en">Sensor</div>
+            <div class="de">Sensor</div>
+            <div class="sv">Sensor</div>
+        </th>
+        <th>
+            <div class="en">Axis</div>
+            <div class="de">Achse</div>
+            <div class="sv">Axel</div>
+        </th>
+        <th>
+            <div class="en">Position</div>
+            <div class="de">Position</div>
+            <div class="sv">Position</div>
+        </th>
+        <th>
+            <div class="en">RSSI Partner</div>
+            <div class="de">RSSI Partner</div>
+            <div class="sv">RSSI Partner</div>
+        </th>
+        <th>
+            <div class="en">Actions</div>
+            <div class="de">Aktionen</div>
+            <div class="sv">Åtgärder</div>
+        </th>
+    </tr>
+    <tr>
+        <td><select id="sensor" name="S_Id[]">
+            @foreach(Sensor s in Model){
+                <option value="@s.Id"><pre>@s.Manufacturer @s.SensorName @s.SensorType</pre></option>
+            }
+        </select></td>
+        <td><select id="axis" name="Axis[]">
+            <option>-</option>
+            <option>X</option>
+            <option>Y</option>
+            <option>Z</option>
+        </select></td>
+        <td><select id="position" name="Position[]">
+            <option>A</option><option>B</option><option>C</option>
+            <option>D</option><option>E</option><option>F</option>
+        </select></td>
+        <td><select id="rssiPartner" name="RssiPartner[]">
+            <option>-</option>
+            <option>A</option><option>B</option><option>C</option>
+            <option>D</option><option>E</option><option>F</option>
+        </select></td>
+        <td onclick="addSensor()">
+            <p style="background-color:grey; text-align:center;">
+                Add
+            </p>
+        </td>
+    </tr>
+</table>
+<button class="btn btn-secondary" style="margin:2px;">
+    <div class="en">Add Sensor Node</div>
+    <div class="de">Sensorknoten hinzufügen</div>
+    <div class="sv">Lägg till sensornod</div>
+</button>
+</form>
+<br>
+@if(ViewBag.Machine.Config != null){
+    @if(ViewBag.Machine.Config.Picture != null){
+    <img src="/images/@ViewBag.Machine.Config.Picture" width="533" height="300">
+    <br>
+    <br>
+    }
+    
+@if(ViewBag.Machine.Config.SensorNodes != null && ViewBag.Machine.Config.SensorNodes.Count > 0){
+    <h4>
+<label for="nodeTable">
+                <div class="en">Sensor Nodes</div>
+                <div class="de">Sensorknoten</div>
+                <div class="sv">Sensornoder</div>
+            </label>
+            </h4>
+            <table id="nodeTable" class="table table-bordered">
+                <tr>
+                    <th>
+                        <div class="en">Actions</div>
+                        <div class="de">Aktionen</div>
+                        <div class="sv">Åtgärder</div>
+                    </th>
+                    <th>
+                        <div class="en">Node Type</div>
+                        <div class="de">Knotentyp</div>
+                        <div class="sv">Nodtyp</div>
+                    </th>
+                    <th>
+                        <div class="en">Battery Status</div>
+                        <div class="de">Batteriestatus</div>
+                        <div class="sv">Batteri status</div>
+                    </th>
+                    <th>
+                        <div class="en">Sensor Type</div>
+                        <div class="de">Sensortyp</div>
+                        <div class="sv">Sensortyp</div>
+                    </th>
+                    <th>
+                        <div class="en">Axis</div>
+                        <div class="de">Achse</div>
+                        <div class="sv">Axel</div>
+                    </th>
+                    <th>
+                        <div class="en">Position</div>
+                        <div class="de">Position</div>
+                        <div class="sv">Placera</div>
+                    </th>
+                    <th>
+                        <div class="en">RSSI Partner</div>
+                        <div class="de">RSSI Partner</div>
+                        <div class="sv">RSSI Partner</div>
+                    </th>
+                    <th>
+                        <div class="en">Sensor Name</div>
+                        <div class="de">Sensorname</div>
+                        <div class="sv">Sensornamn</div>
+                    </th>
+                    <th>
+                        <div class="en">Manufacturer</div>
+                        <div class="de">Hersteller</div>
+                        <div class="sv">Tillverkare</div>
+                    </th>
+                </tr>
+                @foreach(SensorNodeInstance sn in ViewBag.Machine.Config.SensorNodes){
+                    <tr>
+                        <td rowspan="@(sn.Sensors.Count()+1)">
+                            <form method="post" action="/Installation/DeleteSensorNode/@ViewBag.Machine.Id/@sn.Id">
+                                <button class="btn btn-secondary">Delete</button>
+                            </form>
+                        </td>
+                        @if(sn.isMaster){
+                            <td rowspan="@(sn.Sensors.Count()+1)">Master</td>
+                        }
+                        else{
+                            <td rowspan="@(sn.Sensors.Count()+1)">Slave</td>
+                        }
+                        @if(sn.hasBattery && sn.SensorNode != null){
+                            <td rowspan="@(sn.Sensors.Count()+1)">@sn.SensorNode.BatteryStatus</td>
+                        }
+                        else if(!sn.hasBattery){
+                            <td rowspan="@(sn.Sensors.Count()+1)">
+                                <div class="en">Connected to Power.</div>
+                                <div class="de">Mit Strom verbunden.</div>
+                                <div class="sv">Ansluten till ström.</div>
+                            </td>
+                        }
+                        else{
+                            <td rowspan="@(sn.Sensors.Count()+1)">
+                                <div class="en">Has a battery but there is no charge level data available.</div>
+                                <div class="de">Hat eine Batterie, aber es sind keine Daten zum Ladezustand verfügbar.</div>
+                                <div class="sv">Har ett batteri men det finns ingen laddningsnivådata tillgänglig.</div>                                
+                            </td>
+                        }
+                        @foreach(SensorInstance s in sn.Sensors){
+                            <tr>                              
+                                <td>@s.Sensor.SensorType</td>
+                                @if(s.Axis != null){
+                                    <td>@s.Axis</td>
+                                }
+                                else{
+                                    <td>-</td>
+                                }
+                                <td>@s.Position</td>
+                                @if(s.RssiPartner != null){
+                                    <td>@s.RssiPartner</td>
+                                }
+                                else{
+                                    <td>-</td>
+                                }
+                                <td>@s.Sensor.SensorName</td>
+                                <td>@s.Sensor.Manufacturer</td>                                
+                            </tr>
+                        }
+                    </tr>
+                }
+            </table>
+}
+}
+
+<script>
+    function addSensor(){
+        var table = document.getElementById("sensors");
+        var row = table.insertRow(2);
+        var sensorCell = row.insertCell(0);
+        var axisCell = row.insertCell(1);
+        var positionCell = row.insertCell(2);
+        var rssiPartnerCell = row.insertCell(3);
+        var del = row.insertCell(4);
+
+        var selectSensor = document.getElementById("sensor");
+        var selectAxis = document.getElementById("axis");
+        var selectPosition = document.getElementById("position");
+        var selectRssiPartner = document.getElementById("rssiPartner");
+        sensorCell.innerHTML = '<input name="S_Id[]" value="' + selectSensor.value + '" type="hidden">' + selectSensor.options[selectSensor.selectedIndex].text;
+        axisCell.innerHTML = '<input name="Axis[]" value="' + selectAxis.value + '" type="hidden">' + selectAxis.options[selectAxis.selectedIndex].text;
+        positionCell.innerHTML = '<input name="Position[]" value="' + selectPosition.value + '" type="hidden">' + selectPosition.options[selectPosition.selectedIndex].text;
+        rssiPartnerCell.innerHTML = '<input name="RssiPartner[]" value="' + selectRssiPartner.value + '" type="hidden">' + selectRssiPartner.options[selectRssiPartner.selectedIndex].text;
+        del.setAttribute("onclick","deleteSensor(this);");
+        del.innerHTML = '<p style="background-color:grey; text-align:center;">\
+            Delete\
+        </p>';
+
+    }
+    function deleteSensor(delCell){
+        document.getElementById("sensors").deleteRow(delCell.parentElement.rowIndex);
+    }
+</script>

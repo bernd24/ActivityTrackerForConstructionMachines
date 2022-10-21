@@ -1,0 +1,180 @@
+@{
+    ViewData["Title"] = "Charts";
+}
+
+@* ***********body***************** *@
+<div class="container flexbox-container">
+  <div class="flexbox-item flexbox-item-1">
+    @*  here should be the name of the User *@
+    <h1>Visualization</h1> 
+  </div>
+  @* ******************chart.js******https://www.chartjs.org/docs/latest/ *@
+  <div class="flexbox-item flexbox-item-1">
+  <form method="POST">
+      <dl>
+           <dt>
+            <label for="fromDate">
+                From - Till
+            </label>
+        </dt>
+        <dd>
+            <input name="fromDate" class="btn btn-secondary" type="date" value='@ViewBag.fromDate.ToString("yyyy-MM-dd")'>
+            <input name="fromTime" class="btn btn-secondary" type="time" step="1" value='@ViewBag.fromTime.ToString("HH:mm:ss")'>
+            -
+            <input name="tillDate" class="btn btn-secondary" type="date" value='@ViewBag.tillDate.ToString("yyyy-MM-dd")'>
+            <input name="tillTime" class="btn btn-secondary" type="time" step="1" value='@ViewBag.tillTime.ToString("HH:mm:ss")'>
+
+            <input class="btn btn-secondary" type="submit">
+        </dd>
+    </dl>
+    </form>
+    </div>
+  @foreach (var item in Model)
+  {
+    <div class="flexbox-item flexbox-item-1">
+    <h4>Node @item.SN_Id</h4>
+    <div class="flexbox-item flexbox-item-2">
+      <canvas id="@item.SN_Id"></canvas>
+    </div>
+    </div>
+  }
+  
+  @*<div class="flexbox-item flexbox-item-3">
+    <canvas id="myDoughnutChart" ></canvas>
+  </div>
+  <div class="flexbox-item flexbox-item-3">
+    <canvas id="myAreaChart" ></canvas>
+  </div>
+  <div class="flexbox-item flexbox-item-3">
+    <canvas id="mySteppedLineChart" ></canvas>
+  </div>
+
+  <div class="flexbox-item flexbox-item-3">
+    <!-- Section: Timeline -->
+    <h2 class="fw-bold">Excavator 1</h2>
+    <section class="py-5">
+      <h2 class="fw-bold">Timeline</h2>
+      <h5 >14.09.2022 (Tim Mueller)</h5>
+      <ul class="timeline-with-icons">
+        <li class="timeline-item mb-5">
+          <span class="timeline-icon">
+            <i class="fas fa-rocket text-primary fa-sm fa-fw"></i>
+          </span>
+
+          <h5 class="fw-bold">Ideling</h5>
+          <p class="text-muted mb-2 fw-bold">07:30</p>
+        </li>
+
+        <li class="timeline-item mb-5">
+          <span class="timeline-icon">
+            <i class="fas fa-hand-holding-usd text-primary fa-sm fa-fw"></i>
+          </span>
+          <h5 class="fw-bold">Moving</h5>
+          <p class="text-muted mb-2 fw-bold">08:30</p>
+        </li>
+
+        <li class="timeline-item mb-5">
+
+          <span class="timeline-icon">
+            <i class="fas fa-users text-primary fa-sm fa-fw"></i>
+          </span>
+          <h5 class="fw-bold">Digging</h5>
+          <p class="text-muted mb-2 fw-bold">11:30</p>
+        </li>
+
+        <li class="timeline-item mb-5">
+          <span class="timeline-icon">
+            <i class="fas fa-money-bill-wave text-primary fa-sm fa-fw"></i>
+          </span>
+          <h5 class="fw-bold">shutdown</h5>
+          <p class="text-muted mb-2 fw-bold">13:00</p>
+        </li>
+
+         <li class="timeline-item mb-5">
+          <span class="timeline-icon">
+            <i class="fas fa-money-bill-wave text-primary fa-sm fa-fw"></i>
+          </span>
+          <h5 class="fw-bold">digging</h5>
+          <p class="text-muted mb-2 fw-bold">15:00</p>
+        </li>
+      </ul>
+    </section>
+    <!-- Section: Timeline -->
+
+  </div>*@
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+   var model = @Html.Raw(Json.Serialize(Model));
+model.forEach(m => addChart(m));
+
+
+function addChart(m){
+    var data = {
+    //labels: m.data[0].timestamps,
+    datasets: [
+        @*, {
+        label: 'Cubic interpolation',
+        data: datapoints,
+        borderColor: 'rgb(255, 99, 132)',
+        fill: false,
+        tension: 0.4
+        }, {
+        label: 'Linear interpolation (default)',
+        data: datapoints,
+        borderColor: 'rgb(200, 99, 50)',
+        fill: false
+        }*@
+    ]
+    };
+    colors = ['#800000','#9A6324','#808000','#469990','#000075','#000000','#e6194B','#f58231','#ffe119','#3cb44b'];
+    i = 0;
+    m.data.forEach(d =>
+      data.datasets.push({
+        label: d.sensorName,
+        data: d.datapoints,
+        borderColor: colors[i++],
+        //  @* borderColor: Utils.CHART_COLORS.blue,     this shit is not working  Utils file is not there https://github.com/chartjs/Chart.js/blob/master/docs/scripts/utils.js*@  
+        //  @* but i dont think we need that *@
+        fill: false,
+        cubicInterpolationMode: 'monotone',
+        tension: 0.4,
+        showLine: true
+      })
+    );
+
+    const config = {
+      type: 'scatter',
+      data: data,
+      options: {
+        scales: {
+          x: {
+            ticks: {
+              callback: function(label) {
+                return new Date(label).toLocaleString([], { hour12: false, hour: '2-digit', minute: '2-digit', fractionalSecondDigits: 2 });
+              }
+            }
+          }
+        },
+        plugins:{
+          tooltip: {
+            callbacks: {
+                label: function(context) {
+                  return new Date(context.parsed.x).toLocaleTimeString([], { hour12: false, hour: '2-digit', minute: '2-digit', fractionalSecondDigits: 2 }) + ": " + context.parsed.y;
+                }
+            }
+          }
+        }
+      }
+    }; 
+
+    const myChart = new Chart(
+      document.getElementById(m.sN_Id),
+      config
+    );
+}
+</script>
+

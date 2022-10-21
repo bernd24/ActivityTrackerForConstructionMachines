@@ -1,0 +1,81 @@
+@{
+    ViewData["Title"] = "LogData";
+}
+
+<h1>
+    <div class="en">Upload Log Data</div>
+    <div class="de">Logdaten hochladen</div>
+    <div class="sv">Ladda Upp Loggdata</div>
+</h1>
+
+<form action="/Session/LogData" 
+      enctype="multipart/form-data" onsubmit="AJAXSubmit(this);return false;" 
+      method="post">
+    <dl>
+        <dt>
+            <label for="log">
+                <div class="en">Log Data</div>
+                <div class="de">Logdaten</div>
+                <div class="sv">Loggdata</div>
+            </label>
+        </dt>
+        <dd>
+            <input id="log" type="file" 
+                name="log" />
+        </dd>
+        <dt>
+            <label for="WS_Id">
+                Session-ID
+            </label>
+        </dt>
+        <dd>
+            <input name="WS_Id" class="btn btn-secondary" type="number">
+        </dd>
+
+        <dt>
+            <label for="SI_Id">
+                SensorInstance-ID
+            </label>
+        </dt>
+        <dd>
+            <input name="SI_Id" class="btn btn-secondary" type="number">
+        </dd>
+
+        <dt>
+            <label for="date">
+                Timestamp
+            </label>
+        </dt>
+        <dd>
+            <input name="date" class="btn btn-secondary" type="date">
+            <input name="time" class="btn btn-secondary" type="time">
+        </dd>
+    </dl>
+
+    
+
+    <input class="btn btn-secondary" type="submit" value="Upload" />
+
+    <div style="margin-top:15px">
+        <output name="result"></output>
+    </div>
+</form>
+
+<script>
+  async function AJAXSubmit (oFormElement) {
+    var resultElement = oFormElement.elements.namedItem("result");
+    const formData = new FormData(oFormElement);
+
+    try {
+    const response = await fetch(oFormElement.action, {
+      method: 'POST',
+      body: formData
+    });
+
+    resultElement.value = 'Result: ' + response.status + ' ' + 
+      response.statusText;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+</script>
