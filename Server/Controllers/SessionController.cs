@@ -134,7 +134,7 @@ public class SessionController : Controller
             .Get();
 
             if(handshake.Count() == 0){
-                return Ok("no handshake");
+                return "no handshake";
             }
 
             SensorNodeInstance sni = Db.Query("SensorNodeInstance")
