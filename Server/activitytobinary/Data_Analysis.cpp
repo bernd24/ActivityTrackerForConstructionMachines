@@ -476,13 +476,22 @@ std::vector<Activity_Timeline> predict(std::vector<Data> data){
 		Activity_Timeline at;
 		at.timeline = std::vector<bool>();
 		if(d.sensorName == "MPU6050" && d.sensorType == "Gyrometer" && d.sensorAxis == "Z"){
+			float last3[] = {0,0,0};
+			int i = 0;
+			bool digging = false;
 			for(float f: d.data){
-				if(f > 0.06f){
-					at.timeline.push_back(true);
+				last3[i] = f;
+				i++; 
+				if(i == 3){
+					if(last3[0] > 0.06f && last3[1] > 0.06f && last3[2] > 0.06f){
+						digging = true;
+					}
+					else if(last3[0] < 0.06f && last3[1] < 0.06f && last3[2] < 0.06f){
+						digging = false;
+					}
+					i = 0;
 				}
-				else{
-					at.timeline.push_back(false);
-				}
+				at.timeline.push_back(digging);
 			}
 		}
 		ats.push_back(at);
