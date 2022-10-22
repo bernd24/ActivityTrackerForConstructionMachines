@@ -7,12 +7,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Server.styles.css" asp-append-version="true" />
-    <script language="JavaScript" type="text/javascript" src="bootstrap.min.js"></script>
+    
 
 </head>
 <body>
 <script language="JavaScript" type="text/javascript" src="bootstrap.min.js"></script>
-
     @* HEADER SECTION *@
     <header>
 
@@ -24,9 +23,9 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Login</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            @* <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
+                            </button> *@
                         </div>
                         
                         <div class="modal-body">
@@ -57,12 +56,12 @@
                                 <div class="de">Einloggen</div>
                                 <div class="sv">Logga in</div>
                             </button>
-                            <a id="closemodal" href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+                            @* <a id="closemodal" href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 <div class="en">Close</div>
                                 <div class="de">Schließen</div>
                                 <div class="sv">Closa</div>
-                            </button>
+                            </button> *@
                         </div> 
                     </div>
                 </div>
@@ -104,7 +103,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    
+                    <ul class="navbar-nav flex-grow-1 justify-content-around ">
 
                         @if(User.Identity.IsAuthenticated){
                         <li class="nav-item">
@@ -114,18 +114,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="1">
+                            <a class="nav-link text-black" asp-area="" asp-controller="Machine" asp-action="Index" asp-route-id="1">
                                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#gear-fill"/></svg>
                                 Machines
                             </a>
                         </li>
 
-                            <li class="nav-item">
+                            @* <li class="nav-item">
                             <a class="nav-link text-black" asp-area="" asp-controller="Chart" asp-action="SpecificMaschine" asp-route-id="1">
                                 <svg class="bi d-block mx-auto mb-1" width="24" height="24"><use xlink:href="#tools"/></svg>
                                 Installation
                             </a>
-                        </li>
+                        </li> *@
                         }
                     </ul>
                     <ul class="navbar-nav">

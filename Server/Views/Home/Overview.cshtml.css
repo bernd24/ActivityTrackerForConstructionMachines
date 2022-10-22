@@ -223,6 +223,7 @@ caption {
 
 th {
   text-align: inherit;
+  text-align: match-parent;
   text-align: -webkit-match-parent;
 }
 

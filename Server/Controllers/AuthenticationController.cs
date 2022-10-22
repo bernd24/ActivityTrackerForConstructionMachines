@@ -59,7 +59,7 @@ namespace JWTAuthentication.NET6._0.Controllers
 
                HttpContext.Response.Cookies.Append("token", new JwtSecurityTokenHandler().WriteToken(token), new Microsoft.AspNetCore.Http.CookieOptions { Expires = token.ValidTo });
                 
-                return RedirectToAction("Home", "Home");
+                return RedirectToAction("Overview", "Home");
             }
             return RedirectToAction("Index", "Authenticate");
         }
