@@ -2,10 +2,349 @@
     ViewData["Title"] = "Configuration";
 }
 
+@* <link href="css/bootstrap-table-expandable.css" rel="stylesheet">
+<script src="js/bootstrap-table-expandable.js"></script> *@
+
+@* <style>
+    table.table-expandable > tbody > tr:nth-child(odd) {
+    cursor: pointer;
+}
+
+table.table-expandable.table-hover > tbody > tr:nth-child(even):hover td {
+    background-color: white;
+}
+
+table.table-expandable > tbody > tr div.table-expandable-arrow {
+    background:transparent url(../images/arrows.png) no-repeat scroll 0px -16px; width:16px; height:16px; display:block;
+}
+
+table.table-expandable > tbody > tr div.table-expandable-arrow.up {
+    background-position:0px 0px;
+}
+</style> *@
 
 
 
+@* <script>
+    (function ($) {
+    $(function () {
+        $('.table-expandable').each(function () {
+            var table = $(this);
+            table.children('thead').children('tr').append('<th></th>');
+            table.children('tbody').children('tr').filter(':odd').hide();
+            table.children('tbody').children('tr').filter(':even').click(function () {
+                var element = $(this);
+                element.next('tr').toggle('slow');
+                element.find(".table-expandable-arrow").toggleClass("up");
+            });
+            table.children('tbody').children('tr').filter(':even').each(function () {
+                var element = $(this);
+                element.append('<td><div class="table-expandable-arrow"></div></td>');
+            });
+        });
+    });
+})(jQuery); 
+</script> *@
 
+
+<!-- Masthead-->
+<section class="call-to-action text-white text-center">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <div class="text-center text-black">
+                    <!-- Page heading-->
+                    <h1 class="mb-5 en">Overview</h1>
+                    <h1 class="mb-5 de">Übersicht</h1>
+                    <h1 class="mb-5 sv">maskiner</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="features-icons bg-light text-start">
+    <div class="container-fluid">
+        @*  here should be the name of the User *@
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h1 mb-0 text-gray-800">Hello Sebastian</h1>
+        </div>
+    </div>
+    <div class="container-fluid row">
+        <div class="card" >
+        <!-- Card content -->
+            <div class="card-body">
+            <!-- Title -->
+            <h2 class="card-title">
+                <a>
+                    <div class="en">Excavator EC950F</div>
+                    <div class="sv">Maskiner</div>
+                    <div class="de">Maschinen</div>
+                </a>
+            </h2>
+            <!-- Text -->
+            <p class="card-text"> 
+                <div class="en">Detailed Infos about the selected Machine.</div>
+                <div class="sv">Se alla maskiner i systemet.</div>
+                <div class="de">Zeigt alle Maschinen im System an.</div>
+            </p>
+        </div>
+    </div>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Card for the Pie Chart for all Activities-->
+            <div class="col-lg-4 order-lg-1 " >
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body justify-content-center">
+                        <!-- Page Heading -->
+                        <div class="d-sm-flex mb-4 justify-content-center ">
+                            <h1 class="h1 mb-0 text-gray-800">Sensoren </h1>
+
+                        </div>
+                        <div class="row">
+                            <!-- Card Body -->
+                            @* wwwroot\images\woodig.jpg *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 order-lg-2 m-0">
+                <div class="card text-center " style="width: 18rem;">
+                    <div class="card-body ">
+                        <h1 class="card-title text-black">Machines</h1>
+                        <p class="card-text">Click here to select a machine</p>
+                        <a type="button" class="btn btn-primary me-2" asp-area="" asp-controller="Machine" asp-action="Index">
+                            <div class="en">select machine</div>
+                            <div class="de">Registriere  Maschine</div>
+                            <div class="sv">Registriere  Maschien</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <div class="container-fluid row">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body justify-content-center">
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex mb-4 justify-content-center">
+                        <h1 class="h1 mb-0 text-gray-800" >Sensoren </h1>
+                    </div>
+                    <div class="content">
+
+
+<div class="container">
+  <h1 style="margin-top:150px;">jQuery Bootstrap Table Expandable Demo</h1>
+  <table class="table table-hover table-expandable table-striped">
+    <thead>
+      <tr>
+        <th>Country</th>
+        <th>Population</th>
+        <th>Area</th>
+        <th>Official languages</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>United States of America</td>
+        <td>306,939,000</td>
+        <td>9,826,630 km2</td>
+        <td>English</td>
+      </tr>
+      <tr>
+        <td colspan="5"><h4>Additional information</h4>
+          <ul>
+            <li><a href="http://en.wikipedia.org/wiki/Usa">USA on Wikipedia</a></li>
+            <li><a href="http://nationalatlas.gov/">National Atlas of the United States</a></li>
+            <li><a href="http://www.nationalcenter.org/HistoricalDocuments.html">Historical Documents</a></li>
+          </ul></td>
+      </tr>
+      <tr>
+        <td>United Kingdom </td>
+        <td>61,612,300</td>
+        <td>244,820 km2</td>
+        <td>English</td>
+      </tr>
+      <tr>
+        <td colspan="5"><h4>Additional information</h4>
+          <ul>
+            <li><a href="http://en.wikipedia.org/wiki/United_kingdom">UK on Wikipedia</a></li>
+            <li><a href="http://www.visitbritain.com/">Official tourist guide to Britain</a></li>
+            <li><a href="http://www.statistics.gov.uk/StatBase/Product.asp?vlnk=5703">Official Yearbook of the United Kingdom</a></li>
+          </ul></td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+
+                        @* <div class="container"> *@
+                        @* <h1 style="margin-top:150px;">jQuery Bootstrap Table Expandable Demo</h1>
+                        <table class="table table-hover table-expandable table-striped">
+                            <thead>
+                                <th>
+                                    <div class="en">Identificaton</div>
+                                    <div class="de">Identifikation</div>
+                                    <div class="sv">Identifiering</div>
+                                </th>
+                                <th>
+                                    <div class="en">Manufacturer</div>
+                                    <div class="de">Hersteller</div>
+                                    <div class="sv">Tillverkare</div>
+                                </th>
+                                <th>
+                                    <div class="en">Machine Model</div>
+                                    <div class="de">Maschinen-Modell</div>
+                                    <div class="sv">Maskinmodell</div>
+                                </th>    
+                                <th>
+                                    <div class="en">Type</div>
+                                    <div class="de">Typ</div>
+                                    <div class="sv">Typ</div>
+                                </th>
+                                <th>
+                                    <div class="en">Year</div>
+                                    <div class="de">Baujahr</div>
+                                    <div class="sv">Byggår</div>
+                                </th>
+                                <th>
+                                    <div class="en">Actions</div>
+                                    <div class="de">Aktionen</div>
+                                    <div class="sv">Åtgärder</div>
+                                </th>
+
+                            </thead>
+                            <tbody>
+
+                                @foreach (var machine in Model)
+                                {
+                                    <tr class="table-primary">
+                                        <td>@machine.InternalId</td>
+                                        <td>@machine.Model.Manufacturer</td>
+                                        <td>@machine.Model.ModelName</td>
+                                        <td>@machine.Model.MachineType</td>
+                                        <td>@machine.Model.ModelYear</td>
+                                        <td>
+                                            <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Dropdown button
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                <li>
+                                                    <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="dropdown-item">
+                                                        <div class="en">Update</div>
+                                                        <div class="de">Ändern</div>
+                                                        <div class="sv">Förändra</div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <button type="submit" class="dropdown-item">
+                                                        <div class="en">Delete</div>
+                                                        <div class="de">Löschen</div>
+                                                        <div class="sv">Släcka</div>
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="dropdown-item">
+                                                        <div class="en">Show</div>
+                                                        <div class="de">Anzeigen</div>
+                                                        <div class="sv">Visa</div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                         <form action="Machine/Delete/@machine.Id" method="POST">
+                                                <div class="btn-group" role="group">
+                                                    <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                                        <div class="en">Update</div>
+                                                        <div class="de">Ändern</div>
+                                                        <div class="sv">Förändra</div>
+                                                    </a>
+                                                    <button type="submit" class="btn btn-dark">
+                                                        <div class="en">Delete</div>
+                                                        <div class="de">Löschen</div>
+                                                        <div class="sv">Släcka</div>
+                                                    </button>
+                                                    <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                                        <div class="en">Show</div>
+                                                        <div class="de">Anzeigen</div>
+                                                        <div class="sv">Visa</div>
+                                                    </a>
+                                                </div>
+                                            </form>
+                                        <td>
+                                            <form action="Machine/Delete/@machine.Id" method="POST">
+                                                <div class="btn-group" role="group">
+                                                    <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                                        <div class="en">Update</div>
+                                                        <div class="de">Ändern</div>
+                                                        <div class="sv">Förändra</div>
+                                                    </a>
+                                                    <button type="submit" class="btn btn-dark">
+                                                        <div class="en">Delete</div>
+                                                        <div class="de">Löschen</div>
+                                                        <div class="sv">Släcka</div>
+                                                    </button>
+                                                    <a asp-controller="Chart" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                                        <div class="en">Show</div>
+                                                        <div class="de">Anzeigen</div>
+                                                        <div class="sv">Visa</div>
+                                                    </a>
+                                                </div>
+                                            </form>
+                                        </td>
+                                }
+
+                                    <tr>
+                                        <td>United States of America</td>
+                                        <td>306,939,000</td>
+                                        <td>9,826,630 km2</td>
+                                        <td>English</td>
+                                        <td>English</td>
+                                        <td>English</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5"><h4>Additional information</h4>
+                                        <ul>
+                                            <li><a href="http://en.wikipedia.org/wiki/Usa">USA on Wikipedia</a></li>
+                                            <li><a href="http://nationalatlas.gov/">National Atlas of the United States</a></li>
+                                            <li><a href="http://www.nationalcenter.org/HistoricalDocuments.html">Historical Documents</a></li>
+                                        </ul></td>
+                                    </tr>
+                                    <tr>
+                                        <td>United Kingdom </td>
+                                        <td>61,612,300</td>
+                                        <td>244,820 km2</td>
+                                        <td>English</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5"><h4>Additional information</h4>
+                                        <ul>
+                                            <li><a href="http://en.wikipedia.org/wiki/United_kingdom">UK on Wikipedia</a></li>
+                                            <li><a href="http://www.visitbritain.com/">Official tourist guide to Britain</a></li>
+                                            <li><a href="http://www.statistics.gov.uk/StatBase/Product.asp?vlnk=5703">Official Yearbook of the United Kingdom</a></li>
+                                        </ul></td>
+                                    </tr>
+
+                            </tbody>
+                        </table> *@
+                    </div>
+
+                        @* <img src="./wwwroot/images/woodig1.png" alt="Italian Trulli"> *@
+                    @* </div> *@
+                </div>
+            </div>
+        </div>
+    </div>            
+</section>
+
+
+@* 
 <!-- Masthead-->
 <section class="call-to-action text-white text-center">
     <div class="container position-relative">
@@ -18,7 +357,7 @@
                     <h1 class="mb-5 sv">maskiner</h1>
                 </div>
             </div>
-            @* <div class="col-xl-2 col-lg-4 align-self-end ">
+            <div class="col-xl-2 col-lg-4 align-self-end ">
                         <!-- Earnings (Monthly) Card Example -->
                 <div class="card text-center" style="width: 18rem;">
                     <div class="card-body">
@@ -31,10 +370,10 @@
                         </a>
                     </div>
                 </div>
-            </div> *@
+            </div>
         </div>
     </div>
-</section>
+</section> *@
 
 
 <h1>
@@ -59,7 +398,7 @@
 </select>
 <br>
 <br>
-@foreach (Machine m in Model){
+@* @foreach (Machine m in Model){
     if(m.Config != null){
         <div class="config" id="@m.Id">
             @if(m.Config.Picture != null){
@@ -194,7 +533,9 @@
             </a>
         </div>
     }
-}
+} *@
+
+
 <script>
     switchConfig();
     function switchConfig(){    
