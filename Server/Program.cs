@@ -17,8 +17,7 @@ builder.Services.AddTransient<QueryFactory>((e) =>
 {
 
     var connection = new MySqlConnection(
-        //  IbLN+h1MYSQLRP
-        "server=127.0.0.1;user id=root;password=atfcm2022;port=3306;database=atfcm;"
+        "server=127.0.0.1;user id=root;password=IbLN+h1MYSQLRP;port=3306;database=atfcm;"
     );
 
     var compiler = new MySqlCompiler();
@@ -30,7 +29,7 @@ builder.Services.AddTransient<QueryFactory>((e) =>
 
 // For Entity Framework
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 27));
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySql("server=127.0.0.1;user id=root;password=atfcm2022;port=3306;database=atfcmUser;",serverVersion));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySql("server=127.0.0.1;user id=root;password=IbLN+h1MYSQLRP;port=3306;database=atfcmUser;",serverVersion));
 // For Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

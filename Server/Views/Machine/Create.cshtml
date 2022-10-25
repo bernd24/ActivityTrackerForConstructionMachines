@@ -2,44 +2,42 @@
     ViewData["Title"] = "Create";
 }
 
-<form method="POST" action="/Machine/Create">
-<table class="table table-bordered">
-    <tr>
-        <th>
-            <div class="en">Machine Model</div>
-            <div class="de">Maschinen-Modell</div>
-            <div class="sv">Maskinmodell</div>
-        </th>
-        <th>
-            <div class="en">Identificaton</div>
-            <div class="de">Identifikation</div>
-            <div class="sv">Identifiering</div>
-        </th>
-        <th>
-            <div class="en">in Use?</div>
-            <div class="de">in Benutzung?</div>
-            <div class="sv">i användning?</div>
-        </th>
-    </tr>
-    <tr>
-        <td><select name="M_Id">
-            @foreach(MachineModel m in Model){
-                <option value="@m.Id"><pre>@m.Manufacturer @m.ModelName @m.MachineType @m.ModelYear</pre></option>
-            }
-        </select></td>
-        <td><input type="text" name="InternalId" value="Machine #1"></td>
-        <td><input type="checkbox" class="custom-control-input" data-val="true" id="inUse" name="inUse" value="true" checked>
-        <input name="inUse" type="hidden" value="false"></td>
-    </tr>
-</table><br>
-
-    <input type="submit" value="Submit">
-</form>
+@* <form method="POST" action="/Machine/Create">
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                <div class="en">Machine Model</div>
+                <div class="de">Maschinen-Modell</div>
+                <div class="sv">Maskinmodell</div>
+            </th>
+            <th>
+                <div class="en">Identificaton</div>
+                <div class="de">Identifikation</div>
+                <div class="sv">Identifiering</div>
+            </th>
+            <th>
+                <div class="en">in Use?</div>
+                <div class="de">in Benutzung?</div>
+                <div class="sv">i användning?</div>
+            </th>
+        </tr>
+        <tr>
+            <td><select name="M_Id">
+                @foreach(MachineModel m in Model){
+                    <option value="@m.Id"><pre>@m.Manufacturer @m.ModelName @m.MachineType @m.ModelYear</pre></option>
+                }
+            </select></td>
+            <td><input type="text" name="InternalId" value="Machine #1"></td>
+            <td><input type="checkbox" class="custom-control-input" data-val="true" id="inUse" name="inUse" value="true" checked>
+            <input name="inUse" type="hidden" value="false"></td>
+        </tr>
+    </table><br>
+        <input type="submit" value="Submit">
+</form> *@
 
 
 @* Modal for the Create a Machine *@
-@* TODO close dont work *@
-<form method="POST" action="/Machine/Create">
+@* <form method="POST" action="/Machine/Create">
     <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -102,4 +100,4 @@
             </div>
         </div>
     </div>
-</form>
+</form> *@

@@ -31,11 +31,26 @@ public class MachineController : Controller
     [HttpPost]
     public IActionResult Create([FromForm]Machine form)
     {
+
         Db.Query("Machine").Insert(new {
             M_Id = form.M_Id,
             C_Id = form.C_Id,
             InternalId = form.InternalId,
             inUse = form.inUse
+        });
+        return RedirectToAction("Index", "Machine");
+    }
+
+
+        [HttpPost]
+    public IActionResult Create1([FromForm] string M_Id , string C_Id, string InternalId , string inUse)
+    {
+        
+        Db.Query("Machine").Insert(new {
+            M_Id = Convert.ToInt32(M_Id),
+            C_Id = Convert.ToInt32(C_Id),
+            InternalId = InternalId,
+            // inUse = Int32.Parse(inUse)
         });
         return RedirectToAction("Index", "Machine");
     }

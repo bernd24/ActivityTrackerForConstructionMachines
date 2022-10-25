@@ -17,12 +17,6 @@ public class HomeController : Controller
     }
     
     [AllowAnonymous]
-    public IActionResult Index1()
-    {
-        return View();
-    }
-
-    [AllowAnonymous]
     public IActionResult Index()
     {
         return View();
