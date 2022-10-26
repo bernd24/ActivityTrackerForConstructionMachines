@@ -31,139 +31,7 @@
 
 
 
-@* Modal for the Create a Sensor *@
-@* TODO close dont work *@
-<form method="POST" action="/Installation/Create">
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title " id="exampleModalLabel">New Activity</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                
-                <div class="modal-body">
-                    <!-- Machinename input -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-9">
-                                 <input type="text" name="Sensorname" id="Sensorname" class="form-control" />
-                                <label class="form-label" for="Sensorname">
-                                    <div class="en">Sensorname</div>
-                                    <div class="de">Sensorname</div>
-                                    <div class="sv">Sensorname</div>
-                                </label>
 
-                                <div class="row">
-                                    <div class="col-8 col-sm-6 align-self-center">
-                                        <input class="form-check-input" type="checkbox" value="" name="Master" id="Master"> 
-                                        <label class="form-label" for="Master">
-                                            <div class="en">Master</div>
-                                            <div class="de">Master</div>
-                                            <div class="sv">Master</div>
-                                        </label>
-                                    </div>
-                                    <div class="col-8 col-sm-6">
-                                        <input type="text" name="SensorID" id="SensorID" class="form-control" />
-                                        <label class="form-label" for="SensorID">
-                                            <div class="en">SensorID</div>
-                                            <div class="de">SensorID</div>
-                                            <div class="sv">SensorID</div>
-                                        </label>
-                                    </div>
-                                    <div class="col-4 col-sm-6">
-                                        <input type="text" name="Sensortyp" id="Sensortyp" class="form-control" />
-                                        <label class="form-label" for="Sensortyp">
-                                            <div class="en">Sensortyp</div>
-                                            <div class="de">Sensortyp</div>
-                                            <div class="sv">Sensortyp</div>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <div class="en">Create</div>
-                        <div class="de">Erstellen</div>
-                        <div class="sv">Create</div>
-                    </button>
-                    <a id="closemodal" href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        <div class="en">Close</div>
-                        <div class="de">Schließen</div>
-                        <div class="sv">Closa</div>
-                    </button>
-                </div> 
-            </div>
-        </div>
-    </div>
-</form>
-
-
-
-
-@* Modal for the Create a Activity *@
-@* TODO close dont work *@
-<form method="POST" action="/Installation/Create">
-    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title " id="exampleModalLabel">New Activity</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                
-                <div class="modal-body">
-                    <!-- Machinename input -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-9">
-                                 <input type="text" name="Activityname" id="Activityname" class="form-control" />
-                                <label class="form-label" for="Activityname">
-                                    <div class="en">Activityname</div>
-                                    <div class="de">Activitätssname</div>
-                                    <div class="sv">Användarnamn</div>
-                                </label>
-                            </div>
-                            <div class="col-sm-9">
-                                 <input type="text" name="Activitycolour" id="Activitycolour" class="form-control" />
-                                <label class="form-label" for="Activitycolour">
-                                    <div class="en">Colour</div>
-                                    <div class="de">Farbe</div>
-                                    <div class="sv">Användarnamn</div>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <div class="en">Create</div>
-                        <div class="de">Erstellen</div>
-                        <div class="sv">Create</div>
-                    </button>
-                    <a id="closemodal" href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        <div class="en">Close</div>
-                        <div class="de">Schließen</div>
-                        <div class="sv">Closa</div>
-                    </button>
-                </div> 
-            </div>
-        </div>
-    </div>
-</form>
 
 
 
@@ -266,57 +134,57 @@
         <div class="row">
             <div class="col-lg-auto">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="images/testimonials-1.jpg" alt="..." />
-                    <h5>Bernd E.</h5>
-                    <p class="font-weight-light mb-0">Testleader</p>
+                    @* <img class="img-fluid rounded-circle mb-3" src="images/testimonials-1.jpg" alt="..." /> *@
+                    <h5>Bernd D.</h5>
+                    <p class="font-weight-light mb-0">Backend</p>
                 </div>
             </div>
             <div class="col-lg-auto">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="images/testimonials-2.jpg" alt="..." />
-                    <h5>Leander S.</h5>
-                    <p class="font-weight-light mb-0">Frontend designer</p>
+                    @* <img class="img-fluid rounded-circle mb-3" src="images/testimonials-2.jpg" alt="..." /> *@
+                    <h5>Leander N.</h5>
+                    <p class="font-weight-light mb-0">Frontend</p>
                 </div>
             </div>
             <div class="col-lg-auto">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="images/testimonials-3.jpg" alt="..." />
-                    <h5>Sarah W.</h5>
+                    @* <img class="img-fluid rounded-circle mb-3" src="images/testimonials-3.jpg" alt="..." /> *@
+                    <h5>Beatris P.</h5>
                     <p class="font-weight-light mb-0">Hardware designer</p>
                 </div>
             </div>
                 <div class="col-lg-auto">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="images/founder-4.jpg" alt="..." />
-                    <h5>Sarah W.</h5>
+                    @* <img class="img-fluid rounded-circle mb-3" src="images/founder-4.jpg" alt="..." /> *@
+                    <h5>Filippa B.</h5>
                     <p class="font-weight-light mb-0">Hardware designer</p>
                 </div>
             </div>
                 <div class="col-lg-auto">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="images/founder-5.jpg" alt="..." />
-                    <h5>Sarah W.</h5>
+                    @* <img class="img-fluid rounded-circle mb-3" src="images/founder-5.jpg" alt="..." /> *@
+                    <h5>Karar T.</h5>
                     <p class="font-weight-light mb-0">Hardware designer</p>
                 </div>
             </div>
                 <div class="col-lg-auto">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="images/founder-6.jpg" alt="..." />
-                    <h5>Sarah W.</h5>
+                    @* <img class="img-fluid rounded-circle mb-3" src="images/founder-6.jpg" alt="..." /> *@
+                    <h5>Fredrik R.</h5>
                     <p class="font-weight-light mb-0">Hardware designer</p>
                 </div>
             </div>
                 <div class="col-lg-auto">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="images/founder-7.jpg" alt="..." />
-                    <h5>Sarah W.</h5>
+                    @* <img class="img-fluid rounded-circle mb-3" src="images/founder-7.jpg" alt="..." /> *@
+                    <h5>Mathias H.</h5>
                     <p class="font-weight-light mb-0">Hardware designer</p>
                 </div>
             </div>
                 <div class="col-lg-auto">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="images/founder-8.jpg" alt="..." />
-                    <h5>Sarah W.</h5>
+                    @* <img class="img-fluid rounded-circle mb-3" src="images/founder-8.jpg" alt="..." /> *@
+                    <h5>Adane Hailu M.</h5>
                     <p class="font-weight-light mb-0">Hardware designer</p>
                 </div>
             </div>

@@ -34,7 +34,8 @@ public class InstallationController : Controller
     }
 
     [HttpGet]
-    public IActionResult Create(int Id){     
+    public IActionResult Create(int Id){ 
+            ViewBag.M_Id = Id;    
         ViewBag.Machine = new Query(Db).GetMachineWithConfig(Id);
         return View(Db.Query("Sensor").Get<Sensor>());
     }
@@ -108,7 +109,8 @@ public class InstallationController : Controller
                 RssiPartner = sn.RssiPartner.ElementAt(i) == '-' ? null : sn.RssiPartner.ElementAt(i)
             });
         }
-        return RedirectToAction("Create","Installation",new {Id = Id});
+        // return RedirectToAction("Create","Installation",new {Id = Id});
+        return RedirectToAction("Index","Installation");
     }
 
     [HttpPost]

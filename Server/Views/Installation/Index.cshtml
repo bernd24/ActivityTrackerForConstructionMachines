@@ -1,9 +1,456 @@
+@* @model  Machine *@
+
 @{
-    ViewData["Title"] = "Configuration";
+    ViewData["Title"] = "Create";
+    
+    
 }
 
+<script>
+  async function AJAXSubmit (oFormElement) {
+    var resultElement = oFormElement.elements.namedItem("result");
+    const formData = new FormData(oFormElement);
+
+    try {
+    const response = await fetch(oFormElement.action, {
+      method: 'POST',
+      body: formData
+    });
+
+    resultElement.value = 'Result: ' + response.status + ' ' + 
+      response.statusText;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+</script>
+
+    <h4>
+<label for="createSns">
+                <div class="en">Create Sensor Node</div>
+                <div class="de">Sensorknoten erstellen</div>
+                <div class="sv">Skapa Sensornoder</div>
+            </label>
+            </h4>
 
 
+@* Modal for the Create a Sensor *@
+@*    /@ViewBag.Machine.Id*@
+<form id="createSns" method="POST" action="/Installation/Create">
+    <div class="modal form-group" id="createSensorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title " id="exampleModalLabel">register Sensor</h5>
+                </div>
+                <div class="modal-body">
+                    
+                            <table class="table">
+                            <thead>
+                                <th>
+                                    <div class="en">Node Type</div>
+                                    <div class="de">Knotentyp</div>
+                                    <div class="sv">Nodtyp</div>
+                                </th>
+                                <th>
+                                    <div class="en">Battery Status</div>
+                                    <div class="de">Batteriestatus</div>
+                                    <div class="sv">Batteri status</div>
+                                </th>
+                               
+                                <th>
+                                    <div class="en">Position</div>
+                                    <div class="de">Position</div>
+                                    <div class="sv">Placera</div>
+                                </th>
+                                <th>
+                                    <div class="en">RSSI Partner</div>
+                                    <div class="de">RSSI Partner</div>
+                                    <div class="sv">RSSI Partner</div>
+                                </th>
+                               
+                            </thead>
+                            <tbody>
+                                    
+       
+                            <tr >
+                                <td >
+                                    <div class="col-8 col-sm-6 align-self-center">
+                                        <select class="form-select-lg" name="isMaster">
+                                            <option>Master</option>
+                                            <option>Slave</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-8 col-sm-6 align-self-center">
+                                        <select class="form-select-lg mb-3" name="hasBattery">
+                                            <option>Yes</option>
+                                            <option>No</option>
+                                        </select>               
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-8 col-sm-6">
+                                        <select class="form-select-lg mb-3" id="position" name="Position[]">
+                                            <option>A</option>
+                                            <option>B</option>
+                                            <option>C</option>
+                                            <option>D</option>
+                                            <option>E</option>
+                                            <option>F</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-8 col-sm-6"></div>
+                                        <select class="form-select-lg mb-3" id="rssiPartner" name="RssiPartner[]">
+                                            <option>-</option>
+                                            <option>A</option>
+                                            <option>B</option>
+                                            <option>C</option>
+                                            <option>D</option>
+                                            <option>E</option>
+                                            <option>F</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                                <td>
+                                    <div  >
+                                        <table class="table table-hover">
+                                            <thead >
+                                                <th>
+                                                    <div class="en">Type</div>
+                                                    <div class="de">Type</div>
+                                                    <div class="sv">Type</div>
+                                                </th>
+                                                <th>
+                                                    <div class="en">Parameter</div>
+                                                    <div class="de">Axis</div>
+                                                    <div class="sv">Axis</div>
+                                                </th>
+
+                                            </thead>
+                                            <tbody>
+                                                <tr data-bs-toggle="collapse" data-bs-target="#accordion1" class="clickable">
+                                                    <td>
+                                                        Gyrometer
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <thead>
+                                                                <th>
+                                                                    <div >
+                                                                        Axis
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div >
+                                                                        Activity
+                                                                    </div>
+                                                                </th>
+                                                            </thead>
+                                                            <tbody id="accordion1" class="collapse">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                X
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="col-8 col-sm-6">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>-</option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                Y
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                        <div class="col-8 col-sm-6">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>-</option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                Z
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="col-8 col-sm-6">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>-</option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                
+                                                            </tbody>
+                                                                
+                                                      
+                                                        </table>    
+                                                    </td>
+                                                     
+                                                </tr>
+                                                <tr data-bs-toggle="collapse" data-bs-target="#accordion2" class="clickable">
+                                                    <td>
+                                                        Accelerometer
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <thead>
+                                                                <th>
+                                                                    <div >
+                                                                        Axis
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div >
+                                                                        Activity
+                                                                    </div>
+                                                                </th>
+                                                            </thead>
+                                                            <tbody id="accordion2" class="collapse">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                X
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="col-8 col-sm-6">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>-</option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                Y
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                        <div class="col-8 col-sm-6">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>-</option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                Z
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="col-8 col-sm-6">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>-</option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                            
+
+
+                                                            </tbody>
+                                                                
+                                                      
+                                                        </table>    
+                                                    </td>
+                                                     
+                                                </tr>
+                                                <tr data-bs-toggle="collapse" data-bs-target="#accordion3" class="clickable">
+                                                    <td>
+                                                        Ultrasonic
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <thead>
+                                                                <th>
+                                                                    <div >
+                                                                        Axis
+                                                                    </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div >
+                                                                        Activity
+                                                                    </div>
+                                                                </th>
+                                                            </thead>
+                                                            <tbody id="accordion3" class="collapse">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                X
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="col-8 col-sm-6">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>    -     </option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                Y
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                        <div class="col-8 col-sm-6">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>-</option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div>
+                                                                                Z
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+
+                                                                            <div class="col-8 col-sm-6 align-self-center">
+                                                                                <select class="form-select-lg mb-3" id="axis1" name="Axis[]">
+                                                                                    <option>-</option>
+                                                                                    <option>Digging</option>
+                                                                                    <option>Moving</option>
+                                                                                    <option>Ideling</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                            
+
+                                                            
+                                                            </tbody>
+                                                                
+                                                      
+                                                        </table>    
+                                                    </td>
+                                                     
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tbody>
+                        </table>
+                </div>
+
+                <div class="modal-footer">
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block" asp-area="" asp-controller="Installation" asp-action="Create" asp-route-id="1">
+                        <div class="en">Create</div>
+                        <div class="de">Erstellen</div>
+                        <div class="sv">Create</div>
+                    </button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+@* Modal for the Create a Activity *@
+@* TODO close dont work *@
+<form method="POST" action="/Installation/Create">
+    <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title " id="exampleModalLabel">New Activity</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- Machinename input -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                 <input type="text" name="Activityname" id="Activityname" class="form-control" />
+                                <label class="form-label" for="Activityname">
+                                    <div class="en">Activityname</div>
+                                    <div class="de">Activitätssname</div>
+                                    <div class="sv">Användarnamn</div>
+                                </label>
+                            </div>
+                            <div class="col-sm-9">
+                                 <input type="text" name="Activitycolour" id="Activitycolour" class="form-control" />
+                                <label class="form-label" for="Activitycolour">
+                                    <div class="en">Colour</div>
+                                    <div class="de">Farbe</div>
+                                    <div class="sv">Användarnamn</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <div class="en">Create</div>
+                        <div class="de">Erstellen</div>
+                        <div class="sv">Create</div>
+                    </button>
+                    <a id="closemodal" href="#" class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <div class="en">Close</div>
+                        <div class="de">Schließen</div>
+                        <div class="sv">Closa</div>
+                    </button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
 
 
 <!-- Masthead-->
@@ -13,7 +460,7 @@
             <div class="col-xl-6">
                 <div class="text-center text-black">
                     <!-- Page heading-->
-                    <h1 class="mb-5 en">Overview</h1>
+                    <h1 class="mb-5 en">Installation</h1>
                     <h1 class="mb-5 de">Übersicht</h1>
                     <h1 class="mb-5 sv">maskiner</h1>
                 </div>
@@ -22,6 +469,16 @@
     </div>
 </section>
 
+@* <select id="machine" onchange="switchConfig()">
+    @foreach (Machine m in Model){
+        @if(ViewBag.M_Id != null && ViewBag.M_Id == m.Id){
+            <option value="@m.Id" selected>@m.InternalId</option>
+        }
+        else{
+            <option value="@m.Id">@m.InternalId</option>
+        }
+    }
+</select> *@
 
 <section class="features-icons bg-light text-start">
     <div class="container-fluid">
@@ -42,51 +499,10 @@
                     <div class="de">Maschinen</div>
                 </a>
             </h2>
-            <!-- Text -->
-            <p class="card-text"> 
-                <div class="en">Detailed Infos about the selected Machine.</div>
-                <div class="sv">Se alla maskiner i systemet.</div>
-                <div class="de">Zeigt alle Maschinen im System an.</div>
-            </p>
         </div>
     </div>
 
     <div class="container-fluid p-0">
-        <div class="row g-0">
-            <!-- Card for the Pie Chart for all Activities-->
-            <div class="col-lg-4 order-lg-1 " >
-                <div class="card border-left-primary shadow h-100 py-2">
-                    <div class="card-body justify-content-center">
-                        <!-- Page Heading -->
-                        <div class="d-sm-flex mb-4 justify-content-center ">
-                            <h1 class="h1 mb-0 text-gray-800">Sensoren </h1>
-
-                        </div>
-                        <div class="row">
-                            <!-- Card Body -->
-                            @* wwwroot\images\woodig.jpg *@
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-2 order-lg-2 m-0">
-                <div class="card text-center " style="width: 18rem;">
-                    <div class="card-body ">
-                        <h1 class="card-title text-black">Machines</h1>
-                        <p class="card-text">Click here to select a machine</p>
-                        <a type="button" class="btn btn-primary me-2" asp-area="" asp-controller="Machine" asp-action="Index">
-                            <div class="en">select machine</div>
-                            <div class="de">Registriere  Maschine</div>
-                            <div class="sv">Registriere  Maschien</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div> 
-
-
-
         <div class="container-fluid row">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body justify-content-center">
@@ -128,64 +544,112 @@
 
                                 @foreach (var m in Model)
                                 {
-                             
-
                                     @if (m.Config != null)
                                     {
                                         @if(m.Config.Picture != null){
-                                        <img src="/images/@m.Config.Picture" width="533" height="300">
-                                        <br>
-                                        <br>
-                                        }
-                                        @foreach(SensorNodeInstance sn in m.Config.SensorNodes){
-                                            <tr data-bs-toggle="collapse" data-bs-target="#accordion" class="clickable"> 
-                                                if(m.Config != null){
-                                                    <td rowspan="@(sn.Sensors.Count()+1)">@sn.Id</td>
-                                                    @if(sn.isMaster){
-                                                        <td rowspan="@(sn.Sensors.Count()+1)">Master</td>
-                                                    }
-                                                    else{
-                                                        <td rowspan="@(sn.Sensors.Count()+1)">Slave</td>
-                                                    }
-                                                    @if(sn.hasBattery && sn.SensorNode != null){
-                                                        <td rowspan="@(sn.Sensors.Count()+1)">@sn.SensorNode.BatteryStatus</td>
-                                                    }
-                                                    else if(!sn.hasBattery){
-                                                        <td rowspan="@(sn.Sensors.Count()+1)">
-                                                            <div class="en">Connected to Power.</div>
-                                                            <div class="de">Mit Strom verbunden.</div>
-                                                            <div class="sv">Ansluten till ström.</div>
-                                                        </td>
-                                                    }
-                                                    else{
-                                                        <td rowspan="@(sn.Sensors.Count()+1)">
-                                                            <div class="en">Has a batte ry but there is no charge level data available.</div>
-                                                            <div class="de">Hat eine Batterie, aber es sind keine Daten zum Ladezustand verfügbar.</div>
-                                                            <div class="sv">Har ett batteri men det finns ingen laddningsnivådata tillgänglig.</div>                                
-                                                        </td>
-                                                    }
-                                                    <td>@sn.Sensors.FirstOrDefault().Position</td>
-                                                    @if(sn.Sensors.FirstOrDefault().RssiPartner != null){
-                                                        <td>@sn.Sensors.FirstOrDefault().RssiPartner</td>
-                                                    }
-                                                    else{
-                                                        <td>-</td>
-                                                    }
-                                                } 
-                                            </tr>
 
-                                            <tr>
-                                                <td colspan="3">
+                                            <div class="container-fluid p-0">
+                                                <div class="row g-0">
+                                                    <div class="col-lg-10 order-lg-1 " >
+                                                        <div class="card-body justify-content-evenly">
+                                                            <!-- Page Heading -->
+                                                            <div class="d-sm-flex mb-4 justify-content-center ">
+                                                            <img src="/images/@m.Config.Picture"  width="533" height="300" >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Card for the Pie Chart for all Activities-->
+                                                    <div class="col-lg-2 order-lg-1 " >
+                                                        <div class="card-body justify-content-center">
+                                                            <!-- Page Heading -->
+                                                            <div class="card text-center " style="width: 18rem;">
+                                                                <div class="card-body ">
+                                                                    <h1 class="card-title text-black">Create an Activity</h1>
+                                                                    <p class="card-text">Click here to create a new activity</p>
+                                                                    <a type="button" class="btn btn-primary me-2"  data-bs-toggle="modal" data-bs-target="#createActivityModal" asp-area="" asp-controller="Installation" asp-action="Create">
+                                                                        <div class="en">Sign in</div>
+                                                                        <div class="sv">Logga in</div>
+                                                                        <div class="de">Einloggen</div>
+                                                                    </a>
+                                                                
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                            
+                                                        <div class="card-body  justify-content-center">
+                                                            <!-- Page Heading -->
+                                                            <div class="card text-center " style="width: 18rem;">
+                                                                <div class="card-body ">
+                                                                    <h1 class="card-title text-black">register Sensor</h1>
+                                                                    <p class="card-text">Click here to register a Sensor</p>
+                                                                    <a type="button" class="btn btn-primary me-2"  data-bs-toggle="modal" data-bs-target="#createSensorModal" asp-area="" asp-controller="Installation" asp-action="Create">
+                                                                        <div class="en">register sensor</div>
+                                                                        <div class="de">Registriere  Maschine</div>
+                                                                        <div class="sv">Registriere  Maschien</div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                      
+                                                    </div>
+                                                </div> 
+                                            </div>
+                                          
+                                        }
+                                        @foreach(SensorNodeInstance sn in m.Config.SensorNodes){ 
+                                            <tr data-bs-toggle="collapse" data-bs-target="#accordion" class="clickable">
+                                                <td >@sn.Id</td>
+                                                @if(sn.isMaster){
+                                                    <td rowspan="@(sn.Sensors.Count()+1)">Master</td>
+                                                }
+                                                else{
+                                                    <td >Slave</td>
+                                                }
+                                                @if(sn.hasBattery && sn.SensorNode != null){
+                                                    <td >@sn.SensorNode.BatteryStatus</td>
+                                                }
+                                                else if(!sn.hasBattery){
+                                                    <td >
+                                                        <div class="en">Connected to Power.</div>
+                                                        <div class="de">Mit Strom verbunden.</div>
+                                                        <div class="sv">Ansluten till ström.</div>
+                                                    </td>
+                                                }
+                                                else{
+                                                    <td >
+                                                        <div class="en">Has a battery but there is no charge level data available.</div>
+                                                        <div class="de">Hat eine Batterie, aber es sind keine Daten zum Ladezustand verfügbar.</div>
+                                                        <div class="sv">Har ett batteri men det finns ingen laddningsnivådata tillgänglig.</div>                                
+                                                    </td>
+                                                }
+                                                @if (sn.Sensors.FirstOrDefault() != null)
+                                                {
+                                                    <td>@sn.Sensors.FirstOrDefault().Position</td>
+                                                }
+                                                @if(sn.Sensors.FirstOrDefault() != null){
+                                                    <td>@sn.Sensors.FirstOrDefault().RssiPartner</td>
+                                                }
+                                                else{
+                                                    <td>-</td>
+                                                }
+                                            </tr>
+                                                <td>
                                                     <div id="accordion" class="collapse">
                                                         <table class="table table-hover">
                                                             <thead >
-                                                                <th>
+                                                                <th colspan="3">
                                                                     <div class="en">Type</div>
                                                                     <div class="de">Type</div>
                                                                     <div class="sv">Type</div>
                                                                 </th>
-                                                                <th>
+                                                                <th colspan="3">
                                                                     <div class="en">Axis</div>
+                                                                    <div class="de">Axis</div>
+                                                                    <div class="sv">Axis</div>
+                                                                </th>
+                                                                <th colspan="3">
+                                                                    <div class="en">Activity</div>
                                                                     <div class="de">Axis</div>
                                                                     <div class="sv">Axis</div>
                                                                 </th>
@@ -201,20 +665,19 @@
                                                                     else{
                                                                         <td>-</td>
                                                                     }
+                                                                    <td colspan="3" >Digging</td>
                                                                 </tr>
                                                                 }
                                                             </tbody>
                                                         </table>
                                                     </div>
                                                 </td>
-                                            </tr>
-                                        }
+                                      } 
                                     }
                                 }      
                             </tbody>
                         </table>
                     </div>
-                        @* <img src="./wwwroot/images/woodig1.png" alt="Italian Trulli"> *@
                 </div>
             </div>
         </div>
@@ -422,5 +885,32 @@
             cImg.style.display = "none";
         }
         document.getElementById(document.getElementById("machine").value).style.display = "block";
+    }
+
+    function addSensor(){
+        var table = document.getElementById("sensors");
+        var row = table.insertRow(2);
+        var sensorCell = row.insertCell(0);
+        var axisCell = row.insertCell(1);
+        var positionCell = row.insertCell(2);
+        var rssiPartnerCell = row.insertCell(3);
+        var del = row.insertCell(4);
+
+        var selectSensor = document.getElementById("sensor");
+        var selectAxis = document.getElementById("axis");
+        var selectPosition = document.getElementById("position");
+        var selectRssiPartner = document.getElementById("rssiPartner");
+        sensorCell.innerHTML = '<input name="S_Id[]" value="' + selectSensor.value + '" type="hidden">' + selectSensor.options[selectSensor.selectedIndex].text;
+        axisCell.innerHTML = '<input name="Axis[]" value="' + selectAxis.value + '" type="hidden">' + selectAxis.options[selectAxis.selectedIndex].text;
+        positionCell.innerHTML = '<input name="Position[]" value="' + selectPosition.value + '" type="hidden">' + selectPosition.options[selectPosition.selectedIndex].text;
+        rssiPartnerCell.innerHTML = '<input name="RssiPartner[]" value="' + selectRssiPartner.value + '" type="hidden">' + selectRssiPartner.options[selectRssiPartner.selectedIndex].text;
+        del.setAttribute("onclick","deleteSensor(this);");
+        del.innerHTML = '<p style="background-color:grey; text-align:center;">\
+            Delete\
+        </p>';
+
+    }
+    function deleteSensor(delCell){
+        document.getElementById("sensors").deleteRow(delCell.parentElement.rowIndex);
     }
 </script>
