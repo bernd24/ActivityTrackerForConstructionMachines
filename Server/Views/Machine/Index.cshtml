@@ -16,43 +16,39 @@
                 <div class="modal-body ">
                     <div class="container-fluid">
                         <div class="row justify-content-evenly">
-                            <div class="col-sm-auto ">
-                                <label class="form-label" for="Machinename">
-                                    <div class="en">Please enter a Machinename</div>
-                                    <div class="de">Maschinenname</div>
-                                    <div class="sv">Användarnamn</div>
-                                </label>
-                                <input type="text" class="form-control col-8   col-sm-6 mb-5" placeholder="Machinename" aria-label="Username" name="InternalId">
-                                </div>
-                                    <div class="row">
-                                        <div class="col-8 col-sm-6">
-                                            <label class="form-label" for="Brand">
-                                                <div class="en">Brand</div>
-                                                <div class="de">Typ</div>
-                                                <div class="sv">Brand</div>
-                                            </label>
-                                            <select class="form-select" name="M_Id" aria-label="Default select example">
-                                                @* <option >Open this select menu</option> *@
-                                                <option selected value="1">Volvo</option>
-                                                <option value="2">Caterpillar</option>
-                                                <option value="3">Liebherr</option>
-                                            </select>        
-                                        </div>
-                                        <div class="col-4 col-sm-6">
-                                            <label class="form-label" for="Model">
-                                                <div class="en">Model</div>
-                                                <div class="de">Model</div>
-                                                <div class="sv">Model</div>
-                                            </label>
-                                            <select class="form-select" name="C_Id" placeholder="Machinename"  aria-label="Default select example">
-                                                @* <option selected>Open this select menu</option> *@
-                                                <option  selected value="1">EC950</option>
-                                                <option value="2">EC940</option>
-                                                <option value="3">EC350</option>
-                                            </select>    
-                                        </div>
-                                    </div>                   
-                                </div>
+                            <label class="form-label" for="Machinename">
+                                <div class="en">Machinename</div>
+                                <div class="de">Maschinenname</div>
+                                <div class="sv">Användarnamn</div>
+                            </label>
+                            <input type="text" class="form-control col-8   col-sm-6 mb-5" placeholder="Please enter a Machinename" aria-label="Username" name="InternalId">
+                            </div>
+                                <div class="row">
+                                    <div class="col-8 col-sm-6">
+                                        <label class="form-label" for="Brand">
+                                            <div class="en">Brand</div>
+                                            <div class="de">Typ</div>
+                                            <div class="sv">Brand</div>
+                                        </label>
+                                        <select class="form-select" name="M_Id" aria-label="Default select example">
+                                            <option selected value="1">Volvo</option>
+                                            <option value="2">Caterpillar</option>
+                                            <option value="3">Liebherr</option>
+                                        </select>        
+                                    </div>
+                                    <div class="col-4 col-sm-6">
+                                        <label class="form-label" for="Model">
+                                            <div class="en">Model</div>
+                                            <div class="de">Model</div>
+                                            <div class="sv">Model</div>
+                                        </label>
+                                        <select class="form-select" name="C_Id" placeholder="Machinename"  aria-label="Default select example">
+                                            <option  selected value="1">EC950</option>
+                                            <option value="2">EC940</option>
+                                            <option value="3">EC350</option>
+                                        </select>    
+                                    </div>
+                                </div>                   
                             </div>
                         </div>
                     </div>
@@ -142,7 +138,7 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class=" btn btn-secondary">
+                                                <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="dropdown-item">
                                                     <div class="en">Update</div>
                                                     <div class="de">Ändern</div>
                                                     <div class="sv">Förändra</div>
@@ -164,11 +160,6 @@
                                         <div class="de">Anzeigen</div>
                                         <div class="sv">Visa</div>
                                         </a>
-                                        @* <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
-                                        <div class="en">Show</div>
-                                        <div class="de">Anzeigen</div>
-                                        <div class="sv">Visa</div>
-                                        </a> *@
                                     </td>
                                 </tr>           
                             }
@@ -179,7 +170,7 @@
             <div class="col-lg-2 order-lg-2 m-0">
                 <div class="card text-center " style="width: 18rem;">
                     <div class="card-body ">
-                        <h1 class="card-title text-black">Create a new Machine</h1>
+                        <h1 class="card-title text-black">Register a new Machine</h1>
                         <p class="card-text">Click here to register a new Machien</p>
                         <a type="button" class="btn btn-primary me-2"  data-bs-toggle="modal" data-bs-target="#createMachineModal" asp-area="" asp-controller="Machine" asp-action="Create">
                             <div class="en">Register Machine</div>

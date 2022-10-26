@@ -55,6 +55,14 @@ public class MachineController : Controller
         return RedirectToAction("Index", "Machine");
     }
 
+     [HttpGet("Machine/Update/{Id}")]
+    public IActionResult GetMachine(int Id)
+    {
+        var result = Db.Query("Machine").Where("Id",Id).Get<Machine>();
+        ViewBag.Machine = result.First();
+        return View(result);
+    }
+
     [HttpGet]
     public IActionResult Create()
     {

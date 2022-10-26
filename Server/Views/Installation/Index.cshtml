@@ -2,49 +2,8 @@
     ViewData["Title"] = "Configuration";
 }
 
-@* <link href="css/bootstrap-table-expandable.css" rel="stylesheet">
-<script src="js/bootstrap-table-expandable.js"></script> *@
-
-@* <style>
-    table.table-expandable > tbody > tr:nth-child(odd) {
-    cursor: pointer;
-}
-
-table.table-expandable.table-hover > tbody > tr:nth-child(even):hover td {
-    background-color: white;
-}
-
-table.table-expandable > tbody > tr div.table-expandable-arrow {
-    background:transparent url(../images/arrows.png) no-repeat scroll 0px -16px; width:16px; height:16px; display:block;
-}
-
-table.table-expandable > tbody > tr div.table-expandable-arrow.up {
-    background-position:0px 0px;
-}
-</style> *@
 
 
-
-@* <script>
-    (function ($) {
-    $(function () {
-        $('.table-expandable').each(function () {
-            var table = $(this);
-            table.children('thead').children('tr').append('<th></th>');
-            table.children('tbody').children('tr').filter(':odd').hide();
-            table.children('tbody').children('tr').filter(':even').click(function () {
-                var element = $(this);
-                element.next('tr').toggle('slow');
-                element.find(".table-expandable-arrow").toggleClass("up");
-            });
-            table.children('tbody').children('tr').filter(':even').each(function () {
-                var element = $(this);
-                element.append('<td><div class="table-expandable-arrow"></div></td>');
-            });
-        });
-    });
-})(jQuery); 
-</script> *@
 
 
 <!-- Masthead-->
@@ -126,6 +85,8 @@ table.table-expandable > tbody > tr div.table-expandable-arrow.up {
             </div>
         </div> 
 
+
+
         <div class="container-fluid row">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body justify-content-center">
@@ -135,208 +96,125 @@ table.table-expandable > tbody > tr div.table-expandable-arrow.up {
                     </div>
                     <div class="content">
 
-
-<div class="container">
-  <h1 style="margin-top:150px;">jQuery Bootstrap Table Expandable Demo</h1>
-  <table class="table table-hover table-expandable table-striped">
-    <thead>
-      <tr>
-        <th>Country</th>
-        <th>Population</th>
-        <th>Area</th>
-        <th>Official languages</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>United States of America</td>
-        <td>306,939,000</td>
-        <td>9,826,630 km2</td>
-        <td>English</td>
-      </tr>
-      <tr>
-        <td colspan="5"><h4>Additional information</h4>
-          <ul>
-            <li><a href="http://en.wikipedia.org/wiki/Usa">USA on Wikipedia</a></li>
-            <li><a href="http://nationalatlas.gov/">National Atlas of the United States</a></li>
-            <li><a href="http://www.nationalcenter.org/HistoricalDocuments.html">Historical Documents</a></li>
-          </ul></td>
-      </tr>
-      <tr>
-        <td>United Kingdom </td>
-        <td>61,612,300</td>
-        <td>244,820 km2</td>
-        <td>English</td>
-      </tr>
-      <tr>
-        <td colspan="5"><h4>Additional information</h4>
-          <ul>
-            <li><a href="http://en.wikipedia.org/wiki/United_kingdom">UK on Wikipedia</a></li>
-            <li><a href="http://www.visitbritain.com/">Official tourist guide to Britain</a></li>
-            <li><a href="http://www.statistics.gov.uk/StatBase/Product.asp?vlnk=5703">Official Yearbook of the United Kingdom</a></li>
-          </ul></td>
-      </tr>
-
-    </tbody>
-  </table>
-</div>
-
-
-                        @* <div class="container"> *@
-                        @* <h1 style="margin-top:150px;">jQuery Bootstrap Table Expandable Demo</h1>
-                        <table class="table table-hover table-expandable table-striped">
+                        <table class="table table-hover">
                             <thead>
                                 <th>
-                                    <div class="en">Identificaton</div>
-                                    <div class="de">Identifikation</div>
-                                    <div class="sv">Identifiering</div>
+                                    ID
                                 </th>
                                 <th>
-                                    <div class="en">Manufacturer</div>
-                                    <div class="de">Hersteller</div>
-                                    <div class="sv">Tillverkare</div>
+                                    <div class="en">Node Type</div>
+                                    <div class="de">Knotentyp</div>
+                                    <div class="sv">Nodtyp</div>
                                 </th>
                                 <th>
-                                    <div class="en">Machine Model</div>
-                                    <div class="de">Maschinen-Modell</div>
-                                    <div class="sv">Maskinmodell</div>
-                                </th>    
+                                    <div class="en">Battery Status</div>
+                                    <div class="de">Batteriestatus</div>
+                                    <div class="sv">Batteri status</div>
+                                </th>
+                               
                                 <th>
-                                    <div class="en">Type</div>
-                                    <div class="de">Typ</div>
-                                    <div class="sv">Typ</div>
+                                    <div class="en">Position</div>
+                                    <div class="de">Position</div>
+                                    <div class="sv">Placera</div>
                                 </th>
                                 <th>
-                                    <div class="en">Year</div>
-                                    <div class="de">Baujahr</div>
-                                    <div class="sv">Byggår</div>
+                                    <div class="en">RSSI Partner</div>
+                                    <div class="de">RSSI Partner</div>
+                                    <div class="sv">RSSI Partner</div>
                                 </th>
-                                <th>
-                                    <div class="en">Actions</div>
-                                    <div class="de">Aktionen</div>
-                                    <div class="sv">Åtgärder</div>
-                                </th>
-
+                               
                             </thead>
                             <tbody>
 
-                                @foreach (var machine in Model)
+                                @foreach (var m in Model)
                                 {
-                                    <tr class="table-primary">
-                                        <td>@machine.InternalId</td>
-                                        <td>@machine.Model.Manufacturer</td>
-                                        <td>@machine.Model.ModelName</td>
-                                        <td>@machine.Model.MachineType</td>
-                                        <td>@machine.Model.ModelYear</td>
-                                        <td>
-                                            <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                Dropdown button
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li>
-                                                    <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="dropdown-item">
-                                                        <div class="en">Update</div>
-                                                        <div class="de">Ändern</div>
-                                                        <div class="sv">Förändra</div>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <button type="submit" class="dropdown-item">
-                                                        <div class="en">Delete</div>
-                                                        <div class="de">Löschen</div>
-                                                        <div class="sv">Släcka</div>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="dropdown-item">
-                                                        <div class="en">Show</div>
-                                                        <div class="de">Anzeigen</div>
-                                                        <div class="sv">Visa</div>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                         <form action="Machine/Delete/@machine.Id" method="POST">
-                                                <div class="btn-group" role="group">
-                                                    <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
-                                                        <div class="en">Update</div>
-                                                        <div class="de">Ändern</div>
-                                                        <div class="sv">Förändra</div>
-                                                    </a>
-                                                    <button type="submit" class="btn btn-dark">
-                                                        <div class="en">Delete</div>
-                                                        <div class="de">Löschen</div>
-                                                        <div class="sv">Släcka</div>
-                                                    </button>
-                                                    <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
-                                                        <div class="en">Show</div>
-                                                        <div class="de">Anzeigen</div>
-                                                        <div class="sv">Visa</div>
-                                                    </a>
-                                                </div>
-                                            </form>
-                                        <td>
-                                            <form action="Machine/Delete/@machine.Id" method="POST">
-                                                <div class="btn-group" role="group">
-                                                    <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
-                                                        <div class="en">Update</div>
-                                                        <div class="de">Ändern</div>
-                                                        <div class="sv">Förändra</div>
-                                                    </a>
-                                                    <button type="submit" class="btn btn-dark">
-                                                        <div class="en">Delete</div>
-                                                        <div class="de">Löschen</div>
-                                                        <div class="sv">Släcka</div>
-                                                    </button>
-                                                    <a asp-controller="Chart" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
-                                                        <div class="en">Show</div>
-                                                        <div class="de">Anzeigen</div>
-                                                        <div class="sv">Visa</div>
-                                                    </a>
-                                                </div>
-                                            </form>
-                                        </td>
-                                }
+                             
 
-                                    <tr>
-                                        <td>United States of America</td>
-                                        <td>306,939,000</td>
-                                        <td>9,826,630 km2</td>
-                                        <td>English</td>
-                                        <td>English</td>
-                                        <td>English</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="5"><h4>Additional information</h4>
-                                        <ul>
-                                            <li><a href="http://en.wikipedia.org/wiki/Usa">USA on Wikipedia</a></li>
-                                            <li><a href="http://nationalatlas.gov/">National Atlas of the United States</a></li>
-                                            <li><a href="http://www.nationalcenter.org/HistoricalDocuments.html">Historical Documents</a></li>
-                                        </ul></td>
-                                    </tr>
-                                    <tr>
-                                        <td>United Kingdom </td>
-                                        <td>61,612,300</td>
-                                        <td>244,820 km2</td>
-                                        <td>English</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="5"><h4>Additional information</h4>
-                                        <ul>
-                                            <li><a href="http://en.wikipedia.org/wiki/United_kingdom">UK on Wikipedia</a></li>
-                                            <li><a href="http://www.visitbritain.com/">Official tourist guide to Britain</a></li>
-                                            <li><a href="http://www.statistics.gov.uk/StatBase/Product.asp?vlnk=5703">Official Yearbook of the United Kingdom</a></li>
-                                        </ul></td>
-                                    </tr>
+                                    @if (m.Config != null)
+                                    {
+                                        @if(m.Config.Picture != null){
+                                        <img src="/images/@m.Config.Picture" width="533" height="300">
+                                        <br>
+                                        <br>
+                                        }
+                                        @foreach(SensorNodeInstance sn in m.Config.SensorNodes){
+                                            <tr data-bs-toggle="collapse" data-bs-target="#accordion" class="clickable"> 
+                                                if(m.Config != null){
+                                                    <td rowspan="@(sn.Sensors.Count()+1)">@sn.Id</td>
+                                                    @if(sn.isMaster){
+                                                        <td rowspan="@(sn.Sensors.Count()+1)">Master</td>
+                                                    }
+                                                    else{
+                                                        <td rowspan="@(sn.Sensors.Count()+1)">Slave</td>
+                                                    }
+                                                    @if(sn.hasBattery && sn.SensorNode != null){
+                                                        <td rowspan="@(sn.Sensors.Count()+1)">@sn.SensorNode.BatteryStatus</td>
+                                                    }
+                                                    else if(!sn.hasBattery){
+                                                        <td rowspan="@(sn.Sensors.Count()+1)">
+                                                            <div class="en">Connected to Power.</div>
+                                                            <div class="de">Mit Strom verbunden.</div>
+                                                            <div class="sv">Ansluten till ström.</div>
+                                                        </td>
+                                                    }
+                                                    else{
+                                                        <td rowspan="@(sn.Sensors.Count()+1)">
+                                                            <div class="en">Has a batte ry but there is no charge level data available.</div>
+                                                            <div class="de">Hat eine Batterie, aber es sind keine Daten zum Ladezustand verfügbar.</div>
+                                                            <div class="sv">Har ett batteri men det finns ingen laddningsnivådata tillgänglig.</div>                                
+                                                        </td>
+                                                    }
+                                                    <td>@sn.Sensors.FirstOrDefault().Position</td>
+                                                    @if(sn.Sensors.FirstOrDefault().RssiPartner != null){
+                                                        <td>@sn.Sensors.FirstOrDefault().RssiPartner</td>
+                                                    }
+                                                    else{
+                                                        <td>-</td>
+                                                    }
+                                                } 
+                                            </tr>
 
+                                            <tr>
+                                                <td colspan="3">
+                                                    <div id="accordion" class="collapse">
+                                                        <table class="table table-hover">
+                                                            <thead >
+                                                                <th>
+                                                                    <div class="en">Type</div>
+                                                                    <div class="de">Type</div>
+                                                                    <div class="sv">Type</div>
+                                                                </th>
+                                                                <th>
+                                                                    <div class="en">Axis</div>
+                                                                    <div class="de">Axis</div>
+                                                                    <div class="sv">Axis</div>
+                                                                </th>
+
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach(SensorInstance s in sn.Sensors){
+                                                                <tr >
+                                                                    <td colspan="3">@s.Sensor.SensorType</td> 
+                                                                    @if(s.Axis != null){
+                                                                        <td colspan="3"> @s.Axis</td>
+                                                                    }
+                                                                    else{
+                                                                        <td>-</td>
+                                                                    }
+                                                                </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }      
                             </tbody>
-                        </table> *@
+                        </table>
                     </div>
-
                         @* <img src="./wwwroot/images/woodig1.png" alt="Italian Trulli"> *@
-                    @* </div> *@
                 </div>
             </div>
         </div>
@@ -375,7 +253,7 @@ table.table-expandable > tbody > tr div.table-expandable-arrow.up {
     </div>
 </section> *@
 
-
+@* 
 <h1>
     <div class="en">Configuration</div>
     <div class="de">Konfiguration</div>
@@ -398,7 +276,8 @@ table.table-expandable > tbody > tr div.table-expandable-arrow.up {
 </select>
 <br>
 <br>
-@* @foreach (Machine m in Model){
+
+@foreach (Machine m in Model){
     if(m.Config != null){
         <div class="config" id="@m.Id">
             @if(m.Config.Picture != null){
