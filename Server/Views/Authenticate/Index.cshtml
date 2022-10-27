@@ -1,0 +1,32 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
+<form method="POST" action="/Authenticate/Login">
+  <!-- Username input -->
+  <div class="form-outline mb-4">
+    <input type="text" name="Username" id="Username" class="form-control" />
+    <label class="form-label" for="Username">
+        <div class="en">Username</div>
+        <div class="de">Benutzername</div>
+        <div class="sv">Användarnamn</div>
+    </label>
+  </div>
+
+  <!-- Password input -->
+  <div class="form-outline mb-4">
+    <input type="password" name="Password" id="Password" class="form-control" />
+    <label class="form-label" for="Password">
+        <div class="en">Password</div>
+        <div class="de">Passwort</div>
+        <div class="sv">Lösenord</div>
+    </label>
+  </div>
+
+  <!-- Submit button -->
+  <button type="submit" class="btn btn-primary btn-block">
+    <div class="en">Sign in</div>
+    <div class="de">Einloggen</div>
+    <div class="sv">Logga in</div>
+  </button>
+</form>

@@ -20,13 +20,45 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><div class="en">About</div><div class="sv">Om oss</div><div class="de">Über</div></a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Chart" asp-action="Index" asp-route-id="1"><div class="en">About</div><div class="sv">Om oss</div><div class="de">Über</div></a>
+                        </li>
+                        @if(User.Identity.IsAuthenticated){
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Overview">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Machine" asp-action="Index">Machines</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Chart" asp-action="SpecificMaschine"><div class="en">specific maschine</div><div class="sv">Om oss</div><div class="de">Über</div></a>
+                        </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if(User.Identity.IsAuthenticated){
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Logout"><div class="en">Log out</div><div class="sv">Logga ut</div><div class="de">Ausloggen</div></a>
+                        </li>
+                        }
+                        else{
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Authenticate" asp-action="Index"><div class="en">Sign in</div><div class="sv">Logga in</div><div class="de">Einloggen</div></a>
+                        </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><div class="en">| &nbsp&nbspPrivacy Policy</div><div class="sv">| &nbsp&nbspIntegritetspolicy</div><div class="de">| &nbsp&nbspDatenschutzvereinbarung</div></a>
+                        </li>
+                        <li class="nav-item">
+                            <label for="lang">| &nbsp&nbspLanguage - </label>
+                            <select id="lang" style="margin-top: 8px;" onchange="changeLang()">
+                                <option selected>English</option>
+                                <option>Svenska</option>
+                                <option>Deutsch</option>
+                            </select>
                         </li>
                     </ul>
                 </div>
+                </u>
             </div>
         </nav>
     </header>
@@ -37,13 +69,84 @@
     </div>
 
     <footer class="border-top footer text-muted">
+    
         <div class="container">
-            &copy; 2022 - ATFCM
+            <div class="container">
+                &copy; 2022 - SIMS #9
+            </div> 
         </div>
+
     </footer>
+
+
+    @* **************scripts*********** *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+   
+    @* **************charts*********** *@
+    <script src="~/js/lineChart.js" asp-append-version="true"></script>
+    <script src="~/js/steppedLineChart.js" asp-append-version="true"></script>
+    <script src="~/js/doughnutChart.js" asp-append-version="true"></script>
+    <script src="~/js/areaChart.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        var langCookie = getCookie("lang");
+        if(langCookie != ""){
+            document.getElementById("lang").value = langCookie;
+        }
+        changeLang();
+        function changeLang(){
+            document.cookie = "lang=".concat(document.getElementById("lang").value,";path=/"); 
+            if(document.getElementById("lang").value == "English"){
+                for(e of document.getElementsByClassName("en")){
+                    e.style.display = "block"
+                }
+            }
+            else{
+                for(e of document.getElementsByClassName("en")){
+                    e.style.display = "none"
+                }
+            }
+            if(document.getElementById("lang").value == "Svenska"){
+                for(e of document.getElementsByClassName("sv")){
+                    e.style.display = "block"
+                }
+            }
+            else{
+                for(e of document.getElementsByClassName("sv")){
+                    e.style.display = "none"
+                }
+            }
+            if(document.getElementById("lang").value == "Deutsch"){
+                for(e of document.getElementsByClassName("de")){
+                    e.style.display = "block"
+                }
+            }
+            else{
+                for(e of document.getElementsByClassName("de")){
+                    e.style.display = "none"
+                }
+            }
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    </script>
 </body>
 </html>

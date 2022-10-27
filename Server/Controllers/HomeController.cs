@@ -1,21 +1,44 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Server.Models;
+using Microsoft.AspNetCore.Authorization;
+using Server.JWT;
 
 namespace Server.Controllers;
 
+[Authorize]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    public AppDb Db { get; }
+    
 
-    public HomeController(ILogger<HomeController> logger, AppDb db)
+    public HomeController()
     {
-        _logger = logger;
-        Db = db;
+
+    }
+    
+    [AllowAnonymous]
+    public IActionResult Index()
+    {
+        return View();
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Home()
+    {
+        return View();
+    }
+
+    public IActionResult Overview()
+    {
+        return View();
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public string TestESP([FromBody]List<int> list){
+        return "success";
+    }
+
+    public IActionResult ShowChart()
     {
         return View();
     }
@@ -23,6 +46,6 @@ public class HomeController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        return View(new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

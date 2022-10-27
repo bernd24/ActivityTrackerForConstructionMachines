@@ -1,9 +1,247 @@
 ﻿@{
     ViewData["Title"] = "Machines";
 }
-<h1>@ViewData["Title"]</h1>
+<h1>
+    <div style="float: left; margin-right: 10px;" class="en">Machines</div>
+    <div style="float: left; margin-right: 10px;" class="de">Maschinen</div>
+    <div style="float: left; margin-right: 10px;" class="sv">Maskiner</div>
 
+    <a id="tb" class="btn btn-secondary" type="button" onclick="changeStyle()"><div id="toggleButton">
+        <div class="en">Show Unused</div>
+        <div class="de">Unbenutzte anzeigen</div>
+        <div class="sv">Visa oanvänd</div>
+    </div></a>
+    <a class="btn btn-secondary" asp-area="" asp-controller="Machine" asp-action="Create">
+        <div class="en">Add Machine</div>
+        <div class="de">Maschine hinzufügen</div>
+        <div class="sv">Lägg till maskin</div>
+    </a>
+</h1>
+
+<div style="margin-top:10px;" id="unused">
+<table class="table table-bordered">
+    <tr>
+        <th>
+            <div class="en">Identificaton</div>
+            <div class="de">Identifikation</div>
+            <div class="sv">Identifiering</div>
+        </th>
+        <th>
+            <div class="en">Manufacturer</div>
+            <div class="de">Hersteller</div>
+            <div class="sv">Tillverkare</div>
+        </th>
+        <th>
+            <div class="en">Machine Model</div>
+            <div class="de">Maschinen-Modell</div>
+            <div class="sv">Maskinmodell</div>
+        </th>    
+        <th>
+            <div class="en">Type</div>
+            <div class="de">Typ</div>
+            <div class="sv">Typ</div>
+        </th>
+        <th>
+            <div class="en">Year</div>
+            <div class="de">Baujahr</div>
+            <div class="sv">Byggår</div>
+        </th>
+        <th>
+            <div class="en">Actions</div>
+            <div class="de">Aktionen</div>
+            <div class="sv">Åtgärder</div>
+        </th>
+    </tr>
 @foreach (var machine in Model)
 {
-    @machine.Manufacturer @machine.Model @machine.MachineType
+    @if(!machine.inUse){
+        
+            <tr class="table-secondary">
+                <td>@machine.InternalId</td>
+                <td>@machine.Model.Manufacturer</td>
+                <td>@machine.Model.ModelName</td>
+                <td>@machine.Model.MachineType</td>
+                <td>@machine.Model.ModelYear</td>
+                <td>
+                    <form action="Machine/Delete/@machine.Id" method="POST">
+                        <div class="btn-group" role="group">
+                            <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                <div class="en">Update</div>
+                                <div class="de">Ändern</div>
+                                <div class="sv">Förändra</div>
+                            </a>
+                            <button type="submit" class="btn btn-dark">
+                                <div class="en">Delete</div>
+                                <div class="de">Löschen</div>
+                                <div class="sv">Släcka</div>
+                            </button>
+                            <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                <div class="en">Show</div>
+                                <div class="de">Anzeigen</div>
+                                <div class="sv">Visa</div>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+    }
+    else{
+        <tr class="table-primary">
+            <td>@machine.InternalId</td>
+            <td>@machine.Model.Manufacturer</td>
+            <td>@machine.Model.ModelName</td>
+            <td>@machine.Model.MachineType</td>
+            <td>@machine.Model.ModelYear</td>
+            <td>
+                <form action="Machine/Delete/@machine.Id" method="POST">
+                    <div class="btn-group" role="group">
+                        <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                            <div class="en">Update</div>
+                            <div class="de">Ändern</div>
+                            <div class="sv">Förändra</div>
+                        </a>
+                        <button type="submit" class="btn btn-dark">
+                            <div class="en">Delete</div>
+                            <div class="de">Löschen</div>
+                            <div class="sv">Släcka</div>
+                        </button>
+                        <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                <div class="en">Show</div>
+                                <div class="de">Anzeigen</div>
+                                <div class="sv">Visa</div>
+                        </a>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    }
 }
+</table>
+</div>
+
+<div style="margin-top:10px;" id="used">
+<table class="table table-bordered">
+    <tr>
+        <th>
+            <div class="en">Identificaton</div>
+            <div class="de">Identifikation</div>
+            <div class="sv">Identifiering</div>
+        </th>
+        <th>
+            <div class="en">Manufacturer</div>
+            <div class="de">Hersteller</div>
+            <div class="sv">Tillverkare</div>
+        </th>
+        <th>
+            <div class="en">Machine Model</div>
+            <div class="de">Maschinen-Modell</div>
+            <div class="sv">Maskinmodell</div>
+        </th>    
+        <th>
+            <div class="en">Type</div>
+            <div class="de">Typ</div>
+            <div class="sv">Typ</div>
+        </th>
+        <th>
+            <div class="en">Year</div>
+            <div class="de">Baujahr</div>
+            <div class="sv">Byggår</div>
+        </th>
+        <th>
+            <div class="en">Actions</div>
+            <div class="de">Aktionen</div>
+            <div class="sv">Åtgärder</div>
+        </th>
+    </tr>
+@foreach (var machine in Model)
+{
+    @if(machine.inUse){
+        
+            <tr class="table-primary">
+                <td>@machine.InternalId</td>
+                <td>@machine.Model.Manufacturer</td>
+                <td>@machine.Model.ModelName</td>
+                <td>@machine.Model.MachineType</td>
+                <td>@machine.Model.ModelYear</td>
+                <td>
+                    <form action="Machine/Delete/@machine.Id" method="POST">
+                        <div class="btn-group" role="group">
+                            <a asp-controller="Machine" asp-action="Update" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                <div class="en">Update</div>
+                                <div class="de">Ändern</div>
+                                <div class="sv">Förändra</div>
+                            </a>
+                            <button type="submit" class="btn btn-dark">
+                                <div class="en">Delete</div>
+                                <div class="de">Löschen</div>
+                                <div class="sv">Släcka</div>
+                            </button>
+                            <a asp-controller="Installation" asp-action="Show" asp-route-id="@machine.Id" type="button" class="btn btn-secondary">
+                                <div class="en">Show</div>
+                                <div class="de">Anzeigen</div>
+                                <div class="sv">Visa</div>
+                            </a>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+    }
+}
+</table>
+</div>
+
+
+    <p>
+        <font color="red">@TempData["Message"]</font>
+    </p>
+
+
+
+<script>
+    var a = 0;
+    var toggleCookie = getCookie("toggleUnused");
+    if(toggleCookie != ""){
+        a = toggleCookie;
+    }
+    setStyle();
+
+    function changeStyle(){
+        a++;
+        document.cookie = "toggleUnused=".concat(a,";path=/"); 
+        setStyle();
+    }
+
+    function setStyle(){
+        var unused = document.getElementById("unused");
+        var used = document.getElementById("used");
+        var toggleButton = document.getElementById("toggleButton");
+
+        if (a%2 == 0){
+            unused.style.display = "none";
+            used.style.display = "block";
+            toggleButton.style = "background-color: #b72828";
+        }
+        else{
+            unused.style.display = "block";
+            used.style.display = "none";
+            toggleButton.style = "background-color: #31b728";
+        }
+    }
+
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+</script>

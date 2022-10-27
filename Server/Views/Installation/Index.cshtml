@@ -1,0 +1,170 @@
+@{
+    ViewData["Title"] = "Configuration";
+}
+<h1>
+    <div class="en">Configuration</div>
+    <div class="de">Konfiguration</div>
+    <div class="sv">Konfiguration</div>
+</h1>
+<label for="machine">
+    <div class="en">Machine</div>
+    <div class="de">Maschine</div>
+    <div class="sv">Maskin</div>
+</label>
+<select id="machine" onchange="switchConfig()">
+    @foreach (Machine m in Model){
+        @if(ViewBag.M_Id != null && ViewBag.M_Id == m.Id){
+            <option value="@m.Id" selected>@m.InternalId</option>
+        }
+        else{
+            <option value="@m.Id">@m.InternalId</option>
+        }
+    }
+</select>
+<br>
+<br>
+@foreach (Machine m in Model){
+    if(m.Config != null){
+        <div class="config" id="@m.Id">
+            @if(m.Config.Picture != null){
+            <img src="/images/@m.Config.Picture" width="533" height="300">
+            <br>
+            <br>
+            }
+            @if(m.Config.SensorNodes != null && m.Config.SensorNodes.Count > 0){
+            <h4>
+            <label for="nodeTable">
+                <div class="en">Sensor Nodes</div>
+                <div class="de">Sensorknoten</div>
+                <div class="sv">Sensornoder</div>
+            </label>
+            </h4>
+            <table id="nodeTable" class="table table-bordered">
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        <div class="en">Node Type</div>
+                        <div class="de">Knotentyp</div>
+                        <div class="sv">Nodtyp</div>
+                    </th>
+                    <th>
+                        <div class="en">Battery Status</div>
+                        <div class="de">Batteriestatus</div>
+                        <div class="sv">Batteri status</div>
+                    </th>
+                    <th>
+                        <div class="en">Sensor Type</div>
+                        <div class="de">Sensortyp</div>
+                        <div class="sv">Sensortyp</div>
+                    </th>
+                    <th>
+                        <div class="en">Axis</div>
+                        <div class="de">Achse</div>
+                        <div class="sv">Axel</div>
+                    </th>
+                    <th>
+                        <div class="en">Position</div>
+                        <div class="de">Position</div>
+                        <div class="sv">Placera</div>
+                    </th>
+                    <th>
+                        <div class="en">RSSI Partner</div>
+                        <div class="de">RSSI Partner</div>
+                        <div class="sv">RSSI Partner</div>
+                    </th>
+                    <th>
+                        <div class="en">Sensor Name</div>
+                        <div class="de">Sensorname</div>
+                        <div class="sv">Sensornamn</div>
+                    </th>
+                    <th>
+                        <div class="en">Manufacturer</div>
+                        <div class="de">Hersteller</div>
+                        <div class="sv">Tillverkare</div>
+                    </th>
+                    <th>
+                        ID
+                    </th>
+                </tr>
+                @foreach(SensorNodeInstance sn in m.Config.SensorNodes){
+                    <tr>
+                        <td rowspan="@(sn.Sensors.Count()+1)">@sn.Id</td>
+                        @if(sn.isMaster){
+                            <td rowspan="@(sn.Sensors.Count()+1)">Master</td>
+                        }
+                        else{
+                            <td rowspan="@(sn.Sensors.Count()+1)">Slave</td>
+                        }
+                        @if(sn.hasBattery && sn.SensorNode != null){
+                            <td rowspan="@(sn.Sensors.Count()+1)">@sn.SensorNode.BatteryStatus</td>
+                        }
+                        else if(!sn.hasBattery){
+                            <td rowspan="@(sn.Sensors.Count()+1)">
+                                <div class="en">Connected to Power.</div>
+                                <div class="de">Mit Strom verbunden.</div>
+                                <div class="sv">Ansluten till ström.</div>
+                            </td>
+                        }
+                        else{
+                            <td rowspan="@(sn.Sensors.Count()+1)">
+                                <div class="en">Has a battery but there is no charge level data available.</div>
+                                <div class="de">Hat eine Batterie, aber es sind keine Daten zum Ladezustand verfügbar.</div>
+                                <div class="sv">Har ett batteri men det finns ingen laddningsnivådata tillgänglig.</div>                                
+                            </td>
+                        }
+                        @foreach(SensorInstance s in sn.Sensors){
+                            <tr>                               
+                                <td>@s.Sensor.SensorType</td>
+                                @if(s.Axis != null){
+                                    <td>@s.Axis</td>
+                                }
+                                else{
+                                    <td>-</td>
+                                }
+                                <td>@s.Position</td>
+                                @if(s.RssiPartner != null){
+                                    <td>@s.RssiPartner</td>
+                                }
+                                else{
+                                    <td>-</td>
+                                }
+                                <td>@s.Sensor.SensorName</td>
+                                <td>@s.Sensor.Manufacturer</td>
+                                <td>@s.Id</td>                                
+                            </tr>
+                        }
+                    </tr>
+                }
+            </table>
+            }
+            <a class="button" asp-area="" asp-controller="Installation" asp-action="Update" asp-route-id="@m.Id">
+                <div class="en">Update configuration</div>
+                <div class="sv">Uppdatera konfiguration</div>
+                <div class="de">Konfiguration erneuern</div>
+            </a>
+        </div>
+    }
+    else{
+        <div class="config" id="@m.Id">
+            <div class="en">This Machine doesn't have a Configuration.</div>
+            <div class="de">Diese Maschine besitzt keine Konfiguration.</div>
+            <div class="sv">Denna maskin har ingen konfiguration.</div>
+            <a class="button" asp-area="" asp-controller="Installation" asp-action="Create" asp-route-id="@m.Id">
+                <div class="en">Create configuration</div>
+                <div class="sv">Skapa konfiguration</div>
+                <div class="de">Konfiguration erstellen</div>
+            </a>
+        </div>
+    }
+}
+<script>
+    switchConfig();
+    function switchConfig(){    
+        for(var cImg of document.getElementsByClassName("config")){
+            cImg.style.display = "none";
+        }
+        document.getElementById(document.getElementById("machine").value).style.display = "block";
+    }
+</script>
