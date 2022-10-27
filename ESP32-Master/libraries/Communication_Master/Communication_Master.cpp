@@ -1,5 +1,5 @@
-#include <esp_now.h>
-#include <WiFi.h>
+//#include <esp_now.h>
+//#include <WiFi.h>
 
 #include "Communication_Master.h"
 #include <SIM800L.h>
@@ -13,7 +13,8 @@ SIM800L* Communication_Master::sim800;
 JSON_data_packet Communication_Master::server_packet[MAX_CONNECTIONS];
 char Communication_Master::small_packet[] = {'\0'};
 
-char Communication_Master::big_packet[] = {'\0'};
+//char big_packet[] = {'\0'};
+
 
 bool Message_queue::push(const packet_handshake_t& handshake) {
 	return handshake_queue.push(handshake);
@@ -64,7 +65,7 @@ void copyArray(T target[], const T src[], uint16_t size) {
 	}
 }
 
-char file_json[1024] = {'\0'};
+char* file_json = new char[16000];
 void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len) {
 	// First byte contains both sensor_node_id and message type
 	// So we do bitwise AND, with 00001111 to remove first 4 bits
@@ -115,7 +116,7 @@ void OnDataRecv(const uint8_t* mac_addr, const uint8_t* data, int data_len) {
 			*/
 			Communication_Master::queue.push(*(packet_data_t*)data);
 			break;
-		case ERROR:
+		case _ERROR:
 			Communication_Master::queue.push(*(packet_error_t*)data);
 			break;
 	}
@@ -175,7 +176,7 @@ bool Communication_Master::setupSIM800() {
 }
 
 bool Communication_Master::init(char ssid[], char pass[], uint8_t channel, bool ssid_hidden, uint8_t max_connections) {
-	WiFi.mode(WIFI_AP);
+	/*WiFi.mode(WIFI_AP);
 
 	if(!WiFi.softAP(ssid, pass, channel, ssid_hidden, max_connections))
 		return false;
@@ -183,7 +184,7 @@ bool Communication_Master::init(char ssid[], char pass[], uint8_t channel, bool 
 
 	WiFi.disconnect();
 	if(esp_now_init() != ESP_OK)
-		return false;
+		return false;*/
 
 	// Setup file as backup
 	if(WRITE_TO_FILE) {
@@ -203,26 +204,49 @@ bool Communication_Master::init(char ssid[], char pass[], uint8_t channel, bool 
 		file_data.close();
 	}
 
-	Serial2.begin(9600);
+	Serial2.begin(115200);
 	delay(3000);
-	sim800 = new SIM800L((Stream*)&Serial2, SIM800_RST_PIN, 200, 512);
+	sim800 = new SIM800L((Stream*)&Serial2, SIM800_RST_PIN, 1000);
 	if(!setupSIM800()) {
 		delete sim800;
 		return false;
 	}
 	
-	esp_now_register_recv_cb(OnDataRecv);
+	//esp_now_register_recv_cb(OnDataRecv);
 	delay(100);
 
 	packet_handshake_t handshake;
 	handshake.message_type = MASTER_NODE_ID;
-	handshake.size = 1;
+	handshake.size = 7;
 
 	sensor_format_t format;
 	snprintf(format.name, sizeof(format.name), "%s", "MPU6050");
 	format.data_count = 3;
-
 	handshake.payload[0] = format;
+
+	snprintf(format.name, sizeof(format.name), "%s", "Fuel Rate");
+	format.data_count = 1;
+	handshake.payload[1] = format;
+
+    snprintf(format.name, sizeof(format.name), "%s", "Vehicle Speed");
+	format.data_count = 1;
+	handshake.payload[2] = format;
+
+    snprintf(format.name, sizeof(format.name), "%s", "Engine Load");
+	format.data_count = 1;
+	handshake.payload[3] = format;
+
+    snprintf(format.name, sizeof(format.name), "%s", "Fuel Level");
+	format.data_count = 1;
+	handshake.payload[4] = format;
+
+    snprintf(format.name, sizeof(format.name), "%s", "RPM");
+	format.data_count = 1;
+	handshake.payload[5] = format;
+
+    snprintf(format.name, sizeof(format.name), "%s", "Mileage");
+	format.data_count = 1;
+	handshake.payload[6] = format;
 
 	int16_t result = sendToServer(handshake);
 	int counter = 0;
@@ -341,10 +365,12 @@ void Communication_Master::loadPacketIntoJSON(packet_handshake_t packet, char pa
 	JSONFormat(packet, payload, index);
 	strcat(payload, "{");
 	for(uint8_t i = 0; i < packet.size; ++i) {
-		if(i != 0)
+		if(i != 0){
 			strcat(payload, ",");//payload[index++] = delimiter;
+            strcat(payload, "{");
+        }
 
-		char name_str[10];
+		char name_str[14];
 		copyArray(name_str, packet.payload[i].name, sizeof(packet.payload[i].name));
 		loadJsonAttribute(name, sizeof(name), name_str, sizeof(name_str), payload, index);
 		strcat(payload, "\",");
@@ -381,7 +407,7 @@ void Communication_Master::loadPacketIntoJSON(packet_data_t packet, char payload
 		if(i != 0)
 			strcat(payload, ",");
 
-		char data_str[6];
+		char data_str[9];  //100.000.000m = 100.000km
 		snprintf(data_str, sizeof(data_str), "%f", packet.payload[i]);
 		strcat(payload, data_str);
 		/*
@@ -401,7 +427,6 @@ void Communication_Master::loadPacketIntoJSON(packet_error_t packet, char payloa
 }
 
 int16_t Communication_Master::sendToServer(const char payload[]) {
-    Serial.print(strlen(payload));
 	return sim800->doPost(URL2, CONTENT_TYPE, payload, 10000, 10000);
 }
 
@@ -412,7 +437,7 @@ int16_t Communication_Master::sendToServer(const JSON_data_packet& packet) {
 int16_t Communication_Master::sendToServer(const packet_handshake_t& handshake) {
 	loadPacketIntoJSON(handshake, small_packet);
 
-	int16_t result = sim800->doPost(URL1, CONTENT_TYPE, "{\"node_ID\":2,\"payload\":[{\"id\":\"MPU6050\",\"elements\":3}]}", 10000, 10000);
+	int16_t result = sim800->doPost(URL1, CONTENT_TYPE, small_packet, 10000, 10000);
 	Serial.println("Inside send to server");
 	for(int i = 0; i < 256; ++i) {
 		Serial.print(small_packet[i]);
@@ -427,27 +452,26 @@ int16_t Communication_Master::sendToServer(const packet_data_t& data) {
 }
 
 void Communication_Master::close() {
-	WiFi.scanDelete();
+	//WiFi.scanDelete();
 }
 
 void Communication_Master::setOnDataRecvFunction(OnDataRecieveFunc f) {
-	esp_now_register_recv_cb(f);
+	//esp_now_register_recv_cb(f);
 }
 
 void JSON_data_packet::initPayload(const packet_data_t& packet) {
 	resetPayload();
 	
 	//this->node_id = packet.getSensorNodeID();
-	Serial.println("Init new json packet");
 	JSONFormat(packet, payload, current_index);
 	
-	for(uint8_t i = 0; i < packet.size; ++i) {
+	for(uint32_t i = 0; i < packet.size; ++i) {
 		if(i != 0)
 			strcat(payload, ",");
 
-		char data_str[6];
+		char data_str[9];
 		snprintf(data_str, sizeof(data_str), "%f", packet.payload[i]);
-		if(data_str[4] == '.') data_str[4] = '\0';
+		if(data_str[7] == '.') data_str[7] = '\0';
 		strcat(payload, data_str);
 	}
 	number_of_packets = 1;
@@ -470,15 +494,16 @@ bool JSON_data_packet::addDataToPayload(const packet_data_t& packet) {
 			break;
 		}
 	}
-	if((JSON_MAX_PAYLOAD - index_of_null) < added_data_size)
+	if((JSON_MAX_PAYLOAD - index_of_null) < added_data_size){
 		return false;
+    }
 
 
 	for(uint8_t i = 0; i < packet.size; ++i) {
 		strcat(payload, ",");
-		char data_str[6];
+		char data_str[9];
 		snprintf(data_str, sizeof(data_str), "%f", packet.payload[i]);
-		if(data_str[4] == '.') data_str[4] = '\0';
+		if(data_str[7] == '.') data_str[7] = '\0';
 		strcat(payload, data_str);
 	}
 	++number_of_packets;
@@ -554,6 +579,7 @@ bool Communication_Master::concatJsonArrays(char big_arr[]) {
 	strcpy(big_arr, "[");
 	for(int i = 0; i < MAX_CONNECTIONS; ++i) {
 		if(server_packet[i].number_of_packets >= 1) {
+
 			if(i != 0)	strcat(big_arr, ",");
 			if(!server_packet[i].is_full) server_packet[i].finalizePayload();
 

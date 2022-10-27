@@ -2,9 +2,9 @@
 #define COMMUNICATION_MASTER_H
 
 #include <SIM800L.h>
-#include <esp_now.h>
-#include <WiFi.h>
-#include <esp_wifi.h> // only for esp_wifi_set_channel()
+//#include <esp_now.h>
+//#include <WiFi.h>
+//#include <esp_wifi.h> // only for esp_wifi_set_channel()
 #include <RingBuf.h>
 #include <SPIFFS.h>
 
@@ -21,6 +21,8 @@ const char URL1[] = "http://h2986165.stratoserver.net/Session/Handshake";
 //const char URL[] = "https://a00212bf-e590-424f-b2cf-751b9a9d644c.mock.pstmn.io/Machine/Create";
 const char CONTENT_TYPE[] = "application/json";
 
+
+
 #define MAX_CONNECTIONS 4
 #define MASTER_NODE_ID 48
 
@@ -30,23 +32,24 @@ typedef void(*OnDataRecieveFunc)(const uint8_t*, const uint8_t*, int);
 
 const uint8_t HANDSHAKE = 1;
 const uint8_t DATA 		= 2;
-const uint8_t ERROR 	= 3;
+const uint8_t _ERROR 	= 3;
 
-const uint8_t NAME_SIZE = 10;
+const uint8_t NAME_SIZE = 14;
 const uint8_t MAX_SENSORS = 16;
 const uint8_t MAX_PACKET_SIZE = 250;
 
 
 #define packet_handshake_t 	packet_t<sensor_format_t, MAX_SENSORS>
-#define packet_data_t 		packet_t<float, (MAX_PACKET_SIZE - 4) / sizeof(float)>
+#define packet_data_t 		packet_t<float, 800>
 #define packet_error_t 		packet_t<char, MAX_PACKET_SIZE - 2>
 
 
 // General packet for easy implementaion of new packet format.
-template<typename T, uint8_t sz>
+
+template<typename T, uint32_t sz>
 struct packet_t {
 	uint8_t message_type;
-	uint8_t size;
+	uint32_t size;
 	T payload[sz];
 
 	uint8_t getSensorNodeID() const{
@@ -82,14 +85,14 @@ public:
 
 private:
 	RingBuf<packet_handshake_t, 4>		handshake_queue;
-	RingBuf<packet_data_t, 		128> 	data_queue;
+	RingBuf<packet_data_t, 		1> 	data_queue;
 	RingBuf<packet_error_t, 	32> 	error_queue;
 };
 
 
-const uint16_t JSON_MAX_PAYLOAD = 4096;
+const uint16_t JSON_MAX_PAYLOAD = 8000;
 struct JSON_data_packet {
-	char payload[JSON_MAX_PAYLOAD] = {'\0'};
+	char* payload = new char[JSON_MAX_PAYLOAD];
 	uint16_t current_index = 0;
 	uint8_t number_of_packets = 0;
 
@@ -141,9 +144,9 @@ public:
 
 	static bool concatJsonArrays(char big_arr[]);
 	static JSON_data_packet server_packet[MAX_CONNECTIONS];
-	static char small_packet[256];
+	static char small_packet[300];
 
-	static char big_packet[16384];
+
 	//static char sensor_data[2048][32];
 	
 private:
@@ -151,6 +154,5 @@ private:
 
 	static bool setupSIM800();
 };
-
 
 #endif
