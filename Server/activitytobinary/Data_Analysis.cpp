@@ -1,5 +1,5 @@
 // SIMS Group Project - Activity Tracker for Heavy Duty Machine, Project based product development - DT169G 
-// Mathias Hammarström
+// Mathias HammarstrÃ¶m
 // Data_Analysis.cpp, 10-10-2022, 28-10-2022
 // Implementaion of algorithms for detecting movement from sensor data.
 
@@ -27,7 +27,7 @@ std::vector<Activity_Timeline> predict(const std::vector<Data>& data)
 	// Go through each dataset and create a timeline for it
 	for (Data d : data) {
 
-		if (d.sensorName == "HC_SR04") {
+		if (d.sensorName == "HC-SR04") {
 			d.data = derivative(d.data);
 			lowpass_filter_2(d.data, 4);
 		}
