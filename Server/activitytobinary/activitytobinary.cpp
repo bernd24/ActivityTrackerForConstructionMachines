@@ -1,5 +1,5 @@
 // SIMS Group Project - Activity Tracker for Heavy Duty Machine, Project based product development - DT169G 
-// Mathias Hammarström
+// Mathias HammarstrÃ¶m
 // activitytobinary.cpp, 10-10-2022, 31-10-2022
 // Main function file, takes command line arguments for which files should be parsed
 // and converted into timelines.
@@ -13,7 +13,7 @@
 #include "Activity_Timeline.h"
 #include "Data_Analysis.h"
 #include "File_Parser.h"
-#include "Test.h"
+#include "test.h"
 #include "Data.h"
 
 int main(int argc, char* argv[])
