@@ -1,50 +1,86 @@
-#pragma once
+// SIMS Group Project - Activity Tracker for Heavy Duty Machine, Project based product development - DT169G 
+// Mathias Hammarström
+// Activity_Timeline.h, 10-10-2022, 31-10-2022
+// Activity Timeline represents a binary timeline for an activity using a vector of bool
+// Where each bit represent activity in some time period.
+
+#ifndef ACTIVITY_TIMELIME_H
+#define ACTIVITY_TIMELIME_H
+
 #include <vector>
-#include <string>
-#include <cmath>
 
-const std::pair<int, int> test1_node3_ranges[]	= { {37, 53}, {77, 78}, {81, 82}, {84, 85}, {94, 98}, {101, 105}, {115, 117}, {120, 121}, {124, 125}, 
-													{131, 132}, {182, 183}, {186, 197}, {201, 207}, {209, 213}, {225, 226}, {230, 231}, {233, 234}, {238, 239},
-													{242, 245}, {250, 251}, {254, 257}, {262, 263}, {272, 274}, {278, 284}, {289, 290}, {293, 295}, {302, 304} };
-const std::pair<int, int> test1_node4_ranges[]	= { {24, 37}, {83, 86}, {93, 97}, {102, 104}, {114, 115}, {123, 125}, {173, 180}, {211, 213}, {219, 223}, {234, 237},
-													{245, 246}, {264, 268}, {273, 275}, {307, 310} };
 
-const std::pair<int, int> test1_idle_ranges[]	= { {0, 23}, {131, 173}, {307, 335} };
-const std::pair<int, int> test1_dig_ranges[]	= { {23, 54}, {76, 87}, {92, 106}, {113, 127}, {173, 215}, {220, 227}, {232, 248}, {262, 277}, {288, 297} };
-const std::pair<int, int> test1_rotate_ranges[] = { {54, 76}, {87, 92}, {106, 113}, {127, 131}, {215, 220}, {227, 232}, {248, 262}, {277, 288}, {297, 307} };
 
-const std::pair<int, int> test2_idle_ranges[]	= { {0, 94}, {240, 263}, {382, 401} };
-const std::pair<int, int> test2_dig_ranges[]	= { {102, 112}, {119, 145}, {153, 167}, {173, 187}, {192, 200}, {204, 214}, {221, 234}, {263, 283}, {291, 303}, {309, 324},
-													{330, 344}, {350, 362}, {367, 377}, {401, 405}, {410, 421}, {439, 445}, {452, 460} };
-const std::pair<int, int> test2_rotate_ranges[] = { {94, 102}, {112, 119}, {145, 153}, {167, 173}, {187, 192}, {200, 204}, {214, 221}, {234, 240}, {283, 291}, {303, 309},
-													{324, 330}, {344, 350}, {362, 367}, {377, 382}, {405, 410}, {421, 439}, {445, 452}, {460, 465} };
-
+// A Binary timeline
 class Activity_Timeline {
 public:
 	Activity_Timeline() = default;
 	Activity_Timeline(std::string name, size_t size);
+	// Creates a timeline with 1's between given ranges
 	Activity_Timeline(std::string name, size_t size, const std::pair<int, int>* begin, const std::pair<int, int>* end);
 	Activity_Timeline(std::string name, std::vector<bool> t);
+	// Creates a new timeline object by combining to timelines using OR operator.
 	Activity_Timeline(const Activity_Timeline& t1, const Activity_Timeline& t2);
 
+	// Fills given ranges in timeline with ones
 	void fill_ranges(const std::pair<int, int>* begin, const std::pair<int, int>* end);
+
+	// Shifts the timeline to the right.
+	// Pushes false to the front.
 	void operator>>(size_t steps);
 
-	float segment_accuracy(const Activity_Timeline& target);
-	float bit_accuracy(const Activity_Timeline& target);
-	float time_accuracy(const Activity_Timeline& target);
+	void operator=(const std::vector<Activity_Timeline>& arr);
 
+	// Ways of determining the similarity of a timeline to a target timeline
+	// OBD Accuracy is precision. How "precise" our ones are to the target
+	float obd_accuracy(const Activity_Timeline& target) const;
+	// Activity Accuracy is Recall. How many ones do we capture that the target timeline has.
+	float activity_accuracy(const Activity_Timeline& target) const;
+	// Bit accuracy is just bit by bit accuracy.
+	float bit_accuracy(const Activity_Timeline& target) const;
+	// Calculates the amount of ones and compares to eachother
+	float time_accuracy(const Activity_Timeline& target) const;
+
+	// Matthew's Correlation Coefficient
+	// We use this as our primary way to determine a good match
+	float mcc(const Activity_Timeline& target) const;
+	float fscore(const Activity_Timeline& target) const;
+
+	// Filter using a given timeline
 	void filter(const Activity_Timeline& target);
 
-	void post_process(size_t consecutive_bit_length);
+	// filter using AND. Both timelines must have a one in the same place.
+	void filter_and(const Activity_Timeline& target);
+
+	// Inverts a timeline. Just a "NOT" operator
+	void invert();
+
+	// Post processes the binary timeline. 
+	// This will merge ones according to the parameters.
+	void post_process(size_t start_threshold = 3, size_t stop_start_threshold = 3, size_t stop_started_threshold = 15);
+
+	// Fill gaps between ones
 	void smooth_over(size_t max = 1);
-	void compress(size_t factor = 10);
+
+	// Compresses a timeline using factor. 
+	// For every segment that we compress we look at how many ones there are 
+	// to determine if the compressed segment should become a one using the percentage argument
+	void compress(size_t factor = 10, float perc = 0.4);
+
+	// Scales a timeline up by a factor.
 	void scale(size_t factor = 10);
 
+	// Calculate the amount of ones
 	size_t get_total_time() const;
+	// Prints the timeline.
 	void print(size_t rowsize = 10) const;
+
+	void print_acc(const Activity_Timeline& target) const;
+
+	// Gets the size of the underlying timeline vector
 	size_t size() const;
 
+	// Prints timeline to a file.
 	void printToFile(std::string filePath) const;
 
 public:
@@ -52,3 +88,5 @@ public:
 	std::vector<bool> timeline;
 };
 
+
+#endif
