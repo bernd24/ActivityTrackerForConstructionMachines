@@ -205,7 +205,7 @@ public class Callback{
                                     end = current;
                                 }
                             }
-                            current = current.AddMilliseconds(100);
+                            current = current.AddMilliseconds(1000);
                         }
                         if(period){
                             db.Query("WorkSessionActivity")
