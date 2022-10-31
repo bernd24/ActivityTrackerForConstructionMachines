@@ -1,5 +1,5 @@
 // SIMS Group Project - Activity Tracker for Heavy Duty Machine, Project based product development - DT169G 
-// Mathias Hammarström
+// Mathias HammarstrÃ¶m
 // test.h, 10-10-2022, 31-10-2022
 // Contains data from our tests at technichus.
 
@@ -8,6 +8,7 @@
 #include "Activity_Timeline.h"
 #include "File_Parser.h"
 #include <vector>
+#include <algorithm>
 
 const std::pair<int, int> test1_node3_ranges[] = { {37, 53}, {77, 78}, {81, 82}, {84, 85}, {94, 98}, {101, 105}, {115, 117}, {120, 121}, {124, 125},
 													{131, 132}, {182, 183}, {186, 197}, {201, 207}, {209, 213}, {225, 226}, {230, 231}, {233, 234}, {238, 239},

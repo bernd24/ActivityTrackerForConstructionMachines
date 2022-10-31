@@ -1,5 +1,5 @@
 // SIMS Group Project - Activity Tracker for Heavy Duty Machine, Project based product development - DT169G 
-// Mathias Hammarström
+// Mathias HammarstrÃ¶m
 // Activity_Timeline.h, 10-10-2022, 31-10-2022
 // Activity Timeline represents a binary timeline for an activity using a vector of bool
 // Where each bit represent activity in some time period.
@@ -8,6 +8,8 @@
 #define ACTIVITY_TIMELIME_H
 
 #include <vector>
+#include <string>
+#include <cmath>
 
 
 
