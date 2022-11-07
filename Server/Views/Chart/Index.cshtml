@@ -181,6 +181,10 @@ function addChart(m){
                 return new Date(label).toLocaleString([], { hour12: false, hour: '2-digit', minute: '2-digit', fractionalSecondDigits: 2 });
               }
             }
+          },
+          y: {
+            min: m.sN_Id == 4 ? 5 : -1,
+            max: m.sN_Id == 4 ? 25 : 1
           }
         },
         plugins:{
