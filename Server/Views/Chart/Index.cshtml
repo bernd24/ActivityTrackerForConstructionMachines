@@ -10,7 +10,7 @@
   </div>
   @* ******************chart.js******https://www.chartjs.org/docs/latest/ *@
   <div class="flexbox-item flexbox-item-1">
-  <form method="POST">
+  <form method="POST" id="timeframe">
       <dl>
            <dt>
             <label for="fromDate">
@@ -107,10 +107,31 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+  var model = @Html.Raw(Json.Serialize(Model));
+  model.forEach(m => addChart(m));
+  demo();
 
-   var model = @Html.Raw(Json.Serialize(Model));
-model.forEach(m => addChart(m));
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+async function demo(){
+  while(true){
+  await sleep(5000);
+  date = new Date();
+  date2 = new Date();
+  date2.setSeconds(date.getSeconds()-30);
+  $.get(window.location.href + "/indexjson?fromDate=10/7/2022&fromTime="+date2.toLocaleTimeString()+"&tillDate=10/7/2022&tillTime="+date.toLocaleTimeString(), function(data, status){
+    //console.log(status);
+    //console.log(model);
+    model = data;
+  });
+  myChart1.destroy();
+  model.forEach(m => addChart(m));
+  }
+}
+
+var myChart1;
 
 function addChart(m){
     var data = {
@@ -175,6 +196,7 @@ function addChart(m){
       document.getElementById(m.sN_Id),
       config
     );
+    myChart1 = myChart;
 }
 </script>
 
