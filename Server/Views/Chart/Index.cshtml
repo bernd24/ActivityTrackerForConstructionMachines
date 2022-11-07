@@ -131,7 +131,8 @@ async function demo(){
   }
 }
 
-var myChart1;
+var myChart2;
+var myChart4;
 
 function addChart(m){
     var data = {
@@ -196,7 +197,13 @@ function addChart(m){
       document.getElementById(m.sN_Id),
       config
     );
-    myChart1 = myChart;
+    if(m.sN_Id == 2){
+      myChart2 = myChart;
+    }
+    else{
+      myChart4 = myChart;
+    }
+    
 }
 </script>
 
