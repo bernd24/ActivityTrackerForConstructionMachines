@@ -122,8 +122,8 @@ async function demo(){
   date2 = new Date();
   date2.setSeconds(date.getSeconds()-30);
   $.get(window.location.href + "/indexjson?fromDate=10/7/2022&fromTime="+date2.toLocaleTimeString()+"&tillDate=10/7/2022&tillTime="+date.toLocaleTimeString(), function(data, status){
-    //console.log(status);
-    //console.log(model);
+    console.log(status);
+    console.log(model);
     model = data;
   });
   myChart2.destroy();
