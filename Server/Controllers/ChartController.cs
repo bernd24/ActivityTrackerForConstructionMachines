@@ -115,7 +115,7 @@ public class ChartController : Controller
         System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
         var sensors = Db.Query("Measurement")
         .Select("Sensor.SensorName","Sensor.SensorType","SensorInstance.Axis","Measurement.SI_Id","SensorInstance.SN_Id")
-        //.Where("WS_Id",Id)
+        .Where("WS_Id",Id)
         .GroupBy("SI_Id")
         .Join("SensorInstance","SensorInstance.Id","Measurement.SI_Id")
         .Join("Sensor","Sensor.Id","SensorInstance.S_Id")
